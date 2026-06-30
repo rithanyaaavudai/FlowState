@@ -13,6 +13,9 @@ public class FlowUser {
     private String username;
     private String password;
 
-    public String get
+    public String getUsername(){
+        return username;
+    }
+    public String setUsername()
 
 }
