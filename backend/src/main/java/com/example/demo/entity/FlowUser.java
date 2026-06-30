@@ -22,6 +22,9 @@ public class FlowUser {
     public String getPassword(){
         return password;
     }
-    public String set
+    public String setPassword(String password){
+        this.password=password;
+    }
+    
 
 }
