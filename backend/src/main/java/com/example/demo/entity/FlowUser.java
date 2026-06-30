@@ -16,6 +16,12 @@ public class FlowUser {
     public String getUsername(){
         return username;
     }
-    public String setUsername()
+    public String setUsername(String username){
+        this.username=username;
+    }
+    public String getPassword(){
+        return password;
+    }
+    public String set
 
 }
