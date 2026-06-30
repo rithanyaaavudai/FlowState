@@ -6,5 +6,9 @@ import jakarta.persistence.*;
 @Table(name="users")
 public class FlowUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+
 }
