@@ -23,13 +23,15 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <
+        </dependency>
         <!-- Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+       
         <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
