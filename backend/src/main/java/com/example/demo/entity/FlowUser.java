@@ -1,4 +1,8 @@
 package com.example.demo.entity;
+import java.time.LocalDateTime;
+
+import org.springframework.cglib.core.Local;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -41,6 +45,12 @@ public class FlowUser {
     private LocalDateTime createdAt;
 
     @Column(name="last_login_at")
+    private LocalDateTime lastLoginAt;
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt=LocalDateTime.now();
+    }
     public String getUsername(){
         return username;
     }
