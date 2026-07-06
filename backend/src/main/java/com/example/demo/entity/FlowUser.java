@@ -22,8 +22,11 @@ public class FlowUser {
     @Email
     @Size(max=100)
     @Column(name="email",unique=true,nullable=false,length=100)
-    
-    private String password;
+    private String email;
+
+    @NotBlank
+    @Column(name="password_hash",nullable=false)
+    private String passwordHash;
 
     public String getUsername(){
         return username;
