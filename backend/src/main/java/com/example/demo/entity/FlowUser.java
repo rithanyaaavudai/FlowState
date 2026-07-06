@@ -28,6 +28,8 @@ public class FlowUser {
     @Column(name="password_hash",nullable=false)
     private String passwordHash;
 
+    @NotNull
+    
     public String getUsername(){
         return username;
     }
