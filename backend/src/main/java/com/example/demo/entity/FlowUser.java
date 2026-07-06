@@ -51,7 +51,9 @@ public class FlowUser {
     private LocalDateTime lastLoginAt;
 
     // --- Lifecycle Hooks ---
-
+    @Enumerated(EnumType.STRING)
+    @Column(name="role",nullable=false,length=30)
+    
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
