@@ -86,5 +86,5 @@ public class FlowUser {
         this.role=role;
     }
     
-
+enum UserRole
 }
