@@ -48,7 +48,8 @@ public class FlowUser {
     private LocalDateTime lastLoginAt;
 
     @Enumerated(EnumType.STRING)
-    
+    @Column(name="role",nullable=false,length=30)
+    private UserRole role;
 
     @PrePersist
     protected void onCreate(){
