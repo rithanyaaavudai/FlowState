@@ -29,7 +29,8 @@ public class FlowUser {
     private String passwordHash;
 
     @NotNull
-    @Enumer
+    @Enumerated(EnumType.STRING)
+    @Column(name)
     public String getUsername(){
         return username;
     }
