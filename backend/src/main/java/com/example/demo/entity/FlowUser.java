@@ -139,4 +139,10 @@ public class FlowUser {
     public void setRole(UserRole role){
         this.role=role;
     }
+enum UserRole{
+    PLATFORM_ADMIN,
+    FLOW_COACH,
+    PRACTITIONER
 }
+}
+
