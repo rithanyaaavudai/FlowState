@@ -29,7 +29,7 @@ public class FlowUser {
     private String passwordHash;
 
     @NotNull
-    
+    @Enumer
     public String getUsername(){
         return username;
     }
