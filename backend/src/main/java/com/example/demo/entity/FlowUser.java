@@ -47,6 +47,8 @@ public class FlowUser {
     @Column(name="last_login_at")
     private LocalDateTime lastLoginAt;
 
+    @Enumer
+
     @PrePersist
     protected void onCreate(){
         this.createdAt=LocalDateTime.now();
