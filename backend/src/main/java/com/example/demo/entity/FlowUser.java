@@ -64,8 +64,12 @@ public class FlowUser {
         this.username=username;
     }
     public String getEmail(){
-        
+        return email;
     }
+    public String setEmail(String email){
+        this.email=email;
+    }
+    
     public String getPassword(){
         return password;
     }
