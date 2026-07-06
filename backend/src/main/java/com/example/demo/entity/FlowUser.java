@@ -34,7 +34,10 @@ public class FlowUser {
     private String fullName;
 
     @NotNull
-    
+    @Column(name="is_active",nullable=false)
+    private Boolean isActive=true;
+
+    @Column
     public String getUsername(){
         return username;
     }
