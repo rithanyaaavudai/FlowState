@@ -21,7 +21,8 @@ public class FlowUser {
     @NotBlank
     @Email
     @Size(max=100)
-    @Column
+    @Column(name="email",unique=true,nullable=false,length=100)
+    
     private String password;
 
     public String getUsername(){
