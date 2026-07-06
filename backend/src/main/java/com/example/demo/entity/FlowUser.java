@@ -12,7 +12,9 @@ public class FlowUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @NotBlank
+    @Size(max=100)
     @Column(unique=true)
     private String username;
     private String password;
