@@ -69,12 +69,11 @@ public class FlowUser {
     public String setEmail(String email){
         this.email=email;
     }
-    
-    public String getPassword(){
-        return password;
+    public String getPasswordHash(){
+        return passwordHash;
     }
-    public String setPassword(String password){
-        this.password=password;
+    public void setPasswordHash(String passwordHash){
+        this.passwordHash=password;
     }
     
 
