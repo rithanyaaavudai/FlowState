@@ -51,6 +51,13 @@ public class FlowUser {
     protected void onCreate(){
         this.createdAt=LocalDateTime.now();
     }
+    public Long getId(){
+        return id;
+    }
+    public String setId(Long id){
+        this.id=id;
+    }
+    
     public String getUsername(){
         return username;
     }
