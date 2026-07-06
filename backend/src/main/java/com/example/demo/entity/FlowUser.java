@@ -136,5 +136,7 @@ public class FlowUser {
     public UserRole getRole(){
         return role;
     }
-    public void 
+    public void setRole(UserRole role){
+        this.role=role;
+    }
 }
