@@ -30,7 +30,11 @@ public class FlowUser {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name)
+    @Column(name="full_name",nullable=false,length=150)
+    private String fullName;
+
+    @NotNull
+    
     public String getUsername(){
         return username;
     }
