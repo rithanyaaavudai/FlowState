@@ -16,6 +16,9 @@ public class FlowUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    @Column(name="role",nullable=false,length=30)
+    private UserRole role;
     
     @NotBlank
     @Size(max=100)
@@ -47,9 +50,6 @@ public class FlowUser {
     @Column(name="last_login_at")
     private LocalDateTime lastLoginAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name="role",nullable=false,length=30)
-    private UserRole role;
 
     @PrePersist
     protected void onCreate(){
@@ -83,11 +83,9 @@ public class FlowUser {
         return role;
     }
     public void setRole(UserRole role){
-        
-    }
-    public void setRole(UserRole role){
         this.role=role;
     }
+
     
 enum UserRole{
     PLATFORM_ADMIN,
