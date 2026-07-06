@@ -130,5 +130,14 @@ public class FocusSession {
 
     public List<DistractionLog> getDistractions() { return distractions; }
     public void setDistractions(List<DistractionLog> distractions) { this.distractions = distractions; }
+
+enum SessionStatus{
+    SCHEDULED,
+    IN_PROGRESS,
+    COMPLETED,
+    ABANDONED
+}
+enum SessionType{
     
+}
 }
