@@ -47,7 +47,8 @@ public class FlowUser {
     @Column(name="last_login_at")
     private LocalDateTime lastLoginAt;
 
-    @Enumer
+    @Enumerated(EnumType.STRING)
+    
 
     @PrePersist
     protected void onCreate(){
