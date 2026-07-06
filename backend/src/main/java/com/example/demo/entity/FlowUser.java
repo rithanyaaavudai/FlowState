@@ -53,7 +53,8 @@ public class FlowUser {
     // --- Lifecycle Hooks ---
     @Enumerated(EnumType.STRING)
     @Column(name="role",nullable=false,length=30)
-    
+    private UserRole role;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -132,4 +133,8 @@ public class FlowUser {
     public void setLastLoginAt(LocalDateTime lastLoginAt) {
         this.lastLoginAt = lastLoginAt;
     }
+    public UserRole getRole(){
+        return role;
+    }
+    public void 
 }
