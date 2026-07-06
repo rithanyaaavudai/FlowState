@@ -138,6 +138,8 @@ enum SessionStatus{
     ABANDONED
 }
 enum SessionType{
-    
+    DEEP_WORK,
+    CREATIVE,
+    REVIEW
 }
 }
