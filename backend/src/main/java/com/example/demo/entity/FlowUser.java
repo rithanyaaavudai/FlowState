@@ -53,7 +53,7 @@ public class FlowUser {
     // --- Lifecycle Hooks ---
     @Enumerated(EnumType.STRING)
     @Column(name="role",nullable=false,length=30)
-    private UserRole role;
+    private UserRole userRole;
 
     @PrePersist
     protected void onCreate() {
@@ -101,11 +101,11 @@ public class FlowUser {
         this.fullName = fullName;
     }
     public UserRole getUserRole() {
-        return role;
+        return userRole;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setUserRole(UserRole role) {
+        this.role = userRole;
     }
 
     public String getFullName() {
