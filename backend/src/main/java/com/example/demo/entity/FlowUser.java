@@ -73,8 +73,12 @@ public class FlowUser {
         return passwordHash;
     }
     public void setPasswordHash(String passwordHash){
-        this.passwordHash=password;
+        this.passwordHash=passwordHash;
     }
+    public UserRole getRole(){
+        return role;
+    }
+    public void S
     
 
 }
