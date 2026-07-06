@@ -57,12 +57,14 @@ public class FlowUser {
     public String setId(Long id){
         this.id=id;
     }
-    
     public String getUsername(){
         return username;
     }
     public String setUsername(String username){
         this.username=username;
+    }
+    public String getEmail(){
+        
     }
     public String getPassword(){
         return password;
