@@ -94,7 +94,13 @@ public class FlowUser {
         this.passwordHash = passwordHash;
     }
 
-    public UserRole getRole() {
+    public void setRole(UserRole role){
+        this.role=role;
+    }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    public UserRole getUserRole() {
         return role;
     }
 
@@ -106,8 +112,8 @@ public class FlowUser {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public UserRole getRole(){
+        return role;
     }
 
     public Boolean getIsActive() {
@@ -132,12 +138,6 @@ public class FlowUser {
 
     public void setLastLoginAt(LocalDateTime lastLoginAt) {
         this.lastLoginAt = lastLoginAt;
-    }
-    public UserRole getRole(){
-        return role;
-    }
-    public void setRole(UserRole role){
-        this.role=role;
     }
 enum UserRole{
     PLATFORM_ADMIN,
