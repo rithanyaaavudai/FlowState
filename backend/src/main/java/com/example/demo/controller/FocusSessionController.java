@@ -73,7 +73,7 @@ public class FocusSessionController {
                 : 1L;
 
         return ResponseEntity.ok(
-                focusSessionService.getSessionDetails(id, userId));
+                focusSessionService.getSession(id, userId));
     }
 
     @DeleteMapping("/{id}")
