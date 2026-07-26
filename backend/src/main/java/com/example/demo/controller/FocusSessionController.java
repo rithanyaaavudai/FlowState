@@ -24,7 +24,7 @@ public class FocusSessionController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
-    public ResponseEntity<Page<FocusSessionResponseDto>> getAllSessions(
+    public ResponseEntity<Object> getAllSessions(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String status,
             @RequestParam(defaultValue = "0") int page,
@@ -73,7 +73,7 @@ public class FocusSessionController {
                 : 1L;
 
         return ResponseEntity.ok(
-                focusSessionService.getSession(id, userId));
+                focusSessionService.getSessionDetails(id, userId));
     }
 
     @DeleteMapping("/{id}")

@@ -221,4 +221,9 @@ public class FocusSessionService {
                 .createdAt(session.getCreatedAt())
                 .build();
     }
+
+    public Object getAllSessionsPaginated(String search, String status, int page, int size) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllSessionsPaginated'");
+    }
 }
