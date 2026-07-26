@@ -23,84 +23,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-
-        String path = request.getServletPath();
-
-        return path.startsWith("/api/auth/")
-                || path.startsWith("/swagger-ui/")
-                || path.startsWith("/v3/api-docs")
-                || path.equals("/swagger-ui.html");
-    }
-
-    @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                     @NonNull HttpServletResponse response,
+                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
 
-        // No JWT supplied - continue.
-        // SecurityConfig decides whether the endpoint is public.
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7).trim();
-
-        if (token.isEmpty()) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String token = authHeader.substring(7);
 
         try {
-
             String username = jwtService.extractUsername(token);
 
-            if (username != null
-                    && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtService.isTokenValid(token, username)) {
-
                     String role = jwtService.extractRole(token);
                     Long userId = jwtService.extractUserId(token);
 
-                    if (role != null && !role.isBlank()) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            username, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
 
-                        // Prevent ROLE_ROLE_USER
-                        String authority = role.startsWith("ROLE_")
-                                ? role
-                                : "ROLE_" + role;
-
-                        UsernamePasswordAuthenticationToken authentication =
-                                new UsernamePasswordAuthenticationToken(
-                                        username,
-                                        null,
-                                        List.of(
-                                                new SimpleGrantedAuthority(authority)
-                                        )
-                                );
-
-                        SecurityContextHolder
-                                .getContext()
-                                .setAuthentication(authentication);
-
-                        request.setAttribute(
-                                "authenticatedUserId",
-                                userId
-                        );
-                    }
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    request.setAttribute("authenticatedUserId", userId);
                 }
             }
-
         } catch (Exception e) {
-
-            // Invalid/expired JWT.
-            // Clear authentication and allow Spring Security
-            // to determine whether the requested endpoint requires auth.
             SecurityContextHolder.clearContext();
         }
 
