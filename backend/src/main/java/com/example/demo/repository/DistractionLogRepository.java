@@ -13,8 +13,8 @@ public interface DistractionLogRepository extends JpaRepository<DistractionLog, 
 
     long countBySessionId(Long sessionId);
 
-    @Query("SELECT dl.category, COUNT(dl), SUM(dl.durationSeconds) FROM DistractionLog dl " +
-            "WHERE dl.session.practitioner.id = :practitionerId GROUP BY dl.category")
+    @Query("SELECT dl.category, COUNT(dl), SUM(dl.durationSeconds) FROM DistractionLog dl WHERE " +
+            "dl.session.practitioner.id = :practitionerId GROUP BY dl.category")
     List<Object[]> findDistractionBreakdownByPractitioner(@Param("practitionerId") Long practitionerId);
 
     @Query(value = "SELECT YEARWEEK(dl.logged_at) AS wk, COUNT(dl) FROM distraction_log dl " +

@@ -21,7 +21,6 @@ public interface SessionGoalRepository extends JpaRepository<SessionGoal, Long> 
             "g.status != com.example.demo.entity.SessionGoal$GoalStatus.PENDING")
     long countResolvedGoalsByPractitioner(@Param("practitionerId") Long practitionerId);
 
-    @Query("SELECT g.status, COUNT(g) FROM SessionGoal g WHERE g.session.practitioner.id = :practitionerId " +
-            "GROUP BY g.status")
+    @Query("SELECT g.status, COUNT(g) FROM SessionGoal g WHERE g.session.practitioner.id = :practitionerId GROUP BY g.status")
     List<Object[]> countGoalsByStatusForPractitioner(@Param("practitionerId") Long practitionerId);
 }
