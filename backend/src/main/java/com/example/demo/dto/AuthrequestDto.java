@@ -1,5 +1,14 @@
 package com.example.demo.dto;
 
-public class AuthrequestDto {
-    
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Data
+public class AuthRequestDto {
+
+    @NotBlank
+    private String username;
+
+    @NotBlank
+    private String password;
 }
