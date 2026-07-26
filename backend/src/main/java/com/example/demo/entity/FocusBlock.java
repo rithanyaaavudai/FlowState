@@ -1,42 +1,54 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "focus_block")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class FocusBlock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "task_name", nullable = false)
-    private String taskName;
-
-    @Column(name = "duration_minutes", nullable = false)
-    private Integer durationMinutes;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "focus_session_id")
-    private FocusSession focusSession;
+    @JoinColumn(name = "practitioner_id", nullable = false)
+    private FlowUser practitioner;
 
-    public FocusBlock() {}
+    @Column(name = "day_of_week", nullable = false, length = 10)
+    private String dayOfWeek;
 
-    public FocusBlock(String taskName, Integer durationMinutes, FocusSession focusSession) {
-        this.taskName = taskName;
-        this.durationMinutes = durationMinutes;
-        this.focusSession = focusSession;
+    @Column(name = "block_start_time", nullable = false)
+    private LocalTime blockStartTime;
+
+    @Column(name = "block_end_time", nullable = false)
+    private LocalTime blockEndTime;
+
+    @Column(name = "is_protected", nullable = false)
+    private Boolean isProtected;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "preferred_session_type", length = 20)
+    private FocusSession.SessionType preferredSessionType;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.isProtected == null) {
+            this.isProtected = false;
+        }
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getTaskName() { return taskName; }
-    public void setTaskName(String taskName) { this.taskName = taskName; }
-
-    public Integer getDurationMinutes() { return durationMinutes; }
-    public void setDurationMinutes(Integer durationMinutes) { this.durationMinutes = durationMinutes; }
-
-    public FocusSession getFocusSession() { return focusSession; }
-    public void setFocusSession(FocusSession focusSession) { this.focusSession = focusSession; }
 }

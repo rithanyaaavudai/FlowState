@@ -1,49 +1,88 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "focus_session")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class FocusSession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "practitioner_id", nullable = false)
+    private FlowUser practitioner;
+
+    @Column(nullable = false, length = 200)
     private String title;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "planned_start", nullable = false)
+    private LocalDateTime plannedStart;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "planned_end", nullable = false)
+    private LocalDateTime plannedEnd;
 
-    @OneToMany(mappedBy = "focusSession", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FocusBlock> focusBlocks = new ArrayList<>();
+    @Column(name = "actual_start")
+    private LocalDateTime actualStart;
 
-    public FocusSession() {}
+    @Column(name = "actual_end")
+    private LocalDateTime actualEnd;
 
-    public FocusSession(String title, String status, Long userId) {
-        this.title = title;
-        this.status = status;
-        this.userId = userId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private SessionStatus status = SessionStatus.SCHEDULED;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "session_type", nullable = false, length = 20)
+    private SessionType sessionType;
+
+    @Column(name = "focus_score")
+    private Integer focusScore;
+
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
+    @Column(name = "abandon_reason", columnDefinition = "TEXT")
+    private String abandonReason;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<SessionGoal> goals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<DistractionLog> distractions = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (this.status == null) {
+            this.status = SessionStatus.SCHEDULED;
+        }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public enum SessionStatus {
+        SCHEDULED, IN_PROGRESS, COMPLETED, ABANDONED
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-
-    public List<FocusBlock> getFocusBlocks() { return focusBlocks; }
-    public void setFocusBlocks(List<FocusBlock> focusBlocks) { this.focusBlocks = focusBlocks; }
+    public enum SessionType {
+        DEEP_WORK, CREATIVE, REVIEW
+    }
 }

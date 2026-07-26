@@ -3,24 +3,18 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "distraction_log")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DistractionLog {
-
-    public enum DistractionCategory {
-        NOTIFICATION, SOCIAL, ENVIRONMENT, MENTAL, OTHER
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +28,10 @@ public class DistractionLog {
     private LocalDateTime loggedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private DistractionCategory category;
 
-    @Column(name = "description", length = 500, nullable = true)
+    @Column(length = 500)
     private String description;
 
     @Column(name = "duration_seconds", nullable = false)
@@ -52,5 +46,9 @@ public class DistractionLog {
         if (this.loggedAt == null) {
             this.loggedAt = LocalDateTime.now();
         }
+    }
+
+    public enum DistractionCategory {
+        NOTIFICATION, SOCIAL, ENVIRONMENT, MENTAL, OTHER
     }
 }

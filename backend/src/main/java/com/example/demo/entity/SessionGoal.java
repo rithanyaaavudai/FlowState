@@ -3,24 +3,18 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "session_goal")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class SessionGoal {
-
-    public enum GoalStatus {
-        PENDING, ACHIEVED, PARTIAL, MISSED
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +24,7 @@ public class SessionGoal {
     @JoinColumn(name = "session_id", nullable = false)
     private FocusSession session;
 
-    @Column(name = "description", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String description;
 
     @Column(name = "target_minutes", nullable = false)
@@ -40,7 +34,7 @@ public class SessionGoal {
     private Integer achievedMinutes;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
+    @Column(nullable = false, length = 20)
     private GoalStatus status;
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -55,5 +49,9 @@ public class SessionGoal {
         if (this.status == null) {
             this.status = GoalStatus.PENDING;
         }
+    }
+
+    public enum GoalStatus {
+        PENDING, ACHIEVED, PARTIAL, MISSED
     }
 }
