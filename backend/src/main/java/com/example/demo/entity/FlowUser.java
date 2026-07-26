@@ -131,7 +131,7 @@ public class FlowUser {
     public void setLastLoginAt(LocalDateTime lastLoginAt) {
         this.lastLoginAt = lastLoginAt;
     }
-enum UserRole{
+public enum UserRole{
     PLATFORM_ADMIN,
     FLOW_COACH,
     PRACTITIONER
