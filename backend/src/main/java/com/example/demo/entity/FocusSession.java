@@ -1,8 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,105 +8,42 @@ import java.util.List;
 @Table(name = "focus_session")
 public class FocusSession {
 
-    public enum SessionStatus {
-        SCHEDULED, IN_PROGRESS, COMPLETED, ABANDONED
-    }
-
-    public enum SessionType {
-        DEEP_WORK, CREATIVE, REVIEW
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "practitioner_id", nullable = false)
-    private FlowUser practitioner;
-
-    @NotBlank
-    @Size(max = 200)
-    @Column(nullable = false, length = 200)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @NotNull
-    @Column(name = "planned_start", nullable = false)
-    private LocalDateTime plannedStart;
+    @Column(name = "status", nullable = false)
+    private String status;
 
-    @NotNull
-    @Column(name = "planned_end", nullable = false)
-    private LocalDateTime plannedEnd;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column(name = "actual_start")
-    private LocalDateTime actualStart;
-
-    @Column(name = "actual_end")
-    private LocalDateTime actualEnd;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private SessionStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "session_type", length = 20)
-    private SessionType sessionType;
-
-    @Column(name = "focus_score")
-    private Integer focusScore;
-
-    @Column(columnDefinition = "TEXT")
-    private String notes;
-
-    @Column(name = "abandon_reason", columnDefinition = "TEXT")
-    private String abandonReason;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SessionGoal> goals = new ArrayList<>();
-
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DistractionLog> distractions = new ArrayList<>();
+    @OneToMany(mappedBy = "focusSession", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FocusBlock> focusBlocks = new ArrayList<>();
 
     public FocusSession() {}
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        if (this.status == null) {
-            this.status = SessionStatus.SCHEDULED;
-        }
+    public FocusSession(String title, String status, Long userId) {
+        this.title = title;
+        this.status = status;
+        this.userId = userId;
     }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public FlowUser getPractitioner() { return practitioner; }
-    public void setPractitioner(FlowUser practitioner) { this.practitioner = practitioner; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
-    public LocalDateTime getPlannedStart() { return plannedStart; }
-    public void setPlannedStart(LocalDateTime plannedStart) { this.plannedStart = plannedStart; }
-    public LocalDateTime getPlannedEnd() { return plannedEnd; }
-    public void setPlannedEnd(LocalDateTime plannedEnd) { this.plannedEnd = plannedEnd; }
-    public LocalDateTime getActualStart() { return actualStart; }
-    public void setActualStart(LocalDateTime actualStart) { this.actualStart = actualStart; }
-    public LocalDateTime getActualEnd() { return actualEnd; }
-    public void setActualEnd(LocalDateTime actualEnd) { this.actualEnd = actualEnd; }
-    public SessionStatus getStatus() { return status; }
-    public void setStatus(SessionStatus status) { this.status = status; }
-    public SessionType getSessionType() { return sessionType; }
-    public void setSessionType(SessionType sessionType) { this.sessionType = sessionType; }
-    public Integer getFocusScore() { return focusScore; }
-    public void setFocusScore(Integer focusScore) { this.focusScore = focusScore; }
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
-    public String getAbandonReason() { return abandonReason; }
-    public void setAbandonReason(String abandonReason) { this.abandonReason = abandonReason; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    public List<SessionGoal> getGoals() { return goals; }
-    public void setGoals(List<SessionGoal> goals) { this.goals = goals; }
-    public List<DistractionLog> getDistractions() { return distractions; }
-    public void setDistractions(List<DistractionLog> distractions) { this.distractions = distractions; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+
+    public List<FocusBlock> getFocusBlocks() { return focusBlocks; }
+    public void setFocusBlocks(List<FocusBlock> focusBlocks) { this.focusBlocks = focusBlocks; }
 }
