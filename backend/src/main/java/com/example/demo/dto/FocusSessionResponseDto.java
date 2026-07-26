@@ -1,30 +1,29 @@
 package com.example.demo.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class FocusSessionResponseDto {
-
     private Long id;
+    private Long practitionerId;
+    private String practitionerName;
     private String title;
+    private LocalDateTime plannedStart;
+    private LocalDateTime plannedEnd;
+    private LocalDateTime actualStart;
+    private LocalDateTime actualEnd;
     private String status;
-    private Long userId;
-
-    public FocusSessionResponseDto() {}
-
-    public FocusSessionResponseDto(Long id, String title, String status, Long userId) {
-        this.id = id;
-        this.title = title;
-        this.status = status;
-        this.userId = userId;
-    }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    private String sessionType;
+    private Integer focusScore;
+    private String notes;
+    private String abandonReason;
+    private LocalDateTime createdAt;
 }

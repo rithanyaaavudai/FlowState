@@ -1,19 +1,27 @@
 package com.example.demo.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+import java.time.LocalDateTime;
+
+@Data
 public class FocusSessionRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Session title is required")
+    @Size(max = 200)
     private String title;
 
-    private String status;
+    @NotNull(message = "Planned start time is required")
+    private LocalDateTime plannedStart;
 
-    public FocusSessionRequestDto() {}
+    @NotNull(message = "Planned end time is required")
+    private LocalDateTime plannedEnd;
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    @NotBlank(message = "Session type is required")
+    private String sessionType;
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    private String notes;
 }
