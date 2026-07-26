@@ -22,17 +22,15 @@ public interface FocusSessionRepository extends JpaRepository<FocusSession, Long
     long countByStatus(FocusSession.SessionStatus status);
 
     @Query("SELECT fs FROM FocusSession fs WHERE fs.practitioner.id = :practitionerId AND " +
-            "(:status IS NULL OR fs.status = :status) AND " +
-            "(:title IS NULL OR LOWER(fs.title) LIKE LOWER(CONCAT('%', :title, '%')))")
+            "(:status IS NULL OR fs.status = :status) AND (:title IS NULL OR LOWER(fs.title) LIKE LOWER(CONCAT('%', :title, '%')))")
     Page<FocusSession> findByPractitionerIdAndStatusAndTitle(@Param("practitionerId") Long practitionerId,
                                                               @Param("status") FocusSession.SessionStatus status,
                                                               @Param("title") String title,
                                                               Pageable pageable);
 
     @Query("SELECT fs FROM FocusSession fs WHERE fs.practitioner.id = :practitionerId AND " +
-            "fs.status IN (com.example.demo.entity.FocusSession$SessionStatus.SCHEDULED, " +
-            "com.example.demo.entity.FocusSession$SessionStatus.IN_PROGRESS) AND " +
-            "(fs.plannedStart < :plannedEnd AND fs.plannedEnd > :plannedStart)")
+            "fs.status IN (com.example.demo.entity.FocusSession$SessionStatus.SCHEDULED, com.example.demo.entity.FocusSession$SessionStatus.IN_PROGRESS) " +
+            "AND ((fs.plannedStart < :plannedEnd AND fs.plannedEnd > :plannedStart))")
     List<FocusSession> findConflictingSessions(@Param("practitionerId") Long practitionerId,
                                                 @Param("plannedStart") LocalDateTime plannedStart,
                                                 @Param("plannedEnd") LocalDateTime plannedEnd);
@@ -44,8 +42,7 @@ public interface FocusSessionRepository extends JpaRepository<FocusSession, Long
     @Query("SELECT SUM(fs.focusScore) FROM FocusSession fs WHERE fs.practitioner.id = :practitionerId")
     Long findTotalFocusMinutes(@Param("practitionerId") Long practitionerId);
 
-    @Query("SELECT fs.sessionType, COUNT(fs) FROM FocusSession fs WHERE fs.practitioner.id = :practitionerId " +
-            "GROUP BY fs.sessionType")
+    @Query("SELECT fs.sessionType, COUNT(fs) FROM FocusSession fs WHERE fs.practitioner.id = :practitionerId GROUP BY fs.sessionType")
     List<Object[]> countBySessionType(@Param("practitionerId") Long practitionerId);
 
     @Query("SELECT fs FROM FocusSession fs WHERE fs.practitioner.id = :practitionerId ORDER BY fs.createdAt DESC")
