@@ -27,40 +27,63 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http) throws Exception {
 
         http
+                // REST API + JWT -> CSRF disabled
                 .csrf(csrf -> csrf.disable())
 
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // CORS
+                .cors(cors ->
+                        cors.configurationSource(
+                                corsConfigurationSource()
+                        )
+                )
 
+                // JWT -> no HTTP session
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // Allow preflight requests
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // CORS preflight
+                        .requestMatchers(
+                                HttpMethod.OPTIONS,
+                                "/**"
+                        ).permitAll()
 
-                        // Public endpoints
+                        // Authentication endpoints
                         .requestMatchers(
                                 "/api/auth/**"
                         ).permitAll()
 
-                        // Swagger
+                        // Swagger / OpenAPI
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
+                                "/v3/api-docs",
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml"
                         ).permitAll()
 
+                        // Spring error endpoint
+                        .requestMatchers(
+                                "/error"
+                        ).permitAll()
+
                         // Everything else requires JWT
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .authenticated()
                 )
 
-                .addFilterBefore(jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
@@ -68,17 +91,62 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration configuration =
+                new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
+        /*
+         * Add the frontend origins you actually use.
+         *
+         * React CRA -> localhost:3000
+         * Vite      -> localhost:5173
+         */
+        configuration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:3000",
+                        "http://127.0.0.1:3000",
+                        "http://localhost:5173",
+                        "http://127.0.0.1:5173"
+                )
+        );
+
+        configuration.setAllowedMethods(
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "PATCH",
+                        "DELETE",
+                        "OPTIONS"
+                )
+        );
+
+        configuration.setAllowedHeaders(
+                List.of(
+                        "Authorization",
+                        "Content-Type",
+                        "Accept",
+                        "Origin",
+                        "X-Requested-With"
+                )
+        );
+
+        configuration.setExposedHeaders(
+                List.of(
+                        "Authorization"
+                )
+        );
+
         configuration.setAllowCredentials(true);
+
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
 
         return source;
     }
