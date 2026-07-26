@@ -1,4 +1,4 @@
-package com.flowstate.dto;
+package com.example.demo.dto;
 
 public class AuthResponseDto {
     private String accessToken;
