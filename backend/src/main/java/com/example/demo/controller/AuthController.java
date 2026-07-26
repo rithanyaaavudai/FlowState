@@ -36,13 +36,4 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody Map<String, String> body) {
-        String refreshToken = body.get("refreshToken");
-        if (refreshToken == null || refreshToken.isBlank()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "refreshToken is required"));
-        }
-        AuthResponseDto response = authService.refreshToken(refreshToken);
-        return ResponseEntity.ok(response);
-    }
 }
