@@ -77,7 +77,7 @@ public class FocusSessionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('PLATFORM_ADMIN')")
+    @PreAuthorize("hasAnyRole('PRACTITIONER','PLATFORM_ADMIN')")
     public ResponseEntity<String> deleteSession(
             @PathVariable Long id,
             HttpServletRequest request) {

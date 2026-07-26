@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
 
-    private final String secret = "my-secret-key";
+    @Value("${jwt.secret}")
+    private String secret;
 
     public String generateToken(String username) {
         return "token-" + username;
