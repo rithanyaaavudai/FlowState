@@ -15,8 +15,7 @@ public interface CoachRecommendationRepository extends JpaRepository<CoachRecomm
 
     Page<CoachRecommendation> findByCoachIdOrderByCreatedAtDesc(Long coachId, Pageable pageable);
 
-    List<CoachRecommendation> findByPractitionerIdAndStatus(Long practitionerId,
-                                                             CoachRecommendation.RecommendationStatus status);
+    List<CoachRecommendation> findByPractitionerIdAndStatus(Long practitionerId, CoachRecommendation.RecommendationStatus status);
 
     long countByPractitionerIdAndStatus(Long practitionerId, CoachRecommendation.RecommendationStatus status);
 
