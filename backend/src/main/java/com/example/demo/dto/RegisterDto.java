@@ -12,7 +12,7 @@ public class RegisterDto {
     @Size(min = 3, max = 100)
     private String username;
 
-    @NotBlank
+    @NotBlank   
     @Email
     private String email;
 
