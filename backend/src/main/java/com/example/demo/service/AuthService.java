@@ -85,7 +85,7 @@ public class AuthService {
                 .username(user.getUsername())
                 .fullName(user.getFullName())
                 .role(user.getRole().name())
-                .accessToken(accessToken)4\\
+                .accessToken(accessToken)
                 .build();
     }
 }
