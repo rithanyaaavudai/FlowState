@@ -20,9 +20,7 @@ public class CoachRecommendationController {
 
     private final CoachRecommendationService coachRecommendationService;
 
-    /**
-     * Issue a recommendation (Coach)
-     */
+
     @PostMapping("/coach/{coachId}")
     public ResponseEntity<CoachRecommendationResponseDto> issueRecommendation(
             @PathVariable Long coachId,
@@ -34,9 +32,7 @@ public class CoachRecommendationController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    /**
-     * Acknowledge recommendation (Practitioner)
-     */
+    
     @PutMapping("/{recommendationId}/acknowledge/{practitionerId}")
     public ResponseEntity<CoachRecommendationResponseDto> acknowledgeRecommendation(
             @PathVariable Long recommendationId,
@@ -50,9 +46,6 @@ public class CoachRecommendationController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Dismiss recommendation (Practitioner)
-     */
     @PutMapping("/{recommendationId}/dismiss/{practitionerId}")
     public ResponseEntity<CoachRecommendationResponseDto> dismissRecommendation(
             @PathVariable Long recommendationId,
@@ -66,9 +59,7 @@ public class CoachRecommendationController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Get all recommendations for a practitioner
-     */
+    
     @GetMapping("/practitioner/{practitionerId}")
     public ResponseEntity<Page<CoachRecommendationResponseDto>> getRecommendationsForPractitioner(
             @PathVariable Long practitionerId,
@@ -80,9 +71,7 @@ public class CoachRecommendationController {
                         pageable));
     }
 
-    /**
-     * Get pending recommendations for a practitioner
-     */
+    
     @GetMapping("/practitioner/{practitionerId}/pending")
     public ResponseEntity<List<CoachRecommendationResponseDto>> getPendingRecommendations(
             @PathVariable Long practitionerId) {
