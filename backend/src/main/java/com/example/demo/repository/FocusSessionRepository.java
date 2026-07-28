@@ -14,10 +14,7 @@ import java.util.Optional;
 public interface FocusSessionRepository
         extends JpaRepository<FocusSession, Long> {
 
-    // =========================================================
-    // PRACTITIONER SESSIONS
-    // =========================================================
-
+    
     Page<FocusSession> findByPractitionerId(
             Long practitionerId,
             Pageable pageable);
@@ -33,9 +30,7 @@ public interface FocusSessionRepository
     long countByStatus(
             FocusSession.SessionStatus status);
 
-    // =========================================================
-    // PRACTITIONER FILTER
-    // =========================================================
+    
 
     @Query("""
             SELECT fs
@@ -57,9 +52,7 @@ public interface FocusSessionRepository
 
             Pageable pageable);
 
-    // =========================================================
-    // CONFLICTING SESSIONS
-    // =========================================================
+    
 
     @Query("""
             SELECT fs
@@ -79,9 +72,6 @@ public interface FocusSessionRepository
 
             @Param("plannedEnd") LocalDateTime plannedEnd);
 
-    // =========================================================
-    // AVERAGE FOCUS SCORE
-    // =========================================================
 
     @Query("""
             SELECT AVG(fs.focusScore)
@@ -93,12 +83,7 @@ public interface FocusSessionRepository
     Double findAverageFocusScore(
             @Param("practitionerId") Long practitionerId);
 
-    // =========================================================
-    // TOTAL FOCUS MINUTES
-    //
-    // Uses actualStart/actualEnd for completed sessions.
-    // TIMESTAMPDIFF is MySQL-specific.
-    // =========================================================
+    
 
     @Query(value = """
             SELECT COALESCE(
@@ -120,9 +105,7 @@ public interface FocusSessionRepository
     Long findTotalFocusMinutes(
             @Param("practitionerId") Long practitionerId);
 
-    // =========================================================
-    // COUNT BY SESSION TYPE
-    // =========================================================
+    
 
     @Query("""
             SELECT fs.sessionType, COUNT(fs)
@@ -133,9 +116,6 @@ public interface FocusSessionRepository
     List<Object[]> countBySessionType(
             @Param("practitionerId") Long practitionerId);
 
-    // =========================================================
-    // RECENT SESSIONS
-    // =========================================================
 
     @Query("""
             SELECT fs
@@ -147,9 +127,7 @@ public interface FocusSessionRepository
             @Param("practitionerId") Long practitionerId,
             Pageable pageable);
 
-    // =========================================================
-    // ADMIN / ALL SESSION FILTER
-    // =========================================================
+
 
     @Query("""
             SELECT fs
