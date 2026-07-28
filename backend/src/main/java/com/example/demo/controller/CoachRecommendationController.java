@@ -81,9 +81,7 @@ public class CoachRecommendationController {
                         practitionerId));
     }
 
-    /**
-     * Get all recommendations issued by a coach
-     */
+    
     @GetMapping("/coach/{coachId}")
     public ResponseEntity<Page<CoachRecommendationResponseDto>> getRecommendationsByCoach(
             @PathVariable Long coachId,

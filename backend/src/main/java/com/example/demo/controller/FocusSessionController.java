@@ -21,14 +21,7 @@ public class FocusSessionController {
         this.focusSessionService = focusSessionService;
     }
 
-    // =========================================================
-    // GET ALL SESSIONS
-    // Supports:
-    // /api/sessions
-    // /api/sessions?search=study
-    // /api/sessions?status=COMPLETED
-    // /api/sessions?search=study&status=COMPLETED&page=0&size=10
-    // =========================================================
+    
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
@@ -48,9 +41,7 @@ public class FocusSessionController {
         );
     }
 
-    // =========================================================
-    // SCHEDULE SESSION
-    // =========================================================
+    
 
     @PostMapping
     @PreAuthorize("hasRole('PRACTITIONER')")
@@ -69,9 +60,7 @@ public class FocusSessionController {
         );
     }
 
-    // =========================================================
-    // START SESSION
-    // =========================================================
+    
 
     @PutMapping("/{id}/start")
     @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
@@ -86,9 +75,7 @@ public class FocusSessionController {
         );
     }
 
-    // =========================================================
-    // GET SESSION DETAILS
-    // =========================================================
+    
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
@@ -103,9 +90,7 @@ public class FocusSessionController {
         );
     }
 
-    // =========================================================
-    // DELETE SESSION
-    // =========================================================
+    
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('PRACTITIONER','PLATFORM_ADMIN')")
@@ -122,9 +107,7 @@ public class FocusSessionController {
         );
     }
 
-    // =========================================================
-    // AUTHENTICATED USER HELPER
-    // =========================================================
+    
 
     private Long getAuthenticatedUserId(HttpServletRequest request) {
 
@@ -145,12 +128,12 @@ public class FocusSessionController {
                 try {
                     return Long.valueOf(attribute.toString());
                 } catch (NumberFormatException ignored) {
-                    // fallback below
+                    
                 }
             }
         }
 
-        // Keep your existing fallback behaviour.
+
         return 1L;
     }
 }

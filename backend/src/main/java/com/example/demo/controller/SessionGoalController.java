@@ -19,9 +19,7 @@ public class SessionGoalController {
 
     private final SessionGoalService sessionGoalService;
 
-    /**
-     * Attach a goal to a focus session.
-     */
+    
     @PostMapping("/practitioner/{practitionerId}")
     public ResponseEntity<SessionGoalResponseDto> attachGoal(
             @PathVariable Long practitionerId,
@@ -33,9 +31,7 @@ public class SessionGoalController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    /**
-     * Mark the outcome of a goal.
-     */
+    
     @PutMapping("/{goalId}/practitioner/{practitionerId}")
     public ResponseEntity<SessionGoalResponseDto> markGoalOutcome(
             @PathVariable Long goalId,
@@ -51,9 +47,7 @@ public class SessionGoalController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Get all goals for a focus session.
-     */
+    
     @GetMapping("/session/{sessionId}")
     public ResponseEntity<List<SessionGoalResponseDto>> getGoalsForSession(
             @PathVariable Long sessionId) {

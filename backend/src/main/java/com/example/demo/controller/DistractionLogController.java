@@ -22,9 +22,7 @@ public class DistractionLogController {
 
     private final DistractionLogService distractionLogService;
 
-    /**
-     * Log a distraction during an active focus session.
-     */
+    
     @PostMapping("/practitioner/{practitionerId}")
     public ResponseEntity<DistractionLogResponseDto> logDistraction(
             @PathVariable Long practitionerId,
@@ -36,9 +34,7 @@ public class DistractionLogController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    /**
-     * Get all distraction logs for a focus session.
-     */
+
     @GetMapping("/session/{sessionId}")
     public ResponseEntity<List<DistractionLogResponseDto>> getLogsForSession(
             @PathVariable Long sessionId) {
@@ -47,9 +43,7 @@ public class DistractionLogController {
                 distractionLogService.getLogsForSession(sessionId));
     }
 
-    /**
-     * Get distraction breakdown by category for a practitioner.
-     */
+    
     @GetMapping("/practitioner/{practitionerId}/breakdown")
     public ResponseEntity<DistractionBreakdownResponseDto> getDistractionBreakdown(
             @PathVariable Long practitionerId) {
@@ -58,9 +52,7 @@ public class DistractionLogController {
                 distractionLogService.getDistractionBreakdown(practitionerId));
     }
 
-    /**
-     * Get weekly distraction trend for a practitioner.
-     */
+    
     @GetMapping("/practitioner/{practitionerId}/trend")
     public ResponseEntity<List<Map<String, Object>>> getDistractionTrend(
             @PathVariable Long practitionerId) {
@@ -69,9 +61,7 @@ public class DistractionLogController {
                 distractionLogService.getDistractionTrendByWeek(practitionerId));
     }
 
-    /**
-     * Get all distraction logs with pagination.
-     */
+    
     @GetMapping
     public ResponseEntity<Page<DistractionLogResponseDto>> getAllDistractionLogs(
             Pageable pageable) {
