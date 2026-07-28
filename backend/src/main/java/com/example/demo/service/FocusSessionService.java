@@ -33,10 +33,7 @@ public class FocusSessionService {
     private final FlowUserRepository flowUserRepository;
     private final DistractionLogRepository distractionLogRepository;
 
-    // =========================================================
-    // SCHEDULE SESSION
-    // =========================================================
-
+    
     @Transactional
     public FocusSessionResponseDto scheduleSession(
             FocusSessionRequestDto dto,
@@ -47,7 +44,7 @@ public class FocusSessionService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Practitioner not found"));
 
-        // Validate start/end
+        
         if (dto.getPlannedStart() == null ||
                 dto.getPlannedEnd() == null) {
 
@@ -67,7 +64,6 @@ public class FocusSessionService {
                     "Session must be at least 15 minutes long and end after it starts");
         }
 
-        // Check overlapping sessions
         List<FocusSession> conflicts = focusSessionRepository.findConflictingSessions(
                 practitionerId,
                 dto.getPlannedStart(),
@@ -107,10 +103,7 @@ public class FocusSessionService {
         return toResponseDto(saved);
     }
 
-    // =========================================================
-    // START SESSION
-    // =========================================================
-
+    
     @Transactional
     public FocusSessionResponseDto startSession(
             Long sessionId,
@@ -133,9 +126,7 @@ public class FocusSessionService {
                 focusSessionRepository.save(session));
     }
 
-    // =========================================================
-    // COMPLETE SESSION
-    // =========================================================
+    
 
     @Transactional
     public FocusSessionResponseDto completeSession(
@@ -174,10 +165,7 @@ public class FocusSessionService {
                 focusSessionRepository.save(session));
     }
 
-    // =========================================================
-    // CALCULATE FOCUS SCORE
-    // =========================================================
-
+    
     private int calculateFocusScore(
             FocusSession session) {
 
@@ -238,9 +226,7 @@ public class FocusSessionService {
                         Math.round(score)));
     }
 
-    // =========================================================
-    // ABANDON SESSION
-    // =========================================================
+    
 
     @Transactional
     public FocusSessionResponseDto abandonSession(
@@ -277,9 +263,6 @@ public class FocusSessionService {
                 focusSessionRepository.save(session));
     }
 
-    // =========================================================
-    // DELETE SESSION
-    // =========================================================
 
     @Transactional
     public void deleteSession(
@@ -299,10 +282,7 @@ public class FocusSessionService {
         focusSessionRepository.delete(session);
     }
 
-    // =========================================================
-    // GET SINGLE SESSION
-    // =========================================================
-
+    
     @Transactional(readOnly = true)
     public FocusSessionResponseDto getSession(
             Long sessionId,
@@ -314,9 +294,7 @@ public class FocusSessionService {
                         practitionerId));
     }
 
-    // =========================================================
-    // GET PRACTITIONER SESSIONS
-    // =========================================================
+
 
     @Transactional(readOnly = true)
     public Page<FocusSessionResponseDto> getMySessionsPaginated(
@@ -330,10 +308,7 @@ public class FocusSessionService {
                 .map(this::toResponseDto);
     }
 
-    // =========================================================
-    // GET ALL SESSIONS
-    // Existing Pageable version
-    // =========================================================
+    
 
     @Transactional(readOnly = true)
     public Page<FocusSessionResponseDto> getAllSessionsPaginated(
@@ -344,9 +319,7 @@ public class FocusSessionService {
                 .map(this::toResponseDto);
     }
 
-    // =========================================================
-    // GET ALL SESSIONS WITH SEARCH / STATUS / PAGINATION
-    // =========================================================
+    
 
     @Transactional(readOnly = true)
     public Page<FocusSessionResponseDto> getAllSessionsPaginated(
@@ -407,9 +380,6 @@ public class FocusSessionService {
                 .map(this::toResponseDto);
     }
 
-    // =========================================================
-    // SUMMARY STATS
-    // =========================================================
 
     @Transactional(readOnly = true)
     public SessionStatsResponseDto getSummaryStats(
