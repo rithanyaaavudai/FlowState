@@ -56,9 +56,7 @@ public class SessionGoalController {
                 sessionGoalService.getGoalsForSession(sessionId));
     }
 
-    /**
-     * Get goal completion statistics for a practitioner.
-     */
+    
     @GetMapping("/practitioner/{practitionerId}/completion-rate")
     public ResponseEntity<GoalCompletionRateResponseDto> getGoalCompletionRate(
             @PathVariable Long practitionerId) {
