@@ -78,8 +78,6 @@ public class AuthService {
 
     private AuthResponseDto buildAuthResponse(FlowUser user) {
         String accessToken = jwtService.generateAccessToken(user.getUsername(), user.getRole().name(), user.getId());
-        String refreshToken = jwtService.generateRefreshToken(user.getUsername(), user.getRole().name(), user.getId());
-
         return AuthResponseDto.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
