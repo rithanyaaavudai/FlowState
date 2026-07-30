@@ -30,7 +30,7 @@ public class CoachRecommendationService {
         FlowUser coach = flowUserRepository.findById(coachId)
                 .orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
 
-        // 1. Coach Role Validation [REQ-SVC-REC-01]
+        
         if (coach.getRole() != FlowUser.UserRole.FLOW_COACH) {
             throw new BusinessValidationException("Only users with the FLOW_COACH role can issue recommendations");
         }
@@ -38,12 +38,10 @@ public class CoachRecommendationService {
         FlowUser practitioner = flowUserRepository.findById(dto.getPractitionerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Practitioner not found"));
 
-        // 2. Recipient Role Validation [REQ-SVC-REC-01]
         if (practitioner.getRole() != FlowUser.UserRole.PRACTITIONER) {
             throw new BusinessValidationException("Recommendations can only be issued to users with the PRACTITIONER role");
         }
 
-        // 3. Self-recommendation Check [REQ-SVC-REC-01]
         if (dto.getPractitionerId().equals(coachId)) {
             throw new BusinessValidationException("A coach cannot issue a recommendation to themselves");
         }
