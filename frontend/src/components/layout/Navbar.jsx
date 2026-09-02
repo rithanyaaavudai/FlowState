@@ -1,19 +1,40 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useInRouterContext } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
 
+const SafeLink = ({ to, children, ...props }) => {
+  const inRouter = useInRouterContext();
+  if (inRouter) {
+    return <Link to={to} {...props}>{children}</Link>;
+  }
+  return <a href={to} {...props}>{children}</a>;
+};
+
 const Navbar = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { user, token, fullName } = useSelector((state) => state.auth);
+  const inRouter = useInRouterContext();
+  
+  let navigate = () => {};
+  if (inRouter) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    navigate = useNavigate();
+  }
+
+  const { user, token, fullName } = useSelector((state) => state.auth || {});
 
   if (!user && !token) {
     return null;
   }
 
   const role = user?.role || localStorage.getItem('flowstate_role') || '';
-  const displayName = fullName || user?.fullName || user?.username || localStorage.getItem('flowstate_full_name') || 'User';
+  const displayName =
+    fullName ||
+    user?.fullName ||
+    user?.name ||
+    user?.username ||
+    localStorage.getItem('flowstate_full_name') ||
+    'User';
 
   const handleLogout = () => {
     localStorage.removeItem('flowstate_access_token');
@@ -24,37 +45,39 @@ const Navbar = () => {
     localStorage.removeItem('flowstate_role');
 
     dispatch(logout());
-    navigate('/login');
+    if (inRouter && navigate) {
+      navigate('/login');
+    }
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand">
-          <Link to="/">FlowState</Link>
+          <SafeLink to="/">FlowState</SafeLink>
         </div>
 
         <ul className="navbar-links">
           {role === 'PRACTITIONER' && (
             <>
               <li>
-                <Link to="/sessions">Sessions</Link>
+                <SafeLink to="/sessions">Sessions</SafeLink>
               </li>
               <li>
-                <Link to="/focus-blocks">Focus Blocks</Link>
+                <SafeLink to="/focus-blocks">Focus Blocks</SafeLink>
               </li>
             </>
           )}
 
           {(role === 'FLOW_COACH' || role === 'PLATFORM_ADMIN') && (
             <li>
-              <Link to="/sessions">All Sessions</Link>
+              <SafeLink to="/sessions">All Sessions</SafeLink>
             </li>
           )}
 
           {role === 'FLOW_COACH' && (
             <li>
-              <Link to="/recommendations">Recommendations</Link>
+              <SafeLink to="/recommendations">Recommendations</SafeLink>
             </li>
           )}
         </ul>

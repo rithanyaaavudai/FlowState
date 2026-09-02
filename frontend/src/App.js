@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, BrowserRouter, useInRouterContext } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Navbar from './components/layout/Navbar';
 import ErrorHandler from './components/layout/ErrorHandler';
@@ -11,7 +11,7 @@ import CoachRecommendationList from './components/coachRecommendation/CoachRecom
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
-  const { user, token } = useSelector((state) => state.auth);
+  const { user, token } = useSelector((state) => state.auth || {});
   const storedToken = localStorage.getItem('flowstate_access_token');
 
   if (!user && !token && !storedToken) {
@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-function App() {
+const AppContent = () => {
   return (
     <div className="app-container">
       <Navbar />
@@ -73,6 +73,18 @@ function App() {
         </Routes>
       </main>
     </div>
+  );
+};
+
+function App() {
+  const inRouter = useInRouterContext();
+  if (inRouter) {
+    return <AppContent />;
+  }
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
 
