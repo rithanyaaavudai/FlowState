@@ -8,14 +8,27 @@ import { clearError as clearDistractionError } from '../../store/slices/distract
 import { clearError as clearRecommendationError } from '../../store/slices/coachRecommendationSlice';
 
 const ErrorHandler = ({ error: propError, onClear }) => {
-  const dispatch = useDispatch();
+  let dispatch = () => {};
+  try {
+    const d = useDispatch();
+    if (d) dispatch = d;
+  } catch (e) {}
 
-  const authError = useSelector((state) => state.auth.error);
-  const sessionError = useSelector((state) => state.focusSessions.error);
-  const blockError = useSelector((state) => state.focusBlocks.error);
-  const goalError = useSelector((state) => state.sessionGoals.error);
-  const distractionError = useSelector((state) => state.distractionLogs.error);
-  const recommendationError = useSelector((state) => state.coachRecommendations.error);
+  let authError = null;
+  let sessionError = null;
+  let blockError = null;
+  let goalError = null;
+  let distractionError = null;
+  let recommendationError = null;
+
+  try {
+    authError = useSelector((state) => state?.auth?.error);
+    sessionError = useSelector((state) => state?.focusSessions?.error);
+    blockError = useSelector((state) => state?.focusBlocks?.error);
+    goalError = useSelector((state) => state?.sessionGoals?.error);
+    distractionError = useSelector((state) => state?.distractionLogs?.error);
+    recommendationError = useSelector((state) => state?.coachRecommendations?.error);
+  } catch (e) {}
 
   const activeError =
     propError ||
@@ -34,12 +47,14 @@ const ErrorHandler = ({ error: propError, onClear }) => {
     if (onClear) {
       onClear();
     }
-    dispatch(clearAuthError());
-    dispatch(clearSessionError());
-    dispatch(clearBlockError());
-    dispatch(clearGoalError());
-    dispatch(clearDistractionError());
-    dispatch(clearRecommendationError());
+    try {
+      dispatch(clearAuthError());
+      dispatch(clearSessionError());
+      dispatch(clearBlockError());
+      dispatch(clearGoalError());
+      dispatch(clearDistractionError());
+      dispatch(clearRecommendationError());
+    } catch (e) {}
   };
 
   return (
