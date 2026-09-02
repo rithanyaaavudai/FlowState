@@ -65,35 +65,58 @@ export const register = createAsyncThunk(
   }
 );
 
-const handleAuthFulfilled = (state, action) => {
-  state.loading = false;
-  state.error = null;
-  const res = action.payload || {};
-  const tokenVal = res.accessToken || res.token || '';
+const parseAuthPayload = (payload) => {
+  if (!payload) return {};
+  const res = payload.data || payload;
+  const tokenVal = res.accessToken || res.token || res.jwt || res.bearerToken || '';
   const refreshTokenVal = res.refreshToken || '';
-  const userIdVal = res.userId || res.id || '';
-  const usernameVal = res.username || '';
-  const fullNameVal = res.fullName || res.name || res.username || '';
-  const roleVal = res.role || '';
 
-  state.token = tokenVal;
-  state.userId = String(userIdVal);
-  state.username = usernameVal;
-  state.fullName = fullNameVal;
-  state.role = roleVal;
-  state.user = {
+  const userObj = res.user || res;
+  const userIdVal = userObj.userId || userObj.id || res.userId || res.id || '';
+  const usernameVal = userObj.username || res.username || '';
+  const fullNameVal =
+    userObj.fullName || userObj.name || userObj.username || res.fullName || res.name || res.username || '';
+  const roleVal = userObj.role || res.role || '';
+
+  const formattedUser = {
+    userId: String(userIdVal),
+    id: String(userIdVal),
+    username: usernameVal,
+    fullName: fullNameVal,
+    name: fullNameVal,
+    role: roleVal,
+    ...(typeof userObj === 'object' ? userObj : {}),
+  };
+
+  return {
+    token: tokenVal,
+    refreshToken: refreshTokenVal,
     userId: String(userIdVal),
     username: usernameVal,
     fullName: fullNameVal,
     role: roleVal,
+    user: formattedUser,
   };
+};
 
-  if (tokenVal) localStorage.setItem('flowstate_access_token', tokenVal);
-  if (refreshTokenVal) localStorage.setItem('flowstate_refresh_token', refreshTokenVal);
-  if (userIdVal) localStorage.setItem('flowstate_user_id', String(userIdVal));
-  if (usernameVal) localStorage.setItem('flowstate_username', usernameVal);
-  if (fullNameVal) localStorage.setItem('flowstate_full_name', fullNameVal);
-  if (roleVal) localStorage.setItem('flowstate_role', roleVal);
+const handleAuthFulfilled = (state, action) => {
+  state.loading = false;
+  state.error = null;
+  const parsed = parseAuthPayload(action.payload);
+
+  if (parsed.token) state.token = parsed.token;
+  state.userId = parsed.userId;
+  state.username = parsed.username;
+  state.fullName = parsed.fullName;
+  state.role = parsed.role;
+  state.user = parsed.user;
+
+  if (parsed.token) localStorage.setItem('flowstate_access_token', parsed.token);
+  if (parsed.refreshToken) localStorage.setItem('flowstate_refresh_token', parsed.refreshToken);
+  if (parsed.userId) localStorage.setItem('flowstate_user_id', parsed.userId);
+  if (parsed.username) localStorage.setItem('flowstate_username', parsed.username);
+  if (parsed.fullName) localStorage.setItem('flowstate_full_name', parsed.fullName);
+  if (parsed.role) localStorage.setItem('flowstate_role', parsed.role);
 };
 
 const authSlice = createSlice({
@@ -113,6 +136,15 @@ const authSlice = createSlice({
     clearAuthError: (state) => {
       state.error = null;
     },
+    setCredentials: (state, action) => {
+      handleAuthFulfilled(state, action);
+    },
+    setUser: (state, action) => {
+      handleAuthFulfilled(state, action);
+    },
+    setAuth: (state, action) => {
+      handleAuthFulfilled(state, action);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -123,7 +155,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, handleAuthFulfilled)
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || action.error?.message || 'Login failed';
       })
       .addCase(register.pending, (state) => {
         state.loading = true;
@@ -132,7 +164,7 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, handleAuthFulfilled)
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || action.error?.message || 'Registration failed';
       })
       .addMatcher(
         (action) =>
@@ -152,5 +184,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearAuthError } = authSlice.actions;
+export const { logout, clearAuthError, setCredentials, setUser, setAuth } = authSlice.actions;
 export default authSlice.reducer;
+

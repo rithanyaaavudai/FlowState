@@ -43,10 +43,14 @@ const ErrorHandler = ({ error: propError, onClear }) => {
   };
 
   return (
-    <div className="error-handler alert error">
+    <div
+      className="error-handler alert error error-message error-banner"
+      role="alert"
+      data-testid="error-message"
+    >
       <h3>Error Occurred</h3>
       <div className="error-body">
-        <p>{activeError}</p>
+        <p className="error-text">{activeError}</p>
       </div>
       <button className="dismiss-btn" onClick={handleDismiss}>
         Dismiss

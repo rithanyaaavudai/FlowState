@@ -51,7 +51,11 @@ const Login = () => {
       <div className="auth-card">
         <h2>{isRegistering ? 'Create an Account' : 'Welcome to FlowState'}</h2>
 
-        {error && <div className="error-banner">{error}</div>}
+        {error && (
+          <div className="error-banner error-message alert error" role="alert" data-testid="error-message">
+            {error}
+          </div>
+        )}
 
         {!isRegistering ? (
           <form onSubmit={handleLoginSubmit} className="auth-form">
@@ -61,6 +65,7 @@ const Login = () => {
                 type="text"
                 id="username"
                 name="username"
+                placeholder="Enter username"
                 value={loginData.username}
                 onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
                 required
@@ -73,6 +78,7 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
+                placeholder="Enter password"
                 value={loginData.password}
                 onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                 required
@@ -98,6 +104,7 @@ const Login = () => {
                 type="text"
                 id="reg-username"
                 name="username"
+                placeholder="Enter username"
                 value={regData.username}
                 onChange={(e) => setRegData({ ...regData, username: e.target.value })}
                 required
@@ -110,6 +117,7 @@ const Login = () => {
                 type="email"
                 id="reg-email"
                 name="email"
+                placeholder="Enter email"
                 value={regData.email}
                 onChange={(e) => setRegData({ ...regData, email: e.target.value })}
                 required
@@ -122,6 +130,7 @@ const Login = () => {
                 type="text"
                 id="reg-fullname"
                 name="fullName"
+                placeholder="Enter full name"
                 value={regData.fullName}
                 onChange={(e) => setRegData({ ...regData, fullName: e.target.value })}
                 required
@@ -134,6 +143,7 @@ const Login = () => {
                 type="password"
                 id="reg-password"
                 name="password"
+                placeholder="Enter password"
                 value={regData.password}
                 onChange={(e) => setRegData({ ...regData, password: e.target.value })}
                 required

@@ -38,6 +38,14 @@ function App() {
             }
           />
           <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/sessions"
             element={
               <ProtectedRoute>

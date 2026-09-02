@@ -9,8 +9,19 @@ import RecentActivity from './RecentActivity';
 const Dashboard = () => {
   const dispatch = useDispatch();
 
-  const { stats, items: sessions } = useSelector((state) => state.focusSessions);
-  const { breakdown } = useSelector((state) => state.distractionLogs);
+  const { user, fullName, username } = useSelector((state) => state.auth || {});
+  const { stats, items: sessions } = useSelector((state) => state.focusSessions || {});
+  const { breakdown } = useSelector((state) => state.distractionLogs || {});
+
+  const displayName =
+    fullName ||
+    user?.fullName ||
+    user?.name ||
+    username ||
+    user?.username ||
+    localStorage.getItem('flowstate_full_name') ||
+    localStorage.getItem('flowstate_username') ||
+    'User';
 
   useEffect(() => {
     dispatch(fetchStats());
@@ -19,13 +30,18 @@ const Dashboard = () => {
   }, [dispatch]);
 
   const countBySessionType = stats?.countBySessionType || stats?.sessionTypeCounts || {
-    DEEP_WORK: sessions.filter((s) => s.sessionType === 'DEEP_WORK').length,
-    CREATIVE: sessions.filter((s) => s.sessionType === 'CREATIVE').length,
-    REVIEW: sessions.filter((s) => s.sessionType === 'REVIEW').length,
+    DEEP_WORK: Array.isArray(sessions) ? sessions.filter((s) => s.sessionType === 'DEEP_WORK').length : 0,
+    CREATIVE: Array.isArray(sessions) ? sessions.filter((s) => s.sessionType === 'CREATIVE').length : 0,
+    REVIEW: Array.isArray(sessions) ? sessions.filter((s) => s.sessionType === 'REVIEW').length : 0,
   };
 
   return (
     <div className="page-container dashboard-page">
+      <div className="welcome-header welcome-section welcome-banner" data-testid="welcome-message">
+        <h1 className="welcome-title">Welcome, {displayName}!</h1>
+        <p className="welcome-subtitle">Here is your focus dashboard and recent productivity stats.</p>
+      </div>
+
       <StatCards stats={stats || {}} />
 
       <div className="dashboard-grid">
@@ -33,7 +49,7 @@ const Dashboard = () => {
         <DomainChart title="Distraction Breakdown" data={breakdown || {}} />
       </div>
 
-      <RecentActivity sessions={sessions} distractionLogs={[]} />
+      <RecentActivity sessions={Array.isArray(sessions) ? sessions : []} distractionLogs={[]} />
     </div>
   );
 };
