@@ -65,7 +65,7 @@ const Login = () => {
                 type="text"
                 id="username"
                 name="username"
-                placeholder="Enter username"
+                placeholder="Enter your username"
                 value={loginData.username}
                 onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
                 required
@@ -78,7 +78,7 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
-                placeholder="Enter password"
+                placeholder="Enter your password"
                 value={loginData.password}
                 onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                 required

@@ -85,8 +85,12 @@ const parseAuthPayload = (payload) => {
     fullName: fullNameVal,
     name: fullNameVal,
     role: roleVal,
+    token: tokenVal,
+    accessToken: tokenVal,
     ...(typeof userObj === 'object' ? userObj : {}),
   };
+  formattedUser.token = tokenVal;
+  formattedUser.accessToken = tokenVal;
 
   return {
     token: tokenVal,

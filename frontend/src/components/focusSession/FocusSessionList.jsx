@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -21,7 +22,6 @@ const FocusSessionList = () => {
   const {
     items,
     totalPages,
-    currentPage,
     filterByStatus,
     searchQuery,
     loading,
