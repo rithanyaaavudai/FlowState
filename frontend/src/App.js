@@ -1,23 +1,69 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Navbar from './components/layout/Navbar';
+import ErrorHandler from './components/layout/ErrorHandler';
+import Login from './components/layout/Login';
+import Dashboard from './components/dashboard/Dashboard';
+import FocusSessionList from './components/focusSession/FocusSessionList';
+import FocusBlockList from './components/focusBlock/FocusBlockList';
+import CoachRecommendationList from './components/coachRecommendation/CoachRecommendationList';
 import './App.css';
+
+const ProtectedRoute = ({ children }) => {
+  const { user, token } = useSelector((state) => state.auth);
+  const storedToken = localStorage.getItem('flowstate_access_token');
+
+  if (!user && !token && !storedToken) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <Navbar />
+      <ErrorHandler />
+      <main className="main-content">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sessions"
+            element={
+              <ProtectedRoute>
+                <FocusSessionList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/focus-blocks"
+            element={
+              <ProtectedRoute>
+                <FocusBlockList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recommendations"
+            element={
+              <ProtectedRoute>
+                <CoachRecommendationList />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
     </div>
   );
 }
