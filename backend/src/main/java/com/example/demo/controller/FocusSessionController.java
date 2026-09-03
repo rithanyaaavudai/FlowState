@@ -5,6 +5,9 @@ import com.example.demo.dto.FocusSessionResponseDto;
 import com.example.demo.service.FocusSessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +44,19 @@ public class FocusSessionController {
         );
     }
 
-    
+
+    // GET /api/sessions/mine  — paginated sessions for the authenticated user
+    @GetMapping("/mine")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    public ResponseEntity<Object> getMySessions(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpServletRequest request) {
+
+        Long userId = getAuthenticatedUserId(request);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return ResponseEntity.ok(focusSessionService.getMySessionsPaginated(userId, pageable));
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('PRACTITIONER')")
@@ -75,7 +90,34 @@ public class FocusSessionController {
         );
     }
 
-    
+    @PutMapping("/{id}/complete")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    public ResponseEntity<FocusSessionResponseDto> completeSession(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+
+        Long userId = getAuthenticatedUserId(request);
+        return ResponseEntity.ok(focusSessionService.completeSession(id, userId));
+    }
+
+    @PutMapping("/{id}/abandon")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    public ResponseEntity<FocusSessionResponseDto> abandonSession(
+            @PathVariable Long id,
+            @RequestBody(required = false) java.util.Map<String, String> body,
+            HttpServletRequest request) {
+
+        Long userId = getAuthenticatedUserId(request);
+        String reason = body != null ? body.get("reason") : null;
+        return ResponseEntity.ok(focusSessionService.abandonSession(id, reason, userId));
+    }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    public ResponseEntity<Object> getStats(HttpServletRequest request) {
+        Long userId = getAuthenticatedUserId(request);
+        return ResponseEntity.ok(focusSessionService.getSummaryStats(userId));
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
