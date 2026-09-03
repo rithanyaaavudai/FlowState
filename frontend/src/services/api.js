@@ -25,8 +25,9 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('flowstate_access_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (token && token.trim() !== '') {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token.trim()}`;
     }
     return config;
   },
@@ -38,7 +39,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       clearAuthStorage();
-      if (window.location.pathname !== '/login') {
+      if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
     }
