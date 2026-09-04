@@ -21,6 +21,37 @@ public class CoachRecommendationController {
     private final CoachRecommendationService coachRecommendationService;
 
 
+    private Long getAuthenticatedUserId(jakarta.servlet.http.HttpServletRequest request) {
+        if (request != null) {
+            Object attribute = request.getAttribute("authenticatedUserId");
+            if (attribute instanceof Long) {
+                return (Long) attribute;
+            }
+            if (attribute instanceof Integer) {
+                return ((Integer) attribute).longValue();
+            }
+            if (attribute != null) {
+                try {
+                    return Long.valueOf(attribute.toString());
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return 1L;
+    }
+
+    @PostMapping
+    public ResponseEntity<CoachRecommendationResponseDto> issueRecommendationFromAuth(
+            @Valid @RequestBody CoachRecommendationRequestDto requestDto,
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        Long coachId = getAuthenticatedUserId(request);
+        CoachRecommendationResponseDto response =
+                coachRecommendationService.issueRecommendation(requestDto, coachId);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
     @PostMapping("/coach/{coachId}")
     public ResponseEntity<CoachRecommendationResponseDto> issueRecommendation(
             @PathVariable Long coachId,
@@ -32,7 +63,20 @@ public class CoachRecommendationController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    
+    @PutMapping("/{recommendationId}/acknowledge")
+    public ResponseEntity<CoachRecommendationResponseDto> acknowledgeMyRecommendation(
+            @PathVariable Long recommendationId,
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        Long userId = getAuthenticatedUserId(request);
+        CoachRecommendationResponseDto response =
+                coachRecommendationService.acknowledgeRecommendation(
+                        recommendationId,
+                        userId);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/{recommendationId}/acknowledge/{practitionerId}")
     public ResponseEntity<CoachRecommendationResponseDto> acknowledgeRecommendation(
             @PathVariable Long recommendationId,
@@ -42,6 +86,20 @@ public class CoachRecommendationController {
                 coachRecommendationService.acknowledgeRecommendation(
                         recommendationId,
                         practitionerId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{recommendationId}/dismiss")
+    public ResponseEntity<CoachRecommendationResponseDto> dismissMyRecommendation(
+            @PathVariable Long recommendationId,
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        Long userId = getAuthenticatedUserId(request);
+        CoachRecommendationResponseDto response =
+                coachRecommendationService.dismissRecommendation(
+                        recommendationId,
+                        userId);
 
         return ResponseEntity.ok(response);
     }
@@ -59,7 +117,28 @@ public class CoachRecommendationController {
         return ResponseEntity.ok(response);
     }
 
-    
+    @GetMapping("/mine/pending")
+    public ResponseEntity<List<CoachRecommendationResponseDto>> getMyPendingRecommendations(
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        Long userId = getAuthenticatedUserId(request);
+        return ResponseEntity.ok(
+                coachRecommendationService.getPendingRecommendationsForPractitioner(
+                        userId));
+    }
+
+    @GetMapping("/mine/issued")
+    public ResponseEntity<Page<CoachRecommendationResponseDto>> getMyIssuedRecommendations(
+            jakarta.servlet.http.HttpServletRequest request,
+            Pageable pageable) {
+
+        Long coachId = getAuthenticatedUserId(request);
+        return ResponseEntity.ok(
+                coachRecommendationService.getRecommendationsByCoach(
+                        coachId,
+                        pageable));
+    }
+
     @GetMapping("/practitioner/{practitionerId}")
     public ResponseEntity<Page<CoachRecommendationResponseDto>> getRecommendationsForPractitioner(
             @PathVariable Long practitionerId,
@@ -71,7 +150,6 @@ public class CoachRecommendationController {
                         pageable));
     }
 
-    
     @GetMapping("/practitioner/{practitionerId}/pending")
     public ResponseEntity<List<CoachRecommendationResponseDto>> getPendingRecommendations(
             @PathVariable Long practitionerId) {
@@ -81,7 +159,6 @@ public class CoachRecommendationController {
                         practitionerId));
     }
 
-    
     @GetMapping("/coach/{coachId}")
     public ResponseEntity<Page<CoachRecommendationResponseDto>> getRecommendationsByCoach(
             @PathVariable Long coachId,

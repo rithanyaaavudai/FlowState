@@ -58,10 +58,16 @@ public class DistractionLogService {
         Map<String, Long> countByCategory = new HashMap<>();
         Map<String, Long> durationByCategory = new HashMap<>();
 
-        for (Object[] row : rows) {
-            String category = String.valueOf(row[0]);
-            countByCategory.put(category, (Long) row[1]);
-            durationByCategory.put(category, (Long) row[2]);
+        if (rows != null) {
+            for (Object[] row : rows) {
+                if (row != null && row.length >= 3 && row[0] != null) {
+                    String category = String.valueOf(row[0]);
+                    long count = row[1] instanceof Number ? ((Number) row[1]).longValue() : 0L;
+                    long duration = row[2] instanceof Number ? ((Number) row[2]).longValue() : 0L;
+                    countByCategory.put(category, count);
+                    durationByCategory.put(category, duration);
+                }
+            }
         }
 
         return DistractionBreakdownResponseDto.builder()

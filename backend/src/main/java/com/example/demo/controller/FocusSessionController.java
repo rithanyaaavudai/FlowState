@@ -27,7 +27,7 @@ public class FocusSessionController {
     
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','FLOW_COACH','PLATFORM_ADMIN')")
     public ResponseEntity<Object> getAllSessions(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String status,
@@ -47,7 +47,7 @@ public class FocusSessionController {
 
     // GET /api/sessions/mine  — paginated sessions for the authenticated user
     @GetMapping("/mine")
-    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','FLOW_COACH','PLATFORM_ADMIN')")
     public ResponseEntity<Object> getMySessions(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -59,7 +59,7 @@ public class FocusSessionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('PRACTITIONER')")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
     public ResponseEntity<FocusSessionResponseDto> scheduleSession(
             @RequestBody @Valid FocusSessionRequestDto dto,
             HttpServletRequest request) {
@@ -113,14 +113,14 @@ public class FocusSessionController {
     }
 
     @GetMapping("/stats")
-    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','FLOW_COACH','PLATFORM_ADMIN')")
     public ResponseEntity<Object> getStats(HttpServletRequest request) {
         Long userId = getAuthenticatedUserId(request);
         return ResponseEntity.ok(focusSessionService.getSummaryStats(userId));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','PLATFORM_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','FLOW_COACH','PLATFORM_ADMIN')")
     public ResponseEntity<FocusSessionResponseDto> getSessionDetails(
             @PathVariable Long id,
             HttpServletRequest request) {
@@ -135,7 +135,7 @@ public class FocusSessionController {
     
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('PRACTITIONER','PLATFORM_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','PRACTITIONER','FLOW_COACH','PLATFORM_ADMIN')")
     public ResponseEntity<String> deleteSession(
             @PathVariable Long id,
             HttpServletRequest request) {
