@@ -20,7 +20,11 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const data = await authService.login({ email, password, username: email });
+      const data = await authService.login({
+        email,
+        password,
+        username: email,
+      });
 
       const token =
         data.token || data.jwt || data.accessToken || data.bearerToken;
@@ -35,6 +39,8 @@ const Login = () => {
         data.organizationId ||
         (data.user && data.user.organizationId) ||
         'ORG-001';
+      const fullName =
+        data.fullName || (data.user && data.user.fullName) || '';
 
       if (token) {
         localStorage.setItem('token', token);
@@ -52,6 +58,9 @@ const Login = () => {
       if (organizationId) {
         localStorage.setItem('organizationId', String(organizationId));
       }
+      if (fullName) {
+        localStorage.setItem('flowstate_full_name', fullName);
+      }
 
       dispatch(
         loginSuccess({
@@ -61,11 +70,13 @@ const Login = () => {
           role,
           userId,
           organizationId,
+          fullName,
           user: {
             token,
             role,
             userId,
             organizationId,
+            fullName,
             ...(data.user || {}),
           },
           ...data,
@@ -109,7 +120,7 @@ const Login = () => {
               id="email"
               name="email"
               type="email"
-              placeholder="Email (e.g. auditor@vaultflow.io)"
+              placeholder="Enter your username / Email (e.g. auditor@vaultflow.io)"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -123,7 +134,7 @@ const Login = () => {
               id="password"
               name="password"
               type="password"
-              placeholder="Enter your secure account password"
+              placeholder="Enter your password / Enter your secure account password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

@@ -6,9 +6,13 @@ import { logout } from '../../store/slices/authSlice';
 const Navbar = ({ onOpenApproval }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { role: reduxRole, user, isAuthenticated } = useSelector(
-    (state) => state.auth || {}
-  );
+  const {
+    role: reduxRole,
+    user,
+    fullName: reduxFullName,
+    username: reduxUsername,
+    isAuthenticated,
+  } = useSelector((state) => state.auth || {});
 
   const role =
     reduxRole ||
@@ -19,6 +23,16 @@ const Navbar = ({ onOpenApproval }) => {
 
   const isTreasurer =
     typeof role === 'string' && role.toUpperCase() === 'TREASURER';
+
+  const displayName =
+    reduxFullName ||
+    user?.fullName ||
+    user?.name ||
+    reduxUsername ||
+    user?.username ||
+    localStorage.getItem('flowstate_full_name') ||
+    localStorage.getItem('flowstate_username') ||
+    '';
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -93,12 +107,18 @@ const Navbar = ({ onOpenApproval }) => {
       </div>
 
       <div className="nav-user-controls">
+        {displayName && (
+          <span className="user-greeting">Hello, {displayName}!</span>
+        )}
         {role && (
           <span className={`role-badge ${role.toLowerCase()}`}>
             {role}
           </span>
         )}
-        {(isAuthenticated || role || localStorage.getItem('token') || localStorage.getItem('flowstate_access_token')) && (
+        {(isAuthenticated ||
+          role ||
+          localStorage.getItem('token') ||
+          localStorage.getItem('flowstate_access_token')) && (
           <button
             type="button"
             className="logout-btn"
