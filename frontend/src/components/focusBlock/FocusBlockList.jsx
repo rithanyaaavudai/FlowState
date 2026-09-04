@@ -78,47 +78,53 @@ const FocusBlockList = () => {
                   {dayBlocks.length === 0 ? (
                     <div className="empty-day">No blocks</div>
                   ) : (
-                    dayBlocks.map((block) => (
-                      <div
-                        key={block.id}
-                        className={`block-item ${block.protected ? 'is-protected' : ''}`}
-                      >
-                        <div className="block-time">
-                          {block.startTime} - {block.endTime}
-                        </div>
-                        {block.preferredSessionType && (
-                          <div className="block-type">
-                            {block.preferredSessionType.replace('_', ' ')}
+                    dayBlocks.map((block) => {
+                      const isProtected = block.protected ?? block.isProtected;
+                      const startTime = block.startTime || block.blockStartTime;
+                      const endTime = block.endTime || block.blockEndTime;
+
+                      return (
+                        <div
+                          key={block.id}
+                          className={`block-item ${isProtected ? 'is-protected' : ''}`}
+                        >
+                          <div className="block-time">
+                            {startTime} - {endTime}
                           </div>
-                        )}
-                        <div className="block-status">
-                          {block.protected ? 'Protected' : 'Standard'}
-                        </div>
-                        <div className="block-actions">
-                          {block.protected ? (
-                            <button
-                              className="btn action-btn unprotect-btn"
-                              onClick={() => handleUnprotect(block.id)}
-                            >
-                              Unprotect
-                            </button>
-                          ) : (
-                            <button
-                              className="btn action-btn protect-btn"
-                              onClick={() => handleProtect(block.id)}
-                            >
-                              Protect
-                            </button>
+                          {block.preferredSessionType && (
+                            <div className="block-type">
+                              {block.preferredSessionType.replace('_', ' ')}
+                            </div>
                           )}
-                          <button
-                            className="btn action-btn delete-btn"
-                            onClick={() => handleDelete(block.id)}
-                          >
-                            Delete
-                          </button>
+                          <div className="block-status">
+                            {isProtected ? 'Protected' : 'Standard'}
+                          </div>
+                          <div className="block-actions">
+                            {isProtected ? (
+                              <button
+                                className="btn action-btn unprotect-btn"
+                                onClick={() => handleUnprotect(block.id)}
+                              >
+                                Unprotect
+                              </button>
+                            ) : (
+                              <button
+                                className="btn action-btn protect-btn"
+                                onClick={() => handleProtect(block.id)}
+                              >
+                                Protect
+                              </button>
+                            )}
+                            <button
+                              className="btn action-btn delete-btn"
+                              onClick={() => handleDelete(block.id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               </div>

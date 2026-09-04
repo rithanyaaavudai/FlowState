@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -16,10 +17,20 @@ public class FocusBlockRequestDto {
     private String dayOfWeek;
 
     @NotNull
+    @JsonAlias({"startTime", "blockStartTime"})
     private LocalTime blockStartTime;
 
     @NotNull
+    @JsonAlias({"endTime", "blockEndTime"})
     private LocalTime blockEndTime;
 
     private String preferredSessionType;
+
+    public void setStartTime(LocalTime startTime) {
+        this.blockStartTime = startTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.blockEndTime = endTime;
+    }
 }

@@ -31,6 +31,8 @@ const FocusBlockForm = ({ onClose }) => {
       dayOfWeek,
       startTime,
       endTime,
+      blockStartTime: startTime,
+      blockEndTime: endTime,
       preferredSessionType: preferredSessionType || null,
     };
 

@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,19 @@ public class FocusBlockResponseDto {
     private Boolean isProtected;
     private String preferredSessionType;
     private LocalDateTime createdAt;
+
+    @JsonProperty("startTime")
+    public String getStartTime() {
+        return blockStartTime != null ? blockStartTime.toString() : null;
+    }
+
+    @JsonProperty("endTime")
+    public String getEndTime() {
+        return blockEndTime != null ? blockEndTime.toString() : null;
+    }
+
+    @JsonProperty("protected")
+    public Boolean isProtectedFlag() {
+        return isProtected != null ? isProtected : false;
+    }
 }
