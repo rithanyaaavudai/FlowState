@@ -1,27 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '../../services/authService';
 
-const token =
-  localStorage.getItem('token') ||
-  localStorage.getItem('jwt') ||
-  localStorage.getItem('accessToken') ||
-  localStorage.getItem('flowstate_access_token');
-const role = localStorage.getItem('role') || localStorage.getItem('flowstate_role');
-const userId = localStorage.getItem('userId') || localStorage.getItem('flowstate_user_id');
-const organizationId = localStorage.getItem('organizationId');
-const username = localStorage.getItem('flowstate_username');
-const fullName = localStorage.getItem('flowstate_full_name');
+const token = localStorage.getItem('flowstate_access_token') || localStorage.getItem('token') || null;
+const userId = localStorage.getItem('flowstate_user_id') || localStorage.getItem('userId') || null;
+const username = localStorage.getItem('flowstate_username') || null;
+const fullName = localStorage.getItem('flowstate_full_name') || null;
+const role = localStorage.getItem('flowstate_role') || localStorage.getItem('role') || null;
 
 const initialState = {
-  userId: userId || null,
-  role: role || null,
-  organizationId: organizationId || null,
+  token,
+  userId,
+  username,
+  fullName,
+  role,
+  user: token ? { token, accessToken: token, userId, username, fullName, role } : null,
   isAuthenticated: !!token,
-  token: token || null,
-  username: username || null,
-  fullName: fullName || null,
-  user: token ? { userId, role, organizationId, token, username, fullName } : null,
-  status: 'idle',
   loading: false,
   error: null,
 };
@@ -60,166 +53,137 @@ export const register = createAsyncThunk(
   }
 );
 
-const handleAuthSuccess = (state, payload) => {
+const saveAuthToStorageAndState = (state, payload) => {
   const data = payload?.data || payload || {};
   const tokenVal =
+    data.accessToken ||
     data.token ||
     data.jwt ||
-    data.accessToken ||
     data.bearerToken ||
     state.token ||
     '';
   const userObj = data.user || data;
-  const roleVal = data.role || userObj.role || null;
+  const roleVal = data.role || userObj.role || state.role || null;
   const userIdVal =
-    data.userId ||
-    userObj.userId ||
-    userObj.id ||
-    data.id ||
-    state.userId ||
-    null;
-  const orgIdVal =
-    data.organizationId ||
-    userObj.organizationId ||
-    state.organizationId ||
-    null;
-  const usernameVal = data.username || userObj.username || '';
+    data.userId !== undefined && data.userId !== null
+      ? data.userId
+      : userObj.userId !== undefined && userObj.userId !== null
+      ? userObj.userId
+      : userObj.id !== undefined && userObj.id !== null
+      ? userObj.id
+      : data.id !== undefined && data.id !== null
+      ? data.id
+      : state.userId || null;
+  const usernameVal = data.username || userObj.username || state.username || '';
   const fullNameVal =
-    data.fullName || userObj.fullName || userObj.name || usernameVal || '';
+    data.fullName ||
+    userObj.fullName ||
+    userObj.name ||
+    state.fullName ||
+    usernameVal ||
+    '';
+  const refreshTokenVal = data.refreshToken || userObj.refreshToken || '';
 
   state.isAuthenticated = true;
+  state.token = tokenVal;
   state.userId = userIdVal;
   state.role = roleVal;
-  state.organizationId = orgIdVal;
-  state.token = tokenVal || state.token;
   state.username = usernameVal;
   state.fullName = fullNameVal;
   state.user = {
+    token: tokenVal,
+    accessToken: tokenVal,
     userId: userIdVal,
     id: userIdVal,
-    role: roleVal,
-    organizationId: orgIdVal,
-    token: state.token,
-    accessToken: state.token,
     username: usernameVal,
     fullName: fullNameVal,
     name: fullNameVal,
+    role: roleVal,
+    refreshToken: refreshTokenVal,
     ...(typeof userObj === 'object' ? userObj : {}),
   };
   state.loading = false;
-  state.status = 'succeeded';
   state.error = null;
 
-  if (state.token) {
-    localStorage.setItem('token', state.token);
-    localStorage.setItem('jwt', state.token);
-    localStorage.setItem('flowstate_access_token', state.token);
-  }
-  if (roleVal) {
-    localStorage.setItem('role', roleVal);
-    localStorage.setItem('flowstate_role', roleVal);
-  }
-  if (userIdVal) {
-    localStorage.setItem('userId', String(userIdVal));
+  if (tokenVal) localStorage.setItem('flowstate_access_token', tokenVal);
+  if (refreshTokenVal) localStorage.setItem('flowstate_refresh_token', refreshTokenVal);
+  if (userIdVal !== null && userIdVal !== undefined)
     localStorage.setItem('flowstate_user_id', String(userIdVal));
-  }
-  if (orgIdVal) {
-    localStorage.setItem('organizationId', String(orgIdVal));
-  }
   if (usernameVal) localStorage.setItem('flowstate_username', usernameVal);
   if (fullNameVal) localStorage.setItem('flowstate_full_name', fullNameVal);
+  if (roleVal) localStorage.setItem('flowstate_role', roleVal);
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginSuccess: (state, action) => {
-      handleAuthSuccess(state, action.payload);
-    },
     logout: (state) => {
-      state.userId = null;
-      state.role = null;
-      state.organizationId = null;
-      state.isAuthenticated = false;
-      state.token = null;
       state.user = null;
+      state.token = null;
+      state.userId = null;
       state.username = null;
       state.fullName = null;
+      state.role = null;
+      state.isAuthenticated = false;
       state.error = null;
       state.loading = false;
-      state.status = 'idle';
 
-      localStorage.removeItem('token');
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('role');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('organizationId');
       localStorage.removeItem('flowstate_access_token');
       localStorage.removeItem('flowstate_refresh_token');
       localStorage.removeItem('flowstate_user_id');
       localStorage.removeItem('flowstate_username');
       localStorage.removeItem('flowstate_full_name');
       localStorage.removeItem('flowstate_role');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('userId');
     },
     clearAuthError: (state) => {
       state.error = null;
     },
-    setCredentials: (state, action) => {
-      handleAuthSuccess(state, action.payload);
-    },
-    setUser: (state, action) => {
-      handleAuthSuccess(state, action.payload);
-    },
-    setAuth: (state, action) => {
-      handleAuthSuccess(state, action.payload);
+    loginSuccess: (state, action) => {
+      saveAuthToStorageAndState(state, action.payload);
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
-        state.status = 'loading';
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        handleAuthSuccess(state, action.payload);
+        saveAuthToStorageAndState(state, action.payload);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.status = 'failed';
         state.error = action.payload || action.error?.message || 'Login failed';
       })
       .addCase(register.pending, (state) => {
         state.loading = true;
-        state.status = 'loading';
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        handleAuthSuccess(state, action.payload);
+        saveAuthToStorageAndState(state, action.payload);
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.status = 'failed';
         state.error = action.payload || action.error?.message || 'Registration failed';
       })
       .addMatcher(
-        (action) => action.type === 'auth/login/fulfilled',
-        (state, action) => {
-          handleAuthSuccess(state, action.payload);
+        (action) => action.type.endsWith('/rejected') && (
+          (typeof action.payload === 'string' && (action.payload.includes('401') || action.payload.toLowerCase().includes('unauthorized'))) ||
+          (action.error?.message && (action.error.message.includes('401') || action.error.message.toLowerCase().includes('unauthorized')))
+        ),
+        (state) => {
+          state.user = null;
+          state.token = null;
+          state.isAuthenticated = false;
+          localStorage.removeItem('flowstate_access_token');
         }
       );
   },
 });
 
-export const {
-  loginSuccess,
-  logout,
-  clearAuthError,
-  setCredentials,
-  setUser,
-  setAuth,
-} = authSlice.actions;
-
+export const { logout, clearAuthError, loginSuccess } = authSlice.actions;
 export default authSlice.reducer;
