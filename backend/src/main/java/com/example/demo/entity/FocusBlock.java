@@ -44,6 +44,9 @@ public class FocusBlock {
     @Column(name = "preferred_session_type", length = 20)
     private FocusSession.SessionType preferredSessionType;
 
+    @Column(name = "duration_minutes", nullable = false)
+    private Integer durationMinutes;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -58,6 +61,15 @@ public class FocusBlock {
         }
         if (this.isProtected == null) {
             this.isProtected = false;
+        }
+        if (this.blockStartTime != null && this.blockEndTime != null) {
+            long minutes = java.time.Duration.between(this.blockStartTime, this.blockEndTime).toMinutes();
+            if (minutes < 0) {
+                minutes += 24 * 60;
+            }
+            this.durationMinutes = (int) minutes;
+        } else if (this.durationMinutes == null) {
+            this.durationMinutes = 0;
         }
     }
 }

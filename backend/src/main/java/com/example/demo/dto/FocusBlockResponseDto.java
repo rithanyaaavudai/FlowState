@@ -21,6 +21,7 @@ public class FocusBlockResponseDto {
     private LocalTime blockEndTime;
     private Boolean isProtected;
     private String preferredSessionType;
+    private Integer durationMinutes;
     private LocalDateTime createdAt;
 
     @JsonProperty("startTime")

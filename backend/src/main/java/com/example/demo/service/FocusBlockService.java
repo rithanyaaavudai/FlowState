@@ -38,14 +38,21 @@ public class FocusBlockService {
             throw new BusinessValidationException("Focus block overlaps with an existing block");
         }
 
+        long duration = java.time.Duration.between(dto.getBlockStartTime(), dto.getBlockEndTime()).toMinutes();
+        if (duration < 0) {
+            duration += 24 * 60;
+        }
+
         FocusBlock block = FocusBlock.builder()
                 .practitioner(practitioner)
+                .practitionerId(practitioner.getId())
                 .dayOfWeek(dto.getDayOfWeek())
                 .blockStartTime(dto.getBlockStartTime())
                 .blockEndTime(dto.getBlockEndTime())
+                .durationMinutes((int) duration)
                 .isProtected(false)
-                .preferredSessionType(dto.getPreferredSessionType() != null
-                        ? FocusSession.SessionType.valueOf(dto.getPreferredSessionType())
+                .preferredSessionType(dto.getPreferredSessionType() != null && !dto.getPreferredSessionType().isBlank()
+                        ? FocusSession.SessionType.valueOf(dto.getPreferredSessionType().trim().toUpperCase())
                         : null)
                 .build();
 
@@ -95,6 +102,7 @@ public class FocusBlockService {
                 .dayOfWeek(block.getDayOfWeek())
                 .blockStartTime(block.getBlockStartTime())
                 .blockEndTime(block.getBlockEndTime())
+                .durationMinutes(block.getDurationMinutes())
                 .isProtected(block.getIsProtected())
                 .preferredSessionType(block.getPreferredSessionType() != null ? block.getPreferredSessionType().name() : null)
                 .createdAt(block.getCreatedAt())
