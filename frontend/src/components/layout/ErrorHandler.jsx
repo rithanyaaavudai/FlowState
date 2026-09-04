@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { ReactReduxContext } from 'react-redux';
 import { clearError as clearFocusSessionError } from '../../store/slices/focusSessionSlice';
 import { clearError as clearSessionGoalError } from '../../store/slices/sessionGoalSlice';
@@ -11,7 +11,7 @@ const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
   const reduxContext = useContext(ReactReduxContext);
   const store = reduxContext?.store;
 
-  const getReduxError = () => {
+  const getReduxError = useCallback(() => {
     if (!store) return null;
     const state = store.getState();
     return (
@@ -23,7 +23,7 @@ const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
       state?.auth?.error ||
       null
     );
-  };
+  }, [store]);
 
   const [reduxError, setReduxError] = useState(getReduxError);
 
@@ -33,7 +33,7 @@ const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
       setReduxError(getReduxError());
     });
     return () => unsubscribe();
-  }, [store]);
+  }, [store, getReduxError]);
 
   const activeError = propError !== undefined ? propError : reduxError;
 
