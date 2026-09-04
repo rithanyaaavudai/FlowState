@@ -1,4 +1,4 @@
-﻿package com.example.demo.config;
+package com.example.demo.config;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,14 +17,14 @@ public class FlexibleLocalDateTimeDeserializer extends JsonDeserializer<LocalDat
     private static final DateTimeFormatter[] FORMATTERS = new DateTimeFormatter[] {
             DateTimeFormatter.ISO_DATE_TIME,
             DateTimeFormatter.ISO_LOCAL_DATE_TIME,
-            DateTimeFormatter.ofPattern(yyyy-MM-dd'T'HH:mm:ss.SSSX),
-            DateTimeFormatter.ofPattern(yyyy-MM-dd'T'HH:mm:ssX),
-            DateTimeFormatter.ofPattern(yyyy-MM-dd'T'HH:mm:ss),
-            DateTimeFormatter.ofPattern(yyyy-MM-dd'T'HH:mm),
-            DateTimeFormatter.ofPattern(dd-MM-yyyy HH:mm:ss),
-            DateTimeFormatter.ofPattern(dd-MM-yyyy HH:mm),
-            DateTimeFormatter.ofPattern(yyyy-MM-dd HH:mm:ss),
-            DateTimeFormatter.ofPattern(yyyy-MM-dd HH:mm)
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"),
+            DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"),
+            DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
     };
 
     @Override

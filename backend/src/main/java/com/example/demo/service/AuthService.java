@@ -48,6 +48,7 @@ public class AuthService {
     @Transactional
     public AuthResponseDto login(AuthRequestDto dto) {
         FlowUser user = flowUserRepository.findByUsername(dto.getUsername())
+                .or(() -> flowUserRepository.findByEmail(dto.getUsername()))
                 .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPasswordHash())) {
