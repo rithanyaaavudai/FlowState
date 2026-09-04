@@ -22,8 +22,11 @@ public class FocusBlock {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "practitioner_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private FlowUser practitioner;
+
+    @Column(name = "practitioner_id")
+    private Long practitionerId;
 
     @Column(name = "day_of_week", nullable = false, length = 10)
     private String dayOfWeek;
@@ -45,8 +48,14 @@ public class FocusBlock {
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    @PreUpdate
+    protected void onPersistOrUpdate() {
+        if (this.practitioner != null) {
+            this.practitionerId = this.practitioner.getId();
+        }
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
         if (this.isProtected == null) {
             this.isProtected = false;
         }

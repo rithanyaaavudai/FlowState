@@ -89,13 +89,14 @@ public class FocusSessionService {
 
         FocusSession session = FocusSession.builder()
                 .practitioner(practitioner)
+                .practitionerId(practitioner.getId())
                 .title(dto.getTitle())
                 .plannedStart(dto.getPlannedStart())
                 .plannedEnd(dto.getPlannedEnd())
                 .sessionType(sessionType)
                 .notes(dto.getNotes())
-                .status(
-                        FocusSession.SessionStatus.SCHEDULED)
+                .status(FocusSession.SessionStatus.SCHEDULED)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         FocusSession saved = focusSessionRepository.save(session);
