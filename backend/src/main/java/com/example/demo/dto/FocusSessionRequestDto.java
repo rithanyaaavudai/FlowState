@@ -15,9 +15,11 @@ public class FocusSessionRequestDto {
     private String title;
 
     @NotNull(message = "Planned start time is required")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.demo.config.FlexibleLocalDateTimeDeserializer.class)
     private LocalDateTime plannedStart;
 
     @NotNull(message = "Planned end time is required")
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.demo.config.FlexibleLocalDateTimeDeserializer.class)
     private LocalDateTime plannedEnd;
 
     @NotBlank(message = "Session type is required")

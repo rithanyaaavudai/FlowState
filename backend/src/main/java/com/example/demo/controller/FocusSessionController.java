@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class FocusSessionController {
 
     private final FocusSessionService focusSessionService;
+    private final com.example.demo.repository.FlowUserRepository flowUserRepository;
 
-    public FocusSessionController(FocusSessionService focusSessionService) {
+    public FocusSessionController(FocusSessionService focusSessionService,
+                                  com.example.demo.repository.FlowUserRepository flowUserRepository) {
         this.focusSessionService = focusSessionService;
+        this.flowUserRepository = flowUserRepository;
     }
 
     
@@ -152,29 +155,33 @@ public class FocusSessionController {
     
 
     private Long getAuthenticatedUserId(HttpServletRequest request) {
-
         if (request != null) {
-
-            Object attribute =
-                    request.getAttribute("authenticatedUserId");
-
+            Object attribute = request.getAttribute("authenticatedUserId");
             if (attribute instanceof Long) {
                 return (Long) attribute;
             }
-
             if (attribute instanceof Integer) {
                 return ((Integer) attribute).longValue();
             }
-
             if (attribute != null) {
                 try {
                     return Long.valueOf(attribute.toString());
                 } catch (NumberFormatException ignored) {
-                    
                 }
             }
         }
 
+        try {
+            org.springframework.security.core.Authentication auth =
+                    org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.getName() != null && !auth.getName().isBlank() && !"anonymousUser".equals(auth.getName())) {
+                return flowUserRepository.findByUsername(auth.getName())
+                        .or(() -> flowUserRepository.findByEmail(auth.getName()))
+                        .map(com.example.demo.entity.FlowUser::getId)
+                        .orElse(1L);
+            }
+        } catch (Exception ignored) {
+        }
 
         return 1L;
     }
