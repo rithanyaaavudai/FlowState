@@ -47,6 +47,9 @@ public class FocusBlock {
     @Column(name = "duration_minutes", nullable = false)
     private Integer durationMinutes;
 
+    @Column(name = "task_name")
+    private String taskName;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -61,6 +64,9 @@ public class FocusBlock {
         }
         if (this.isProtected == null) {
             this.isProtected = false;
+        }
+        if (this.taskName == null) {
+            this.taskName = this.preferredSessionType != null ? this.preferredSessionType.name() : "Focus Block";
         }
         if (this.blockStartTime != null && this.blockEndTime != null) {
             long minutes = java.time.Duration.between(this.blockStartTime, this.blockEndTime).toMinutes();
