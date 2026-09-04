@@ -44,12 +44,26 @@ public class GlobalExceptionHandler {
         body.put("error", "Validation Failed");
 
         Map<String, String> fieldErrors = new HashMap<>();
+        StringBuilder messageBuilder = new StringBuilder();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
+            if (messageBuilder.length() > 0) messageBuilder.append("; ");
+            messageBuilder.append(error.getField()).append(": ").append(error.getDefaultMessage());
         }
         body.put("fieldErrors", fieldErrors);
+        body.put("message", messageBuilder.length() > 0 ? messageBuilder.toString() : "Validation failed");
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, Object>> handleMessageNotReadable(org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, "Malformed request payload: " + ex.getMostSpecificCause().getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

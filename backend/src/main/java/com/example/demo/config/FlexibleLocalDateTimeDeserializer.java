@@ -29,8 +29,26 @@ public class FlexibleLocalDateTimeDeserializer extends JsonDeserializer<LocalDat
 
     @Override
     public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        if (p.currentToken() == com.fasterxml.jackson.core.JsonToken.VALUE_NUMBER_INT) {
+            long epochMillis = p.getLongValue();
+            return Instant.ofEpochMilli(epochMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        }
+
+        if (p.isExpectedStartArrayToken()) {
+            int[] values = p.readValueAs(int[].class);
+            if (values != null && values.length >= 3) {
+                int year = values[0];
+                int month = values[1];
+                int day = values[2];
+                int hour = values.length > 3 ? values[3] : 0;
+                int minute = values.length > 4 ? values[4] : 0;
+                int second = values.length > 5 ? values[5] : 0;
+                return LocalDateTime.of(year, month, day, hour, minute, second);
+            }
+        }
+
         String text = p.getText();
-        if (text == null || text.isBlank()) {
+        if (text == null || text.isBlank() || "null".equalsIgnoreCase(text.trim()) || "Invalid Date".equalsIgnoreCase(text.trim())) {
             return null;
         }
         text = text.trim();
@@ -55,6 +73,12 @@ public class FlexibleLocalDateTimeDeserializer extends JsonDeserializer<LocalDat
                 return LocalDateTime.parse(text, formatter);
             } catch (Exception ignored) {
             }
+        }
+
+        try {
+            long epoch = Long.parseLong(text);
+            return Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        } catch (Exception ignored) {
         }
 
         return LocalDateTime.parse(text);
