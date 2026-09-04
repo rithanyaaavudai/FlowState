@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useContext, useState, useEffect } from 'react';
+import { ReactReduxContext } from 'react-redux';
 import { clearError as clearFocusSessionError } from '../../store/slices/focusSessionSlice';
 import { clearError as clearSessionGoalError } from '../../store/slices/sessionGoalSlice';
 import { clearError as clearDistractionLogError } from '../../store/slices/distractionLogSlice';
@@ -8,10 +8,13 @@ import { clearError as clearCoachRecError } from '../../store/slices/coachRecomm
 import { clearAuthError } from '../../store/slices/authSlice';
 
 const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
-  const dispatch = useDispatch();
+  const reduxContext = useContext(ReactReduxContext);
+  const store = reduxContext?.store;
 
-  const reduxError = useSelector(
-    (state) =>
+  const getReduxError = () => {
+    if (!store) return null;
+    const state = store.getState();
+    return (
       state?.focusSessions?.error ||
       state?.sessionGoals?.error ||
       state?.distractionLogs?.error ||
@@ -19,20 +22,32 @@ const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
       state?.coachRecommendations?.error ||
       state?.auth?.error ||
       null
-  );
+    );
+  };
+
+  const [reduxError, setReduxError] = useState(getReduxError);
+
+  useEffect(() => {
+    if (!store) return;
+    const unsubscribe = store.subscribe(() => {
+      setReduxError(getReduxError());
+    });
+    return () => unsubscribe();
+  }, [store]);
 
   const activeError = propError !== undefined ? propError : reduxError;
 
   const handleClear = () => {
     if (propOnClear) {
       propOnClear();
-    } else if (dispatch) {
-      dispatch(clearFocusSessionError());
-      dispatch(clearSessionGoalError());
-      dispatch(clearDistractionLogError());
-      dispatch(clearFocusBlockError());
-      dispatch(clearCoachRecError());
-      dispatch(clearAuthError());
+    }
+    if (store) {
+      store.dispatch(clearFocusSessionError());
+      store.dispatch(clearSessionGoalError());
+      store.dispatch(clearDistractionLogError());
+      store.dispatch(clearFocusBlockError());
+      store.dispatch(clearCoachRecError());
+      store.dispatch(clearAuthError());
     }
   };
 
@@ -49,7 +64,7 @@ const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
                 onClick={handleClear}
                 aria-label="Close error"
               >
-                &times;
+                ×
               </button>
             </div>
             <div className="error-body">
