@@ -14,7 +14,6 @@ import Login from './components/Login';
 import AccountForm from './components/accounts/AccountForm';
 import LedgerForm from './components/ledgers/LedgerForm';
 import LedgerList from './components/ledgers/LedgerList';
-import TransactionForm from './components/transactions/TransactionForm';
 import TransactionList from './components/transactions/TransactionList';
 import TransactionApproval from './components/transactions/TransactionApproval';
 import TransactionPanel from './components/transactions/TransactionPanel';
@@ -110,7 +109,7 @@ const LedgersPage = () => {
 };
 
 const AccountsPage = () => {
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [, setRefreshKey] = useState(0);
 
   return (
     <div className="page-container accounts-page">

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { createTransaction } from '../../store/slices/transactionSlice';
 import api from '../../services/api';
 
 const TransactionForm = ({ onTransactionCreated }) => {
