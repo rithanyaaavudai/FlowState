@@ -1,28 +1,45 @@
 import React, { useEffect, useState } from 'react';
 
-const NotificationStack = ({ notifications = [], onDismiss }) => {
+const DEFAULT_NOTIFICATIONS = [];
+
+const NotificationStack = ({ notifications = DEFAULT_NOTIFICATIONS, onDismiss }) => {
   const [activeList, setActiveList] = useState(notifications);
+  const onDismissRef = React.useRef(onDismiss);
 
   useEffect(() => {
-    setActiveList(notifications);
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
+
+  useEffect(() => {
+    setActiveList((prev) => {
+      if (prev === notifications) return prev;
+      if (
+        Array.isArray(prev) &&
+        Array.isArray(notifications) &&
+        prev.length === notifications.length &&
+        prev.every((item, idx) => item === notifications[idx])
+      ) {
+        return prev;
+      }
+      return Array.isArray(notifications) ? notifications : DEFAULT_NOTIFICATIONS;
+    });
   }, [notifications]);
 
   const handleDismiss = (id) => {
-    if (onDismiss) {
-      onDismiss(id);
-    } else {
-      setActiveList((prev) => prev.filter((n) => (n.id ?? n._id) !== id));
+    if (onDismissRef.current) {
+      onDismissRef.current(id);
     }
+    setActiveList((prev) => prev.filter((n) => (n.id ?? n._id) !== id));
   };
 
   useEffect(() => {
-    if (activeList.length === 0) return;
+    if (!activeList || activeList.length === 0) return;
 
     const timer = setTimeout(() => {
       setActiveList((prev) => {
         if (prev.length > 0) {
           const dismissedId = prev[0].id ?? prev[0]._id;
-          if (onDismiss) onDismiss(dismissedId);
+          if (onDismissRef.current) onDismissRef.current(dismissedId);
           return prev.slice(1);
         }
         return prev;
@@ -30,7 +47,7 @@ const NotificationStack = ({ notifications = [], onDismiss }) => {
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [activeList, onDismiss]);
+  }, [activeList]);
 
   if (!activeList || activeList.length === 0) {
     return null;

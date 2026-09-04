@@ -30,7 +30,8 @@ const ErrorHandler = ({ error: propError, onClear: propOnClear, children }) => {
   useEffect(() => {
     if (!store) return;
     const unsubscribe = store.subscribe(() => {
-      setReduxError(getReduxError());
+      const newErr = getReduxError();
+      setReduxError((prev) => (prev === newErr ? prev : newErr));
     });
     return () => unsubscribe();
   }, [store, getReduxError]);
