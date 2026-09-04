@@ -70,11 +70,26 @@ public class JwtService {
     }
 
     public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class));
+        return extractClaim(token, claims -> {
+            Object val = claims.get("role");
+            return val != null ? val.toString() : null;
+        });
     }
 
     public Long extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("userId", Long.class));
+        return extractClaim(token, claims -> {
+            Object val = claims.get("userId");
+            if (val instanceof Number) {
+                return ((Number) val).longValue();
+            }
+            if (val != null) {
+                try {
+                    return Long.valueOf(val.toString());
+                } catch (NumberFormatException ignored) {
+                }
+            }
+            return null;
+        });
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> resolver) {

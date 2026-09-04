@@ -96,7 +96,7 @@ public interface FocusSessionRepository
                 ),
                 0
             )
-            FROM focus_sessions
+            FROM focus_session
             WHERE practitioner_id = :practitionerId
             AND status = 'COMPLETED'
             AND actual_start IS NOT NULL

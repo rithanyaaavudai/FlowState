@@ -415,10 +415,10 @@ public class FocusSessionService {
         Map<String, Long> typeMap = new HashMap<>();
 
         for (Object[] row : countsBySessionType) {
-
-            typeMap.put(
-                    String.valueOf(row[0]),
-                    (Long) row[1]);
+            if (row != null && row.length >= 2 && row[0] != null) {
+                long count = row[1] instanceof Number ? ((Number) row[1]).longValue() : 0L;
+                typeMap.put(String.valueOf(row[0]), count);
+            }
         }
 
         return SessionStatsResponseDto
