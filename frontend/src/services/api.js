@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://localhost:8081',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -9,7 +9,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('flowstate_access_token');
+    const token =
+      localStorage.getItem('flowstate_access_token') ||
+      localStorage.getItem('token');
     if (token && token.trim() !== '') {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token.trim()}`;
@@ -29,6 +31,9 @@ api.interceptors.response.use(
       localStorage.removeItem('flowstate_username');
       localStorage.removeItem('flowstate_full_name');
       localStorage.removeItem('flowstate_role');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('userId');
 
       if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
         window.location.href = '/login';
