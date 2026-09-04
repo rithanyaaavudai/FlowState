@@ -9,19 +9,8 @@ import RecentActivity from './RecentActivity';
 const Dashboard = () => {
   const dispatch = useDispatch();
 
-  const { user, fullName, username } = useSelector((state) => state.auth || {});
   const { stats, items: sessions } = useSelector((state) => state.focusSessions || {});
   const { breakdown } = useSelector((state) => state.distractionLogs || {});
-
-  const displayName =
-    fullName ||
-    user?.fullName ||
-    user?.name ||
-    username ||
-    user?.username ||
-    localStorage.getItem('flowstate_full_name') ||
-    localStorage.getItem('flowstate_username') ||
-    'User';
 
   useEffect(() => {
     dispatch(fetchStats());
