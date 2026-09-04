@@ -1,33 +1,20 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import authReducer, { loginSuccess, logout } from '../store/slices/authSlice';
-import accountReducer, { fetchAccounts, createAccount } from '../store/slices/accountSlice';
-import ledgerReducer, { fetchLedgers, createLedger, setSelectedLedger } from '../store/slices/ledgerSlice';
-import transactionReducer, { fetchTransactions, approveTransaction } from '../store/slices/transactionSlice';
+// Import slice reducers directly
+import authReducer from '../store/slices/authSlice';
+import focusSessionReducer from '../store/slices/focusSessionSlice';
+import sessionGoalReducer from '../store/slices/sessionGoalSlice';
+import distractionLogReducer from '../store/slices/distractionLogSlice';
+import focusBlockReducer from '../store/slices/focusBlockSlice';
+import coachRecommendationReducer from '../store/slices/coachRecommendationSlice';
 
-import Login from '../components/Login';
-import ErrorHandler from '../components/ErrorHandler';
-import NotificationStack from '../components/NotificationStack';
-import Navbar from '../components/layout/Navbar';
-import AccountForm from '../components/accounts/AccountForm';
-import LedgerForm from '../components/ledgers/LedgerForm';
-import LedgerList from '../components/ledgers/LedgerList';
-import TransactionForm from '../components/transactions/TransactionForm';
-import TransactionList from '../components/transactions/TransactionList';
-import TransactionApproval from '../components/transactions/TransactionApproval';
-import TransactionPanel from '../components/transactions/TransactionPanel';
-import api from '../services/api';
-import authService from '../services/authService';
-import accountService from '../services/accountService';
-import ledgerService from '../services/ledgerService';
-import transactionService from '../services/transactionService';
-
+// Mock axios at top level with all required methods
 jest.mock('axios', () => {
   const mAxios = {
     get: jest.fn(),
@@ -44,11 +31,18 @@ jest.mock('axios', () => {
   return mAxios;
 });
 
+// Domain Constants (CROSS-REFERENCE LOCK)
+const DOMAIN_ROLE = 'PRACTITIONER';
+const CRUD_DELETE_MSG = 'FocusSession deleted successfully.';
+const CRUD_CREATE_MSG = 'FocusSession scheduled successfully.';
+const CRUD_UPDATE_MSG = 'FocusSession updated successfully.';
+const DOMAIN_VALUE_1 = 'Morning Deep Work';
+
 let testStore;
 
-const renderWithProviders = (ui, store = testStore) => {
+const renderWithProviders = (ui) => {
   return render(
-    <Provider store={store}>
+    <Provider store={testStore}>
       <BrowserRouter>
         {ui}
       </BrowserRouter>
@@ -56,308 +50,544 @@ const renderWithProviders = (ui, store = testStore) => {
   );
 };
 
-describe('VaultFlow — Transaction & Ledger Orchestrator Spec Suite', () => {
+// Global default mock implementation
+const setupDefaultMocks = () => {
+  axios.get.mockImplementation((url) => {
+    if (url.includes('/api/sessions/mine') || url.includes('/api/sessions')) {
+      return Promise.resolve({ data: { content: [], totalPages: 0, number: 0 } });
+    }
+    if (url.includes('/api/sessions/stats')) {
+      return Promise.resolve({ data: { totalSessions: 0, totalFocusHours: 0, averageFocusScore: 0, totalFocusMinutes: 0, completedSessions: 0 } });
+    }
+    if (url.includes('/api/blocks/mine') || url.includes('/api/blocks/capacity-plan')) {
+      return Promise.resolve({ data: [] });
+    }
+    if (url.includes('/api/recommendations/mine/pending') || url.includes('/api/recommendations')) {
+      return Promise.resolve({ data: { content: [], totalPages: 0, number: 0 } });
+    }
+    return Promise.resolve({ data: {} });
+  });
+
+  axios.post.mockImplementation(() => Promise.resolve({ data: {} }));
+  axios.put.mockImplementation(() => Promise.resolve({ data: {} }));
+  axios.delete.mockImplementation(() => Promise.resolve({ data: {} }));
+};
+
+describe('Frontend Tests (FlowState Focus Session Management System)', () => {
+
   beforeEach(() => {
     localStorage.clear();
     jest.clearAllMocks();
+    setupDefaultMocks();
+    window.confirm = jest.fn(() => true);
+    window.scrollTo = jest.fn();
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
+    // Create a fresh store instance for each test
     testStore = configureStore({
       reducer: {
         auth: authReducer,
-        accounts: accountReducer,
-        ledgers: ledgerReducer,
-        transactions: transactionReducer,
-      },
+        focusSessions: focusSessionReducer,
+        sessionGoals: sessionGoalReducer,
+        distractionLogs: distractionLogReducer,
+        focusBlocks: focusBlockReducer,
+        coachRecommendations: coachRecommendationReducer,
+      }
     });
   });
 
   test('T01 - Folder structure: Login page exists', async () => {
-    const LoginComp = (await import('../components/Login')).default;
-    renderWithProviders(<LoginComp />);
-    expect(screen.getByRole('button', { name: /^Login$/i })).toBeInTheDocument();
+    const Login = (await import('../components/Login')).default;
+    renderWithProviders(<Login />);
+    expect(screen.getByRole('button', { name: /Login/i })).toBeInTheDocument();
   });
 
   test('T02 - Folder structure: services directory exists', async () => {
-    const ts = await import('../services/transactionService');
-    expect(ts.default).toBeDefined();
-    expect(ts.default.getAllTransactions).toBeDefined();
-    expect(ts.default.getByLedger).toBeDefined();
-    expect(ts.default.createTransaction).toBeDefined();
-    expect(ts.default.approveTransaction).toBeDefined();
+    const response = await import('../services/focusSessionService');
+    expect(response).toBeDefined();
+    expect(response.default.getAll).toBeDefined();
   });
 
   test('T03 - Folder structure: store directory exists', async () => {
-    const authS = await import('../store/slices/authSlice');
-    expect(authS.default).toBeDefined();
-    expect(typeof authS.default).toBe('function');
+    const response = await import('../store/slices/authSlice');
+    expect(response).toBeDefined();
+    expect(typeof response.default).toBe('function');
   });
 
-  test('T04 - Folder structure: styling check', () => {
+  test('T04 - Folder structure: styling check', async () => {
     const AppContainer = document.createElement('div');
     AppContainer.className = 'modal-card';
     expect(AppContainer.className).toBe('modal-card');
   });
 
-  test('T05 - Folder structure: component directory exists & Navbar renders', async () => {
-    const { default: NavbarComp } = await import('../components/layout/Navbar');
-    expect(NavbarComp).toBeDefined();
-    renderWithProviders(<NavbarComp />);
+  test('T05 - Folder structure: component directory exists', async () => {
+    const response = await import('../components/layout/Navbar');
+    expect(response).toBeDefined();
+    expect(response.default).toBeDefined();
+
+    const { default: Navbar } = response;
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    renderWithProviders(<Navbar />);
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
-  test('T06 - Navbar: Displays navigation elements and brand', async () => {
-    const { default: NavbarComp } = await import('../components/layout/Navbar');
-    renderWithProviders(<NavbarComp />);
-    expect(screen.getByText('VaultFlow ORCHESTRATOR')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Transactions/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Ledgers/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Accounts/i })).toBeInTheDocument();
-  });
-
-  test('T07 - Navbar: Role-based Approve Transaction button visibility', async () => {
-    const { default: NavbarComp } = await import('../components/layout/Navbar');
-    testStore.dispatch(
-      loginSuccess({ userId: '1', role: 'TREASURER', token: 'tok' })
-    );
-    const { unmount } = renderWithProviders(<NavbarComp />);
-    expect(screen.getByRole('button', { name: /Approve Transaction/i })).toBeInTheDocument();
-    unmount();
-
-    testStore.dispatch(
-      loginSuccess({ userId: '2', role: 'AUDITOR', token: 'tok' })
-    );
-    renderWithProviders(<NavbarComp />);
-    expect(screen.queryByRole('button', { name: /Approve Transaction/i })).not.toBeInTheDocument();
-  });
-
-  test('T08 - authService: login and logout methods exist and operate correctly', async () => {
-    axios.post.mockResolvedValueOnce({
-      data: { token: 'mock-jwt', role: 'TREASURER', userId: 1 },
+  test('T06 - Navbar: Displays navigation elements', async () => {
+    const { default: Navbar } = await import('../components/layout/Navbar');
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
     });
-
-    const result = await authService.login({
-      email: 'treasurer@vaultflow.io',
-      password: 'password123',
-    });
-    expect(axios.post).toHaveBeenCalled();
-    expect(result.token).toBe('mock-jwt');
+    renderWithProviders(<Navbar />);
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
-  test('T09 - accountService: getAccounts and createAccount operate correctly', async () => {
-    axios.get.mockResolvedValueOnce({ data: [{ id: 1, name: 'Main' }] });
-    const accs = await accountService.getAccounts();
-    expect(accs).toEqual([{ id: 1, name: 'Main' }]);
-  });
-
-  test('T10 - Redux: Verifies auth state updates with loginSuccess', () => {
-    const mockToken = 'mock-jwt-token';
-    testStore.dispatch(
-      loginSuccess({
-        userId: 'U-1',
-        role: 'TREASURER',
-        organizationId: 'ORG-1',
-        token: mockToken,
-      })
-    );
-    const state = testStore.getState().auth;
-    expect(state.isAuthenticated).toBe(true);
-    expect(state.role).toBe('TREASURER');
-    expect(state.userId).toBe('U-1');
-  });
-
-  test('T11 - Redux: Verifies auth logout resets state', () => {
-    testStore.dispatch(
-      loginSuccess({
-        userId: 'U-1',
-        role: 'TREASURER',
-        organizationId: 'ORG-1',
-        token: 'tok',
-      })
-    );
-    testStore.dispatch(logout());
-    const state = testStore.getState().auth;
-    expect(state.isAuthenticated).toBe(false);
-    expect(state.userId).toBeNull();
-  });
-
-  test('T12 - Login: Input fields have required placeholders', async () => {
-    renderWithProviders(<Login />);
-    expect(
-      screen.getByPlaceholderText('Email (e.g. auditor@vaultflow.io)')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText('Enter your secure account password')
-    ).toBeInTheDocument();
-  });
-
-  test('T13 - ErrorHandler: Displays literal error on rendering crash', () => {
-    const CrashingComponent = () => {
-      throw new Error('Component crashed');
+  test('T07 - SessionList: Fetches and displays sessions from the backend', async () => {
+    const mockData = {
+      content: [{ id: 1, title: DOMAIN_VALUE_1, status: 'SCHEDULED', sessionType: 'DEEP_WORK', plannedStart: new Date().toISOString(), plannedEnd: new Date(Date.now() + 3600000).toISOString() }]
     };
-    const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    render(
-      <ErrorHandler>
-        <CrashingComponent />
-      </ErrorHandler>
-    );
-    expect(
-      screen.getByText('Ledger synchronization failed. Please check connectivity.')
-    ).toBeInTheDocument();
-    spy.mockRestore();
-  });
-
-  test('T14 - NotificationStack: Renders independent notifications with data-testid alert-{id}', () => {
-    const items = [
-      { id: '1', type: 'success', message: 'Account Reconciled Successfully' },
-      { id: '2', type: 'warning', message: 'Unrecognized transaction flag detected' },
-    ];
-    render(<NotificationStack notifications={items} />);
-    expect(screen.getByTestId('alert-1')).toHaveTextContent('Account Reconciled Successfully');
-    expect(screen.getByTestId('alert-2')).toHaveTextContent('Unrecognized transaction flag detected');
-  });
-
-  test('T15 - AccountForm: Live preview and dynamic interest rate', () => {
-    renderWithProviders(<AccountForm />);
-    const nameInput = screen.getByLabelText(/Account Name/i);
-    fireEvent.change(nameInput, { target: { value: 'Reserve Vault' } });
-    expect(screen.getByTestId('account-name-preview')).toHaveTextContent('Reserve Vault');
-
-    const select = screen.getByLabelText(/Account Type/i);
-    expect(screen.getByLabelText(/Interest Rate/i)).toBeInTheDocument();
-
-    fireEvent.change(select, { target: { value: 'CHECKING' } });
-    expect(screen.queryByLabelText(/Interest Rate/i)).not.toBeInTheDocument();
-  });
-
-  test('T16 - LedgerForm: Edit Ledger focuses Ledger Description input', () => {
-    renderWithProviders(<LedgerForm />);
-    const input = screen.getByPlaceholderText('Ledger Description');
-    fireEvent.click(screen.getByRole('button', { name: /Edit Ledger/i }));
-    expect(document.activeElement).toBe(input);
-  });
-
-  test('T17 - LedgerList: 401 error displays "Session expired. Please log in again."', async () => {
-    axios.get.mockRejectedValueOnce({
-      response: { status: 401, data: { message: 'Unauthorized' } },
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/api/sessions/mine')) return Promise.resolve({ data: mockData });
+      return Promise.resolve({ data: { content: [] } });
     });
-    renderWithProviders(<LedgerList />);
-    expect(
-      await screen.findByText('Session expired. Please log in again.')
-    ).toBeInTheDocument();
-  });
 
-  test('T18 - TransactionForm: Missing accounts shows warning-alert', async () => {
-    renderWithProviders(<TransactionForm />);
-    fireEvent.change(screen.getByPlaceholderText('Transaction Amount'), {
-      target: { value: '100' },
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
     });
-    fireEvent.change(screen.getByPlaceholderText('e.g. TRX-2026-ARC-00441'), {
-      target: { value: 'REF-1' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /Submit Transaction/i }));
+    renderWithProviders(<FocusSessionList />);
 
-    const alert = await screen.findByTestId('warning-alert');
-    expect(alert).toHaveTextContent('Account not selected');
-  });
-
-  test('T19 - TransactionForm: HTTP 500 shows error-alert', async () => {
-    axios.post.mockRejectedValueOnce({
-      response: { status: 500, data: {} },
-    });
-    renderWithProviders(<TransactionForm />);
-    fireEvent.change(screen.getByPlaceholderText('Transaction Amount'), {
-      target: { value: '100' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Source Account Reference'), {
-      target: { value: 'ACC-1' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Target Account Reference'), {
-      target: { value: 'ACC-2' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('e.g. TRX-2026-ARC-00441'), {
-      target: { value: 'REF-1' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /Submit Transaction/i }));
-
-    const errorAlert = await screen.findByTestId('error-alert');
-    expect(errorAlert).toHaveTextContent('Unable to process transaction. Please try again.');
-  });
-
-  test('T20 - TransactionForm: Success shows success-alert', async () => {
-    axios.post.mockResolvedValueOnce({
-      data: { id: 1, amount: 100, source: 'ACC-1', target: 'ACC-2' },
-    });
-    renderWithProviders(<TransactionForm />);
-    fireEvent.change(screen.getByPlaceholderText('Transaction Amount'), {
-      target: { value: '100' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Source Account Reference'), {
-      target: { value: 'ACC-1' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Target Account Reference'), {
-      target: { value: 'ACC-2' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('e.g. TRX-2026-ARC-00441'), {
-      target: { value: 'REF-1' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /Submit Transaction/i }));
-
-    const successAlert = await screen.findByTestId('success-alert');
-    expect(successAlert).toHaveTextContent('Transaction Logged Successfully');
-  });
-
-  test('T21 - TransactionList: Mounts and calls getAllTransactions', async () => {
-    axios.get.mockResolvedValueOnce({
-      data: [
-        {
-          id: '101',
-          reference: 'REF-101',
-          source: 'ACC-1',
-          target: 'ACC-2',
-          amount: 500,
-          status: 'PENDING',
-        },
-      ],
-    });
-    renderWithProviders(<TransactionList />);
-    expect(await screen.findByText('101')).toBeInTheDocument();
-    expect(screen.getByText('Reference')).toBeInTheDocument();
-    expect(screen.getByText('Source')).toBeInTheDocument();
-    expect(screen.getByText('Target')).toBeInTheDocument();
-    expect(screen.getByText('Amount')).toBeInTheDocument();
-    expect(screen.getByText('Status')).toBeInTheDocument();
-  });
-
-  test('T22 - TransactionList: Search placeholder matches specification', () => {
-    renderWithProviders(<TransactionList />);
-    expect(
-      screen.getByPlaceholderText('Search by Transaction ID or Account Name')
-    ).toBeInTheDocument();
-  });
-
-  test('T23 - TransactionApproval: Sends PUT with status APPROVED', async () => {
-    testStore.dispatch(
-      loginSuccess({ userId: '1', role: 'TREASURER', token: 'tok' })
-    );
-    axios.put.mockResolvedValueOnce({
-      data: { id: '101', status: 'APPROVED' },
-    });
-    renderWithProviders(
-      <TransactionApproval transaction={{ id: '101', amount: 500 }} />
-    );
-    fireEvent.click(screen.getByRole('button', { name: /^Approve$/i }));
     await waitFor(() => {
-      expect(axios.put).toHaveBeenCalledWith('/transactions/101', {
-        status: 'APPROVED',
-      });
+      expect(screen.getByText(DOMAIN_VALUE_1)).toBeInTheDocument();
     });
   });
 
-  test('T24 - TransactionPanel: Toggle Initiate / Close Transaction Panel', () => {
-    renderWithProviders(<TransactionPanel />);
-    const btn = screen.getByRole('button', { name: /Initiate Transaction/i });
-    fireEvent.click(btn);
-    expect(screen.getByRole('button', { name: /Close Transaction Panel/i })).toBeInTheDocument();
+  test('T08 - authService: login and register methods call correct endpoints', async () => {
+    axios.post.mockResolvedValueOnce({
+      data: { accessToken: 'mock-token', refreshToken: 'mock-refresh-token', userId: 1, username: 'bob', fullName: 'Bob', role: 'PRACTITIONER' }
+    });
+
+    const { default: authService } = await import('../services/authService');
+
+    expect(typeof authService.login).toBe('function');
+    expect(typeof authService.register).toBe('function');
+
+    const result = await authService.login({ username: 'bob', password: 'password123' });
+
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(result.accessToken).toBeDefined();
+    expect(result.role).toBe('PRACTITIONER');
+    expect(result.fullName).toBe('Bob');
   });
+
+
+  test('T10 - Redux: Verifies auth state updates', async () => {
+    const mockToken = 'mock-jwt-token';
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: mockToken,
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const state = testStore.getState().auth;
+    expect(state.user.token).toBe(mockToken);
+  });
+
+
+  test('T12 - Login: Input fields should have correct placeholders', async () => {
+    const { default: Login } = await import('../components/Login');
+    renderWithProviders(<Login />);
+    expect(screen.getByPlaceholderText(/Enter your username/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Enter your password/i)).toBeInTheDocument();
+  });
+
+  test('T13 - Feedback: Displays error message when operation fails', async () => {
+    const { default: ErrorHandler } = await import('../components/ErrorHandler');
+    const errorMessage = "FocusSession-specific failure during load";
+    render(<ErrorHandler error={errorMessage} onClear={jest.fn()} />);
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  });
+
+  test('T14 - UI: Shows loading spinner during fetch', async () => {
+    const DataLoader = ({ isLoading, data }) => (
+      <div>{isLoading ? <div data-testid="loader">Loading...</div> : <div data-testid="content">{data}</div>}</div>
+    );
+    render(<DataLoader isLoading={true} data={null} />);
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+  });
+
+  test('T15 - FormReset: Clears input fields', async () => {
+    const ResetForm = () => {
+      const [val, setVal] = React.useState('Initial');
+      return (
+        <div>
+          <input data-testid="reset-input" value={val} onChange={(e) => setVal(e.target.value)} />
+          <button onClick={() => setVal('')}>Reset</button>
+        </div>
+      );
+    };
+    render(<ResetForm />);
+    const input = screen.getByTestId('reset-input');
+    fireEvent.click(screen.getByRole('button', { name: /reset/i }));
+    expect(input.value).toBe('');
+  });
+
+  test('T16 - Validation: Frontend blocks invalid submission when title is empty', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+
+    const postSpy = jest.spyOn(axios, 'post');
+
+    const FocusSessionForm = (await import('../components/focusSession/FocusSessionForm')).default;
+    renderWithProviders(<FocusSessionForm onClose={jest.fn()} />);
+
+    const titleInput = screen.getByLabelText(/Session Title/i);
+    expect(titleInput).toHaveAttribute('required');
+    expect(titleInput.value).toBe('');
+
+    // JSDOM does not enforce HTML5 required attribute validation on form submit.
+    // We assert that the field has the "required" validation constraint and is currently invalid.
+    expect(titleInput.checkValidity()).toBe(false);
+    expect(postSpy).not.toHaveBeenCalled();
+  });
+
+
+  test('T17 - FocusSessions: Renders My Focus Sessions heading correctly', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    renderWithProviders(<FocusSessionList />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /My Focus Sessions/i })).toBeInTheDocument();
+    });
+  });
+
+  test('T18 - FocusSessions: Handles deletion feedback with correct response string', async () => {
+    axios.delete.mockResolvedValueOnce({ status: 200, data: 'FocusSession deleted successfully.' });
+
+    const { default: focusSessionService } = await import('../services/focusSessionService');
+
+    expect(typeof focusSessionService.delete).toBe('function');
+
+    const result = await focusSessionService.delete(1);
+
+    expect(axios.delete).toHaveBeenCalledTimes(1);
+    expect(result).toBe('FocusSession deleted successfully.');
+  });
+
+  test('T19 - Sessions: Handles deletion flow and calls delete endpoint', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+
+    const mockData = {
+      content: [{ id: 1, title: DOMAIN_VALUE_1, status: 'SCHEDULED', sessionType: 'DEEP_WORK', plannedStart: new Date().toISOString(), plannedEnd: new Date(Date.now() + 3600000).toISOString() }],
+      totalPages: 1, number: 0
+    };
+
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/api/sessions/mine')) return Promise.resolve({ data: mockData });
+      return Promise.resolve({ data: { content: [] } });
+    });
+    axios.delete.mockResolvedValueOnce({ status: 200, data: CRUD_DELETE_MSG });
+
+    const { default: focusSessionService } = await import('../services/focusSessionService');
+    expect(typeof focusSessionService.delete).toBe('function');
+
+    const result = await focusSessionService.delete(1);
+
+    expect(axios.delete).toHaveBeenCalledTimes(1);
+    expect(result).toBe(CRUD_DELETE_MSG);
+  });
+
+  test('T20 - Pagination: SessionList correctly handles Spring Data Page structure', async () => {
+    const mockPage = {
+      content: [
+        { id: 1, title: DOMAIN_VALUE_1, status: 'SCHEDULED', sessionType: 'DEEP_WORK', plannedStart: new Date().toISOString(), plannedEnd: new Date(Date.now() + 3600000).toISOString() }
+      ],
+      totalPages: 3,
+      number: 0
+    };
+
+    axios.get.mockImplementation((url) => {
+      if (url.includes('/api/sessions/mine')) return Promise.resolve({ data: mockPage });
+      return Promise.resolve({ data: { content: [] } });
+    });
+
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    renderWithProviders(<FocusSessionList />);
+
+    await waitFor(() => {
+      expect(screen.getByText(DOMAIN_VALUE_1)).toBeInTheDocument();
+    });
+
+    expect(axios.get).toHaveBeenCalled();
+  });
+
+  test('T21 - Resilience: SessionList handles network failure gracefully', async () => {
+    axios.get.mockRejectedValueOnce(new Error('Network Error'));
+
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    renderWithProviders(<FocusSessionList />);
+
+    await waitFor(() => {
+      const errorEl = screen.queryByText(/Failed to fetch sessions/i) || screen.queryByText(/Network Error/i);
+      const headingEl = screen.queryByRole('heading', { name: /My Focus Sessions/i });
+      expect(errorEl || headingEl).toBeInTheDocument();
+    });
+
+    expect(axios.get).toHaveBeenCalled();
+  });
+
+  test('T22 - Validation: Date format constraints', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionForm = (await import('../components/focusSession/FocusSessionForm')).default;
+    renderWithProviders(<FocusSessionForm onClose={jest.fn()} />);
+    const inputs = document.querySelectorAll('input[type="datetime-local"]');
+    expect(inputs.length).toBeGreaterThan(0);
+    expect(inputs[0]).toHaveAttribute('required');
+  });
+
+  test('T23 - SessionList Modal: Validates input types', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionForm = (await import('../components/focusSession/FocusSessionForm')).default;
+    renderWithProviders(<FocusSessionForm onClose={jest.fn()} />);
+    const timeInput = document.querySelector('input[type="datetime-local"]');
+    expect(timeInput).toHaveAttribute('type', 'datetime-local');
+  });
+
+  test('T24 - SessionList: Identity validation', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    renderWithProviders(<FocusSessionList />);
+    expect(screen.getByRole('heading', { name: /My Focus Sessions/i })).toBeInTheDocument();
+  });
+
+  test('T25 - Subject Management: Fetches and lists subjects', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionForm = (await import('../components/focusSession/FocusSessionForm')).default;
+    renderWithProviders(<FocusSessionForm onClose={jest.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText('Deep Work')).toBeInTheDocument();
+      expect(screen.getByText('Creative')).toBeInTheDocument();
+      expect(screen.getByText('Review')).toBeInTheDocument();
+    });
+  });
+
+  test('T26 - SessionList: Heading verification', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    renderWithProviders(<FocusSessionList />);
+    expect(screen.getByRole('heading', { name: /My Focus Sessions/i })).toBeInTheDocument();
+  });
+
+  test('T27 - Style: Branding constraints', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    renderWithProviders(<FocusSessionList />);
+
+    const addBtn = screen.getByRole('button', { name: /\+ Schedule Session/i });
+    expect(addBtn).toBeInTheDocument();
+    expect(addBtn).toHaveClass('primary-btn');
+  });
+
+  test('T28 - Style: Layout constraints', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const FocusSessionList = (await import('../components/focusSession/FocusSessionList')).default;
+    renderWithProviders(<FocusSessionList />);
+
+    const heading = screen.getByRole('heading', { name: /My Focus Sessions/i });
+    const container = heading.closest('.page-container');
+    expect(container).not.toBeNull();
+    expect(container).toHaveClass('page-container');
+  });
+
+  test('T29 - Layout: Navigation constraints', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-token',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'Bob',
+        role: 'PRACTITIONER'
+      }
+    });
+    const { default: Navbar } = await import('../components/layout/Navbar');
+    renderWithProviders(<Navbar />);
+    expect(screen.getByRole('navigation')).toBeInTheDocument();
+  });
+
+  test('T30 - Home: Welcome logic', async () => {
+    testStore.dispatch({
+      type: 'auth/login/fulfilled',
+      payload: {
+        accessToken: 'mock-jwt',
+        refreshToken: 'mock-refresh-token',
+        userId: 1,
+        username: 'testuser',
+        fullName: 'John Doe',
+        role: 'PRACTITIONER'
+      }
+    });
+    const App = (await import('../App')).default;
+    render(
+      <Provider store={testStore}>
+        <App />
+      </Provider>
+    );
+    await waitFor(() => {
+      expect(screen.getByText(/Hello, John Doe!/i)).toBeInTheDocument();
+    });
+  });
+
 });

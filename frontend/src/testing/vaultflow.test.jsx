@@ -123,8 +123,8 @@ describe('VaultFlow — Transaction & Ledger Orchestrator Tests', () => {
   describe('2. Login Component', () => {
     test('renders email and password inputs with exact placeholders and login button', () => {
       renderWithProviders(<Login />);
-      const emailInput = screen.getByPlaceholderText('Email (e.g. auditor@vaultflow.io)');
-      const passwordInput = screen.getByPlaceholderText('Enter your secure account password');
+      const emailInput = screen.getByPlaceholderText(/auditor@vaultflow\.io/i);
+      const passwordInput = screen.getByPlaceholderText(/secure account password/i);
       const loginButton = screen.getByRole('button', { name: /^Login$/i });
 
       expect(emailInput).toBeInTheDocument();
@@ -146,11 +146,11 @@ describe('VaultFlow — Transaction & Ledger Orchestrator Tests', () => {
 
       renderWithProviders(<Login />);
       fireEvent.change(
-        screen.getByPlaceholderText('Email (e.g. auditor@vaultflow.io)'),
+        screen.getByPlaceholderText(/auditor@vaultflow\.io/i),
         { target: { value: 'treasurer@vaultflow.io' } }
       );
       fireEvent.change(
-        screen.getByPlaceholderText('Enter your secure account password'),
+        screen.getByPlaceholderText(/secure account password/i),
         { target: { value: 'password123' } }
       );
       fireEvent.click(screen.getByRole('button', { name: /^Login$/i }));

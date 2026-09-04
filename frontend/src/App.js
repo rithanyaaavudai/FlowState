@@ -40,13 +40,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const TransactionsPage = () => {
-  const {
-    role: reduxRole,
-    user,
-    fullName: reduxFullName,
-    username: reduxUsername,
-  } = useSelector((state) => state.auth || {});
-
+  const { role: reduxRole, user } = useSelector((state) => state.auth || {});
   const role =
     reduxRole ||
     user?.role ||
@@ -55,16 +49,6 @@ const TransactionsPage = () => {
     '';
   const isTreasurer =
     typeof role === 'string' && role.toUpperCase() === 'TREASURER';
-
-  const displayName =
-    reduxFullName ||
-    user?.fullName ||
-    user?.name ||
-    reduxUsername ||
-    user?.username ||
-    localStorage.getItem('flowstate_full_name') ||
-    localStorage.getItem('flowstate_username') ||
-    '';
 
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -78,11 +62,6 @@ const TransactionsPage = () => {
             Create, audit, and authorize transactional ledger movements
           </p>
         </div>
-        {displayName && (
-          <div className="user-greeting-pill">
-            Hello, {displayName}!
-          </div>
-        )}
       </div>
 
       <TransactionPanel
@@ -150,13 +129,7 @@ const AccountsPage = () => {
 };
 
 const AppContent = () => {
-  const {
-    isAuthenticated,
-    token,
-    user,
-    fullName: reduxFullName,
-    username: reduxUsername,
-  } = useSelector((state) => state.auth || {});
+  const { isAuthenticated, token } = useSelector((state) => state.auth || {});
 
   const storedToken =
     localStorage.getItem('token') ||
@@ -165,23 +138,10 @@ const AppContent = () => {
     localStorage.getItem('flowstate_access_token');
   const isAuth = isAuthenticated || !!token || !!storedToken;
 
-  const displayName =
-    reduxFullName ||
-    user?.fullName ||
-    user?.name ||
-    reduxUsername ||
-    user?.username ||
-    localStorage.getItem('flowstate_full_name') ||
-    localStorage.getItem('flowstate_username') ||
-    '';
-
   return (
     <div className="app-container">
       <Navbar />
       <NotificationStack />
-      {isAuth && displayName && (
-        <div style={{ display: 'none' }}>Hello, {displayName}!</div>
-      )}
       <main className="main-content">
         <Routes>
           <Route
