@@ -59,9 +59,10 @@ public class DistractionLogController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'PRACTITIONER')")
     public ResponseEntity<DistractionLogResponseDto> logMyDistraction(
             @Valid @RequestBody DistractionLogRequestDto requestDto,
-            jakarta.servlet.http.HttpServletRequest request) {
+            HttpServletRequest request) {
 
         Long userId = getAuthenticatedUserId(request);
         DistractionLogResponseDto response =
@@ -71,6 +72,7 @@ public class DistractionLogController {
     }
 
     @PostMapping("/practitioner/{practitionerId}")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<DistractionLogResponseDto> logDistraction(
             @PathVariable Long practitionerId,
             @Valid @RequestBody DistractionLogRequestDto requestDto) {
@@ -82,9 +84,10 @@ public class DistractionLogController {
     }
 
     @GetMapping("/breakdown")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<DistractionBreakdownResponseDto> getMyDistractionBreakdown(
             @RequestParam(required = false) Long practitionerId,
-            jakarta.servlet.http.HttpServletRequest request) {
+            HttpServletRequest request) {
 
         if (practitionerId != null) {
             return ResponseEntity.ok(distractionLogService.getDistractionBreakdown(practitionerId));
@@ -100,9 +103,10 @@ public class DistractionLogController {
     }
 
     @GetMapping("/trend")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<List<Map<String, Object>>> getMyDistractionTrend(
             @RequestParam(required = false) Long practitionerId,
-            jakarta.servlet.http.HttpServletRequest request) {
+            HttpServletRequest request) {
 
         if (practitionerId != null) {
             return ResponseEntity.ok(distractionLogService.getDistractionTrendByWeek(practitionerId));
@@ -118,16 +122,19 @@ public class DistractionLogController {
     }
 
     @GetMapping("/platform/breakdown")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH')")
     public ResponseEntity<DistractionBreakdownResponseDto> getPlatformBreakdown() {
         return ResponseEntity.ok(distractionLogService.getDistractionBreakdown(null));
     }
 
     @GetMapping("/platform/trend")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH')")
     public ResponseEntity<List<Map<String, Object>>> getPlatformTrend() {
         return ResponseEntity.ok(distractionLogService.getDistractionTrendByWeek(null));
     }
 
     @GetMapping("/session/{sessionId}")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<List<DistractionLogResponseDto>> getLogsForSession(
             @PathVariable Long sessionId) {
 
@@ -136,6 +143,7 @@ public class DistractionLogController {
     }
 
     @GetMapping("/practitioner/{practitionerId}/breakdown")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<DistractionBreakdownResponseDto> getDistractionBreakdown(
             @PathVariable Long practitionerId) {
 
@@ -144,6 +152,7 @@ public class DistractionLogController {
     }
 
     @GetMapping("/practitioner/{practitionerId}/trend")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<List<Map<String, Object>>> getDistractionTrend(
             @PathVariable Long practitionerId) {
 
@@ -151,12 +160,25 @@ public class DistractionLogController {
                 distractionLogService.getDistractionTrendByWeek(practitionerId));
     }
 
+    @GetMapping("/platform/logs")
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH')")
+    public ResponseEntity<Page<DistractionLogResponseDto>> getPlatformDistractionLogs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable =
+                org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "loggedAt"));
+        return ResponseEntity.ok(
+                distractionLogService.getAllPaginated(pageable));
+    }
+
     @GetMapping
+    @PreAuthorize("hasAnyRole('PLATFORM_ADMIN', 'FLOW_COACH', 'PRACTITIONER')")
     public ResponseEntity<Page<DistractionLogResponseDto>> getAllDistractionLogs(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        org.springframework.data.domain.Pageable pageable =
+        Pageable pageable =
                 org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "loggedAt"));
         return ResponseEntity.ok(
                 distractionLogService.getAllPaginated(pageable));
