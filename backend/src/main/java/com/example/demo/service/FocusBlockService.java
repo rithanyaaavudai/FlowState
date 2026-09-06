@@ -109,10 +109,19 @@ public class FocusBlockService {
         return getMyBlocks(practitionerId);
     }
 
-    private FocusBlock getOwnedBlock(Long blockId, Long practitionerId) {
-        return focusBlockRepository.findById(blockId)
-                .filter(b -> b.getPractitioner().getId().equals(practitionerId))
+    private FocusBlock getOwnedBlock(Long blockId, Long requesterId) {
+        FlowUser requester = flowUserRepository.findById(requesterId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        FocusBlock block = focusBlockRepository.findById(blockId)
                 .orElseThrow(() -> new ResourceNotFoundException("FocusBlock not found"));
+
+        if (requester.getRole() != FlowUser.UserRole.PLATFORM_ADMIN &&
+                !block.getPractitioner().getId().equals(requesterId)) {
+            throw new BusinessValidationException("You do not have permission to modify this focus block");
+        }
+
+        return block;
     }
 
     private FocusBlockResponseDto toResponseDto(FocusBlock block) {
