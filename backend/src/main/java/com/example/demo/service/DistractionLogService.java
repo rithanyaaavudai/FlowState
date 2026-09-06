@@ -53,7 +53,12 @@ public class DistractionLogService {
     }
 
     public DistractionBreakdownResponseDto getDistractionBreakdown(Long practitionerId) {
-        List<Object[]> rows = distractionLogRepository.findDistractionBreakdownByPractitioner(practitionerId);
+        List<Object[]> rows;
+        if (practitionerId == null) {
+            rows = distractionLogRepository.findPlatformDistractionBreakdown();
+        } else {
+            rows = distractionLogRepository.findDistractionBreakdownByPractitioner(practitionerId);
+        }
 
         Map<String, Long> countByCategory = new HashMap<>();
         Map<String, Long> durationByCategory = new HashMap<>();
@@ -77,7 +82,12 @@ public class DistractionLogService {
     }
 
     public List<Map<String, Object>> getDistractionTrendByWeek(Long practitionerId) {
-        List<Object[]> rows = distractionLogRepository.findWeeklyDistractionTrend(practitionerId);
+        List<Object[]> rows;
+        if (practitionerId == null) {
+            rows = distractionLogRepository.findPlatformWeeklyDistractionTrend();
+        } else {
+            rows = distractionLogRepository.findWeeklyDistractionTrend(practitionerId);
+        }
         return rows.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
             map.put("week", row[0]);
@@ -91,9 +101,23 @@ public class DistractionLogService {
     }
 
     private DistractionLogResponseDto toResponseDto(DistractionLog log) {
+        Long practitionerId = null;
+        String practitionerName = null;
+        String sessionTitle = null;
+        if (log.getSession() != null) {
+            sessionTitle = log.getSession().getTitle();
+            if (log.getSession().getPractitioner() != null) {
+                practitionerId = log.getSession().getPractitioner().getId();
+                practitionerName = log.getSession().getPractitioner().getFullName();
+            }
+        }
+
         return DistractionLogResponseDto.builder()
                 .id(log.getId())
-                .sessionId(log.getSession().getId())
+                .sessionId(log.getSession() != null ? log.getSession().getId() : null)
+                .sessionTitle(sessionTitle)
+                .practitionerId(practitionerId)
+                .practitionerName(practitionerName)
                 .loggedAt(log.getLoggedAt())
                 .category(log.getCategory().name())
                 .description(log.getDescription())

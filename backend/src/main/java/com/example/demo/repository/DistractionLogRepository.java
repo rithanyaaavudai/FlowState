@@ -22,6 +22,13 @@ public interface DistractionLogRepository extends JpaRepository<DistractionLog, 
             "GROUP BY wk ORDER BY wk DESC LIMIT 8", nativeQuery = true)
     List<Object[]> findWeeklyDistractionTrend(@Param("practitionerId") Long practitionerId);
 
+    @Query("SELECT dl.category, COUNT(dl), SUM(dl.durationSeconds) FROM DistractionLog dl GROUP BY dl.category")
+    List<Object[]> findPlatformDistractionBreakdown();
+
+    @Query(value = "SELECT YEARWEEK(dl.logged_at) AS wk, COUNT(dl) FROM distraction_log dl " +
+            "GROUP BY wk ORDER BY wk DESC LIMIT 8", nativeQuery = true)
+    List<Object[]> findPlatformWeeklyDistractionTrend();
+
     @Query("SELECT COALESCE(SUM(dl.durationSeconds), 0) FROM DistractionLog dl WHERE dl.session.id = :sessionId")
     Long sumDurationSecondsBySessionId(@Param("sessionId") Long sessionId);
 }

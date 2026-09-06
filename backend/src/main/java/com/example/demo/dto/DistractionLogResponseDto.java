@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 public class DistractionLogResponseDto {
     private Long id;
     private Long sessionId;
+    private String sessionTitle;
+    private Long practitionerId;
+    private String practitionerName;
     private LocalDateTime loggedAt;
     private String category;
     private String description;

@@ -16,6 +16,7 @@ import java.time.LocalTime;
 public class FocusBlockResponseDto {
     private Long id;
     private Long practitionerId;
+    private String practitionerName;
     private String dayOfWeek;
     private LocalTime blockStartTime;
     private LocalTime blockEndTime;
