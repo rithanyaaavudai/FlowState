@@ -40,6 +40,25 @@ public class CoachRecommendationController {
         return 1L;
     }
 
+    @GetMapping
+    public ResponseEntity<Object> getAllRecommendations(
+            @RequestParam(required = false) Long practitionerId,
+            @RequestParam(required = false) Long coachId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            jakarta.servlet.http.HttpServletRequest request) {
+
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "createdAt"));
+        if (practitionerId != null) {
+            return ResponseEntity.ok(coachRecommendationService.getRecommendationsForPractitioner(practitionerId, pageable));
+        }
+        if (coachId != null) {
+            return ResponseEntity.ok(coachRecommendationService.getRecommendationsByCoach(coachId, pageable));
+        }
+
+        return ResponseEntity.ok(coachRecommendationService.getAllRecommendationsPaginated(pageable));
+    }
+
     @PostMapping
     public ResponseEntity<CoachRecommendationResponseDto> issueRecommendationFromAuth(
             @Valid @RequestBody CoachRecommendationRequestDto requestDto,

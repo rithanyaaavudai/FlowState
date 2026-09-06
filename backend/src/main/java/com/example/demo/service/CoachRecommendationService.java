@@ -31,8 +31,8 @@ public class CoachRecommendationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Coach not found"));
 
         
-        if (coach.getRole() != FlowUser.UserRole.FLOW_COACH) {
-            throw new BusinessValidationException("Only users with the FLOW_COACH role can issue recommendations");
+        if (coach.getRole() != FlowUser.UserRole.FLOW_COACH && coach.getRole() != FlowUser.UserRole.PLATFORM_ADMIN) {
+            throw new BusinessValidationException("Only users with the FLOW_COACH or PLATFORM_ADMIN role can issue recommendations");
         }
 
         FlowUser practitioner = flowUserRepository.findById(dto.getPractitionerId())
@@ -70,6 +70,16 @@ public class CoachRecommendationService {
         CoachRecommendation recommendation = getOwnedByPractitioner(id, practitionerId);
         recommendation.setStatus(CoachRecommendation.RecommendationStatus.DISMISSED);
         return toResponseDto(coachRecommendationRepository.save(recommendation));
+    }
+
+    public Page<CoachRecommendationResponseDto> getAllRecommendationsPaginated(Pageable pageable) {
+        return coachRecommendationRepository.findAll(pageable)
+                .map(this::toResponseDto);
+    }
+
+    public List<CoachRecommendationResponseDto> getAllRecommendations() {
+        return coachRecommendationRepository.findAll(org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "createdAt"))
+                .stream().map(this::toResponseDto).collect(Collectors.toList());
     }
 
     public Page<CoachRecommendationResponseDto> getRecommendationsForPractitioner(Long practitionerId, Pageable pageable) {

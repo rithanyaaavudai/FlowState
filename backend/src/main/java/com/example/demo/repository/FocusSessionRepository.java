@@ -145,4 +145,43 @@ public interface FocusSessionRepository
             @Param("title") String title,
 
             Pageable pageable);
+
+    @Query("""
+            SELECT AVG(fs.focusScore)
+            FROM FocusSession fs
+            WHERE fs.status = com.example.demo.entity.FocusSession$SessionStatus.COMPLETED
+            """)
+    Double findPlatformAverageFocusScore();
+
+    @Query(value = """
+            SELECT COALESCE(
+                SUM(
+                    TIMESTAMPDIFF(
+                        MINUTE,
+                        actual_start,
+                        actual_end
+                    )
+                ),
+                0
+            )
+            FROM focus_session
+            WHERE status = 'COMPLETED'
+            AND actual_start IS NOT NULL
+            AND actual_end IS NOT NULL
+            """, nativeQuery = true)
+    Long findPlatformTotalFocusMinutes();
+
+    @Query("""
+            SELECT fs.sessionType, COUNT(fs)
+            FROM FocusSession fs
+            GROUP BY fs.sessionType
+            """)
+    List<Object[]> countPlatformBySessionType();
+
+    @Query("""
+            SELECT fs.status, COUNT(fs)
+            FROM FocusSession fs
+            GROUP BY fs.status
+            """)
+    List<Object[]> countPlatformByStatus();
 }

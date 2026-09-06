@@ -49,6 +49,26 @@ public class FocusBlockController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<FocusBlockResponseDto>> getBlocks(
+            @RequestParam(required = false) Long practitionerId,
+            HttpServletRequest request) {
+        if (practitionerId != null) {
+            return ResponseEntity.ok(focusBlockService.getMyBlocks(practitionerId));
+        }
+        boolean isAdmin = request.isUserInRole("ROLE_PLATFORM_ADMIN") || request.isUserInRole("PLATFORM_ADMIN");
+        if (isAdmin) {
+            return ResponseEntity.ok(focusBlockService.getAllBlocks());
+        }
+        Long userId = getAuthenticatedUserId(request);
+        return ResponseEntity.ok(focusBlockService.getMyBlocks(userId));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<FocusBlockResponseDto>> getAllBlocks() {
+        return ResponseEntity.ok(focusBlockService.getAllBlocks());
+    }
+
     @GetMapping("/mine")
     public ResponseEntity<List<FocusBlockResponseDto>> getMyBlocks(HttpServletRequest request) {
         Long userId = getAuthenticatedUserId(request);

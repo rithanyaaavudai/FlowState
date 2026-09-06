@@ -66,20 +66,48 @@ public class DistractionLogController {
 
     @GetMapping("/breakdown")
     public ResponseEntity<DistractionBreakdownResponseDto> getMyDistractionBreakdown(
+            @RequestParam(required = false) Long practitionerId,
             jakarta.servlet.http.HttpServletRequest request) {
 
+        if (practitionerId != null) {
+            return ResponseEntity.ok(distractionLogService.getDistractionBreakdown(practitionerId));
+        }
+
         Long userId = getAuthenticatedUserId(request);
+        boolean isAdmin = request.isUserInRole("ROLE_PLATFORM_ADMIN") || request.isUserInRole("PLATFORM_ADMIN");
+        if (isAdmin) {
+            return ResponseEntity.ok(distractionLogService.getDistractionBreakdown(null));
+        }
         return ResponseEntity.ok(
                 distractionLogService.getDistractionBreakdown(userId));
     }
 
     @GetMapping("/trend")
     public ResponseEntity<List<Map<String, Object>>> getMyDistractionTrend(
+            @RequestParam(required = false) Long practitionerId,
             jakarta.servlet.http.HttpServletRequest request) {
 
+        if (practitionerId != null) {
+            return ResponseEntity.ok(distractionLogService.getDistractionTrendByWeek(practitionerId));
+        }
+
         Long userId = getAuthenticatedUserId(request);
+        boolean isAdmin = request.isUserInRole("ROLE_PLATFORM_ADMIN") || request.isUserInRole("PLATFORM_ADMIN");
+        if (isAdmin) {
+            return ResponseEntity.ok(distractionLogService.getDistractionTrendByWeek(null));
+        }
         return ResponseEntity.ok(
                 distractionLogService.getDistractionTrendByWeek(userId));
+    }
+
+    @GetMapping("/platform/breakdown")
+    public ResponseEntity<DistractionBreakdownResponseDto> getPlatformBreakdown() {
+        return ResponseEntity.ok(distractionLogService.getDistractionBreakdown(null));
+    }
+
+    @GetMapping("/platform/trend")
+    public ResponseEntity<List<Map<String, Object>>> getPlatformTrend() {
+        return ResponseEntity.ok(distractionLogService.getDistractionTrendByWeek(null));
     }
 
     @GetMapping("/session/{sessionId}")
@@ -108,8 +136,11 @@ public class DistractionLogController {
 
     @GetMapping
     public ResponseEntity<Page<DistractionLogResponseDto>> getAllDistractionLogs(
-            Pageable pageable) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
+        org.springframework.data.domain.Pageable pageable =
+                org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "loggedAt"));
         return ResponseEntity.ok(
                 distractionLogService.getAllPaginated(pageable));
     }

@@ -287,104 +287,56 @@ public class FocusSessionService {
     @Transactional(readOnly = true)
     public FocusSessionResponseDto getSession(
             Long sessionId,
-            Long practitionerId) {
+            Long requesterId) {
+
+        FlowUser user = flowUserRepository.findById(requesterId).orElse(null);
+        if (user != null && (user.getRole() == FlowUser.UserRole.PLATFORM_ADMIN || user.getRole() == FlowUser.UserRole.FLOW_COACH)) {
+            FocusSession session = focusSessionRepository.findById(sessionId)
+                    .orElseThrow(() -> new ResourceNotFoundException("FocusSession not found"));
+            return toResponseDto(session);
+        }
 
         return toResponseDto(
                 getOwnedSession(
                         sessionId,
-                        practitionerId));
+                        requesterId));
     }
 
-
-
     @Transactional(readOnly = true)
-    public Page<FocusSessionResponseDto> getMySessionsPaginated(
-            Long practitionerId,
-            Pageable pageable) {
+    public SessionStatsResponseDto getPlatformSummaryStats() {
+        long total = focusSessionRepository.count();
+        long completed = focusSessionRepository.countByStatus(FocusSession.SessionStatus.COMPLETED);
+        long abandoned = focusSessionRepository.countByStatus(FocusSession.SessionStatus.ABANDONED);
+        Double avgScore = focusSessionRepository.findPlatformAverageFocusScore();
+        Long totalMinutes = focusSessionRepository.findPlatformTotalFocusMinutes();
+        List<Object[]> countsBySessionType = focusSessionRepository.countPlatformBySessionType();
 
-        return focusSessionRepository
-                .findByPractitionerId(
-                        practitionerId,
-                        pageable)
-                .map(this::toResponseDto);
-    }
-
-    
-
-    @Transactional(readOnly = true)
-    public Page<FocusSessionResponseDto> getAllSessionsPaginated(
-            Pageable pageable) {
-
-        return focusSessionRepository
-                .findAll(pageable)
-                .map(this::toResponseDto);
-    }
-
-    
-
-    @Transactional(readOnly = true)
-    public Page<FocusSessionResponseDto> getAllSessionsPaginated(
-            String search,
-            String status,
-            int page,
-            int size) {
-
-        if (page < 0) {
-            throw new BusinessValidationException(
-                    "Page number cannot be negative");
-        }
-
-        if (size <= 0) {
-            throw new BusinessValidationException(
-                    "Page size must be greater than zero");
-        }
-
-        String title = null;
-
-        if (search != null &&
-                !search.trim().isEmpty()) {
-
-            title = search.trim();
-        }
-
-        FocusSession.SessionStatus sessionStatus = null;
-
-        if (status != null &&
-                !status.trim().isEmpty()) {
-
-            try {
-
-                sessionStatus = FocusSession.SessionStatus.valueOf(
-                        status.trim()
-                                .toUpperCase());
-
-            } catch (IllegalArgumentException e) {
-
-                throw new BusinessValidationException(
-                        "Invalid session status: " +
-                                status);
+        Map<String, Long> typeMap = new HashMap<>();
+        for (Object[] row : countsBySessionType) {
+            if (row != null && row.length >= 2 && row[0] != null) {
+                long count = row[1] instanceof Number ? ((Number) row[1]).longValue() : 0L;
+                typeMap.put(String.valueOf(row[0]), count);
             }
         }
 
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                Sort.by(
-                        Sort.Direction.DESC,
-                        "createdAt"));
-
-        return focusSessionRepository
-                .findAllWithStatusAndTitleFilter(
-                        sessionStatus,
-                        title,
-                        pageable)
-                .map(this::toResponseDto);
+        return SessionStatsResponseDto.builder()
+                .totalSessions(total)
+                .completedSessions(completed)
+                .abandonedSessions(abandoned)
+                .averageFocusScore(avgScore != null ? avgScore : 0.0)
+                .totalFocusMinutes(totalMinutes != null ? totalMinutes : 0L)
+                .countBySessionType(typeMap)
+                .build();
     }
-
 
     @Transactional(readOnly = true)
     public SessionStatsResponseDto getSummaryStats(
             Long userId) {
+
+        FlowUser user = flowUserRepository.findById(userId).orElse(null);
+        if (user != null && user.getRole() == FlowUser.UserRole.PLATFORM_ADMIN) {
+            return getPlatformSummaryStats();
+        }
 
         long total = focusSessionRepository
                 .findByPractitionerId(

@@ -77,9 +77,26 @@ public class FocusBlockService {
     }
 
     @Transactional
-    public void deleteBlock(Long blockId, Long practitionerId) {
-        FocusBlock block = getOwnedBlock(blockId, practitionerId);
+    public void deleteBlock(Long blockId, Long requesterId) {
+        FlowUser requester = flowUserRepository.findById(requesterId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        FocusBlock block = focusBlockRepository.findById(blockId)
+                .orElseThrow(() -> new ResourceNotFoundException("FocusBlock not found"));
+
+        if (requester.getRole() != FlowUser.UserRole.PLATFORM_ADMIN &&
+                !block.getPractitioner().getId().equals(requesterId)) {
+            throw new BusinessValidationException("You do not have permission to delete this focus block");
+        }
+
         focusBlockRepository.delete(block);
+    }
+
+    public List<FocusBlockResponseDto> getAllBlocks() {
+        return focusBlockRepository.findAll(org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.ASC, "dayOfWeek", "blockStartTime"))
+                .stream()
+                .map(this::toResponseDto)
+                .collect(Collectors.toList());
     }
 
     public List<FocusBlockResponseDto> getMyBlocks(Long practitionerId) {
@@ -102,6 +119,7 @@ public class FocusBlockService {
         return FocusBlockResponseDto.builder()
                 .id(block.getId())
                 .practitionerId(block.getPractitioner().getId())
+                .practitionerName(block.getPractitioner().getFullName())
                 .dayOfWeek(block.getDayOfWeek())
                 .blockStartTime(block.getBlockStartTime())
                 .blockEndTime(block.getBlockEndTime())
