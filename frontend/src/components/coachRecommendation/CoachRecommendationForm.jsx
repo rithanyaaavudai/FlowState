@@ -8,7 +8,7 @@ const CoachRecommendationForm = ({ onClose, onSuccess }) => {
   const { user } = useSelector((state) => state.auth);
 
   const role = user?.role || localStorage.getItem('flowstate_role') || '';
-  const isAuthorized = role === 'FLOW_COACH' || role === 'PLATFORM_ADMIN';
+  const isAuthorized = role === 'FLOW_COACH' || role === 'PLATFORM_ADMIN' || role === 'ADMIN';
 
   const [practitionerId, setPractitionerId] = useState('');
   const [recommendationText, setRecommendationText] = useState('');

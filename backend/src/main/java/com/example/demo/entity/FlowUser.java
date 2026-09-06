@@ -54,6 +54,6 @@ public class FlowUser {
     }
 
     public enum UserRole {
-        PLATFORM_ADMIN, FLOW_COACH, PRACTITIONER
+        ADMIN, PLATFORM_ADMIN, FLOW_COACH, PRACTITIONER
     }
 }

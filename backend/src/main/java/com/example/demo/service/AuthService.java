@@ -32,12 +32,19 @@ public class AuthService {
             throw new BusinessValidationException("Email already exists");
         }
 
+        FlowUser.UserRole role;
+        try {
+            role = FlowUser.UserRole.valueOf(dto.getRole().toUpperCase());
+        } catch (Exception e) {
+            throw new BusinessValidationException("Invalid role: " + dto.getRole());
+        }
+
         FlowUser user = FlowUser.builder()
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .passwordHash(passwordEncoder.encode(dto.getPassword()))
                 .fullName(dto.getFullName())
-                .role(FlowUser.UserRole.valueOf(dto.getRole()))
+                .role(role)
                 .isActive(true)
                 .build();
 

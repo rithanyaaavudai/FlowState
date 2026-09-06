@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const isPractitioner = role === 'PRACTITIONER';
   const isCoach = role === 'FLOW_COACH';
-  const isAdmin = role === 'PLATFORM_ADMIN';
+  const isAdmin = role === 'ADMIN' || role === 'PLATFORM_ADMIN';
 
   const displayName =
     fullName ||

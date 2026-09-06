@@ -22,7 +22,7 @@ public class DataSeeder implements CommandLineRunner {
                     .email("admin@flowstate.com")
                     .passwordHash(passwordEncoder.encode("Admin@123"))
                     .fullName("Platform Admin")
-                    .role(FlowUser.UserRole.PLATFORM_ADMIN)
+                    .role(FlowUser.UserRole.ADMIN)
                     .isActive(true)
                     .build();
 
