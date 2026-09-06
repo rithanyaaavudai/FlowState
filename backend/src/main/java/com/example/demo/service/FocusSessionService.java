@@ -303,6 +303,86 @@ public class FocusSessionService {
     }
 
     @Transactional(readOnly = true)
+    public Page<FocusSessionResponseDto> getMySessionsPaginated(
+            Long practitionerId,
+            Pageable pageable) {
+
+        return focusSessionRepository
+                .findByPractitionerId(
+                        practitionerId,
+                        pageable)
+                .map(this::toResponseDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<FocusSessionResponseDto> getAllSessionsPaginated(
+            Pageable pageable) {
+
+        return focusSessionRepository
+                .findAll(pageable)
+                .map(this::toResponseDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<FocusSessionResponseDto> getAllSessionsPaginated(
+            String search,
+            String status,
+            int page,
+            int size) {
+
+        if (page < 0) {
+            throw new BusinessValidationException(
+                    "Page number cannot be negative");
+        }
+
+        if (size <= 0) {
+            throw new BusinessValidationException(
+                    "Page size must be greater than zero");
+        }
+
+        String title = null;
+
+        if (search != null &&
+                !search.trim().isEmpty()) {
+
+            title = search.trim();
+        }
+
+        FocusSession.SessionStatus sessionStatus = null;
+
+        if (status != null &&
+                !status.trim().isEmpty()) {
+
+            try {
+
+                sessionStatus = FocusSession.SessionStatus.valueOf(
+                        status.trim()
+                                .toUpperCase());
+
+            } catch (IllegalArgumentException e) {
+
+                throw new BusinessValidationException(
+                        "Invalid session status: " +
+                                status);
+            }
+        }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(
+                        Sort.Direction.DESC,
+                        "createdAt"));
+
+        return focusSessionRepository
+                .findAllWithStatusAndTitleFilter(
+                        sessionStatus,
+                        title,
+                        pageable)
+                .map(this::toResponseDto);
+    }
+
+    @Transactional(readOnly = true)
     public SessionStatsResponseDto getPlatformSummaryStats() {
         long total = focusSessionRepository.count();
         long completed = focusSessionRepository.countByStatus(FocusSession.SessionStatus.COMPLETED);
