@@ -58,7 +58,7 @@ export const adminService = {
 
   // Focus Blocks
   getAllFocusBlocks: async () => {
-    const response = await api.get('/api/blocks/all');
+    const response = await api.get('/api/blocks');
     return response.data;
   },
 
