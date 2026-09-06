@@ -54,6 +54,12 @@ const AppContent = () => {
             element={isAuth ? <Navigate to="/" replace /> : <Login />}
           />
           <Route
+            path="/register"
+            element={
+              isAuth ? <Navigate to="/" replace /> : <Login initialRegister={true} />
+            }
+          />
+          <Route
             path="/"
             element={
               <ProtectedRoute>

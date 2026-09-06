@@ -41,35 +41,7 @@ const authService = {
 
   register: async (userData) => {
     const response = await api.post('/api/auth/register', userData);
-    const data = response.data || {};
-
-    const token = data.accessToken || data.token || data.jwt;
-    const refreshToken = data.refreshToken;
-    const role = data.role || data.user?.role;
-    const userId = data.userId || data.user?.userId || data.user?.id || data.id;
-    const username = data.username || data.user?.username;
-    const fullName = data.fullName || data.user?.fullName || data.user?.name;
-
-    if (token) {
-      localStorage.setItem('flowstate_access_token', token);
-    }
-    if (refreshToken) {
-      localStorage.setItem('flowstate_refresh_token', refreshToken);
-    }
-    if (userId !== undefined && userId !== null) {
-      localStorage.setItem('flowstate_user_id', String(userId));
-    }
-    if (username) {
-      localStorage.setItem('flowstate_username', username);
-    }
-    if (fullName) {
-      localStorage.setItem('flowstate_full_name', fullName);
-    }
-    if (role) {
-      localStorage.setItem('flowstate_role', role);
-    }
-
-    return data;
+    return response.data || {};
   },
 
   refresh: async (refreshToken) => {

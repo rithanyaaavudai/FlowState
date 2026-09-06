@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { login, register, clearAuthError } from '../../store/slices/authSlice';
 
-const Login = () => {
+const Login = ({ initialRegister = false }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, user, token, loading, error } = useSelector(
     (state) => state.auth || {}
   );
 
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(
+    initialRegister || location.pathname === '/register'
+  );
 
   // Login form state
   const [username, setUsername] = useState('');
@@ -33,6 +36,14 @@ const Login = () => {
       navigate('/', { replace: true });
     }
   }, [isAuth, navigate]);
+
+  useEffect(() => {
+    if (location.pathname === '/register') {
+      setIsRegistering(true);
+    } else if (location.pathname === '/login') {
+      setIsRegistering(false);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     return () => {
@@ -60,13 +71,19 @@ const Login = () => {
       })
     );
     if (register.fulfilled.match(res)) {
-      navigate('/', { replace: true });
+      setIsRegistering(false);
+      setUsername(regUsername);
+      setPassword('');
+      setRegPassword('');
+      navigate('/login', { replace: true });
     }
   };
 
   const toggleMode = () => {
     dispatch(clearAuthError());
-    setIsRegistering(!isRegistering);
+    const nextMode = !isRegistering;
+    setIsRegistering(nextMode);
+    navigate(nextMode ? '/register' : '/login');
   };
 
   return (
