@@ -88,10 +88,13 @@ public class DistractionLogService {
         } else {
             rows = distractionLogRepository.findWeeklyDistractionTrend(practitionerId);
         }
+        if (rows == null) {
+            return java.util.Collections.emptyList();
+        }
         return rows.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("week", row[0]);
-            map.put("count", row[1]);
+            map.put("week", row != null && row.length > 0 && row[0] != null ? row[0].toString() : "");
+            map.put("count", row != null && row.length > 1 && row[1] instanceof Number ? ((Number) row[1]).longValue() : 0L);
             return map;
         }).collect(Collectors.toList());
     }

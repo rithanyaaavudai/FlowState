@@ -17,16 +17,16 @@ public interface DistractionLogRepository extends JpaRepository<DistractionLog, 
             "dl.session.practitioner.id = :practitionerId GROUP BY dl.category")
     List<Object[]> findDistractionBreakdownByPractitioner(@Param("practitionerId") Long practitionerId);
 
-    @Query(value = "SELECT YEARWEEK(dl.logged_at) AS wk, COUNT(dl) FROM distraction_log dl " +
-            "JOIN focus_session fs ON dl.session_id = fs.id WHERE fs.practitioner_id = :practitionerId " +
-            "GROUP BY wk ORDER BY wk DESC LIMIT 8", nativeQuery = true)
+    @Query(value = "SELECT YEARWEEK(dl.logged_at) AS wk, COUNT(*) FROM distraction_log dl " +
+            "JOIN focus_session fs ON dl.session_id = fs.id WHERE (fs.practitioner_id = :practitionerId OR fs.user_id = :practitionerId) " +
+            "GROUP BY YEARWEEK(dl.logged_at) ORDER BY wk DESC LIMIT 8", nativeQuery = true)
     List<Object[]> findWeeklyDistractionTrend(@Param("practitionerId") Long practitionerId);
 
     @Query("SELECT dl.category, COUNT(dl), SUM(dl.durationSeconds) FROM DistractionLog dl GROUP BY dl.category")
     List<Object[]> findPlatformDistractionBreakdown();
 
-    @Query(value = "SELECT YEARWEEK(dl.logged_at) AS wk, COUNT(dl) FROM distraction_log dl " +
-            "GROUP BY wk ORDER BY wk DESC LIMIT 8", nativeQuery = true)
+    @Query(value = "SELECT YEARWEEK(dl.logged_at) AS wk, COUNT(*) FROM distraction_log dl " +
+            "GROUP BY YEARWEEK(dl.logged_at) ORDER BY wk DESC LIMIT 8", nativeQuery = true)
     List<Object[]> findPlatformWeeklyDistractionTrend();
 
     @Query("SELECT COALESCE(SUM(dl.durationSeconds), 0) FROM DistractionLog dl WHERE dl.session.id = :sessionId")

@@ -3,13 +3,17 @@ package com.example.demo.controller;
 import com.example.demo.dto.DistractionBreakdownResponseDto;
 import com.example.demo.dto.DistractionLogRequestDto;
 import com.example.demo.dto.DistractionLogResponseDto;
+import com.example.demo.entity.FlowUser;
+import com.example.demo.repository.FlowUserRepository;
 import com.example.demo.service.DistractionLogService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +22,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/distractions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class DistractionLogController {
 
     private final DistractionLogService distractionLogService;
+    private final FlowUserRepository flowUserRepository;
 
-    private Long getAuthenticatedUserId(jakarta.servlet.http.HttpServletRequest request) {
+    private Long getAuthenticatedUserId(HttpServletRequest request) {
         if (request != null) {
             Object attribute = request.getAttribute("authenticatedUserId");
             if (attribute instanceof Long) {
@@ -37,6 +43,17 @@ public class DistractionLogController {
                 } catch (NumberFormatException ignored) {
                 }
             }
+        }
+        try {
+            org.springframework.security.core.Authentication auth =
+                    org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.getName() != null && !auth.getName().isBlank() && !"anonymousUser".equals(auth.getName())) {
+                return flowUserRepository.findByUsername(auth.getName())
+                        .or(() -> flowUserRepository.findByEmail(auth.getName()))
+                        .map(FlowUser::getId)
+                        .orElse(1L);
+            }
+        } catch (Exception ignored) {
         }
         return 1L;
     }
