@@ -16,6 +16,12 @@ import FocusSessionList from './components/focusSession/FocusSessionList';
 import FocusBlockList from './components/focusBlock/FocusBlockList';
 import CoachRecommendationList from './components/coachRecommendation/CoachRecommendationList';
 import UserManagement from './components/admin/UserManagement';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminSessions from './components/admin/AdminSessions';
+import AdminAnalytics from './components/admin/AdminAnalytics';
+import AdminDistractions from './components/admin/AdminDistractions';
+import AdminFocusBlocks from './components/admin/AdminFocusBlocks';
+import AdminRecommendations from './components/admin/AdminRecommendations';
 import './App.css';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -70,7 +76,13 @@ const AppContent = () => {
             path="/"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                {(() => {
+                  const role = user?.role || localStorage.getItem('flowstate_role') || '';
+                  if (role === 'PLATFORM_ADMIN') {
+                    return <Navigate to="/admin/dashboard" replace />;
+                  }
+                  return <Dashboard />;
+                })()}
               </ProtectedRoute>
             }
           />
@@ -103,6 +115,62 @@ const AppContent = () => {
             element={
               <ProtectedRoute allowedRoles={['FLOW_COACH', 'PLATFORM_ADMIN', 'PRACTITIONER']}>
                 <CoachRecommendationList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <Navigate to="/admin/dashboard" replace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/sessions"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <AdminSessions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/analytics"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <AdminAnalytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/distractions"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <AdminDistractions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/focus-blocks"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <AdminFocusBlocks />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/recommendations"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <AdminRecommendations />
               </ProtectedRoute>
             }
           />

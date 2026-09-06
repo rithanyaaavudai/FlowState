@@ -79,42 +79,95 @@ const Navbar = () => {
           </>
         )}
 
-        {(isCoach || isPlatformAdmin) && (
-          <NavLink
-            to="/sessions"
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-          >
-            All Sessions
-          </NavLink>
-        )}
-
-        {(isCoach || isPlatformAdmin) && (
-          <NavLink
-            to="/recommendations"
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-          >
-            Recommendations
-          </NavLink>
+        {isCoach && (
+          <>
+            <NavLink
+              to="/sessions"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              All Sessions
+            </NavLink>
+            <NavLink
+              to="/recommendations"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Recommendations
+            </NavLink>
+          </>
         )}
 
         {isPlatformAdmin && (
-          <NavLink
-            to="/admin/users"
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-          >
-            User Management
-          </NavLink>
+          <>
+            <NavLink
+              to="/admin/dashboard"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Admin Console
+            </NavLink>
+            <NavLink
+              to="/admin/sessions"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              All Sessions
+            </NavLink>
+            <NavLink
+              to="/admin/analytics"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Analytics
+            </NavLink>
+            <NavLink
+              to="/admin/distractions"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Distractions
+            </NavLink>
+            <NavLink
+              to="/admin/focus-blocks"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Focus Blocks
+            </NavLink>
+            <NavLink
+              to="/admin/recommendations"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Recommendations
+            </NavLink>
+            <NavLink
+              to="/admin/users"
+              className={({ isActive }) =>
+                isActive ? 'nav-link active' : 'nav-link'
+              }
+            >
+              Users
+            </NavLink>
+          </>
         )}
       </div>
 
       <div className="nav-user-controls">
-        <span className="user-greeting">Welcome back, {displayName}!</span>
+        <span className="user-greeting">
+          Welcome, <strong>{displayName}</strong>
+          {isPlatformAdmin && <span className="admin-role-badge">ADMIN</span>}
+          {isCoach && <span className="coach-role-badge">COACH</span>}
+        </span>
         <button
           type="button"
           className="btn logout-btn"
