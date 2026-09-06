@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import userService from '../../services/userService';
 import EmptyState from '../common/EmptyState';
+import AdminLayout from './AdminLayout';
 
 const UserManagement = () => {
   const { user } = useSelector((state) => state.auth || {});
@@ -115,8 +116,9 @@ const UserManagement = () => {
   }
 
   return (
-    <div className="page-container user-management-page">
-      <div className="page-header">
+    <AdminLayout>
+      <div className="admin-page user-management-page">
+        <div className="page-header">
         <div>
           <h2>User & RBAC Management</h2>
           <p className="login-subtitle">Manage user roles, platform access, and active accounts</p>
