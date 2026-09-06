@@ -18,7 +18,7 @@ const CoachRecommendationList = () => {
 
   const role = user?.role || localStorage.getItem('flowstate_role') || '';
   const isPractitioner = role === 'PRACTITIONER';
-  const isCoach = role === 'FLOW_COACH' || role === 'PLATFORM_ADMIN' || role === 'ADMIN';
+  const isCoach = role === 'FLOW_COACH' || role === 'PLATFORM_ADMIN';
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');

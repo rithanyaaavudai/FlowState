@@ -217,7 +217,6 @@ const Login = ({ initialRegister = false }) => {
               >
                 <option value="PRACTITIONER">PRACTITIONER</option>
                 <option value="FLOW_COACH">FLOW_COACH</option>
-                <option value="ADMIN">ADMIN</option>
               </select>
             </div>
 

@@ -15,9 +15,10 @@ import Dashboard from './components/dashboard/Dashboard';
 import FocusSessionList from './components/focusSession/FocusSessionList';
 import FocusBlockList from './components/focusBlock/FocusBlockList';
 import CoachRecommendationList from './components/coachRecommendation/CoachRecommendationList';
+import UserManagement from './components/admin/UserManagement';
 import './App.css';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, token, user } = useSelector(
     (state) => state.auth || {}
   );
@@ -29,6 +30,12 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuth) {
     return <Navigate to="/login" replace />;
+  }
+
+  const role = user?.role || localStorage.getItem('flowstate_role') || '';
+
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    return <Navigate to="/" replace />;
   }
 
   return children;
@@ -78,7 +85,7 @@ const AppContent = () => {
           <Route
             path="/blocks"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['PRACTITIONER', 'PLATFORM_ADMIN']}>
                 <FocusBlockList />
               </ProtectedRoute>
             }
@@ -86,7 +93,7 @@ const AppContent = () => {
           <Route
             path="/focus-blocks"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['PRACTITIONER', 'PLATFORM_ADMIN']}>
                 <FocusBlockList />
               </ProtectedRoute>
             }
@@ -94,8 +101,16 @@ const AppContent = () => {
           <Route
             path="/recommendations"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['FLOW_COACH', 'PLATFORM_ADMIN', 'PRACTITIONER']}>
                 <CoachRecommendationList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={['PLATFORM_ADMIN']}>
+                <UserManagement />
               </ProtectedRoute>
             }
           />

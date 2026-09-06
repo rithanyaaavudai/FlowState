@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const isPractitioner = role === 'PRACTITIONER';
   const isCoach = role === 'FLOW_COACH';
-  const isAdmin = role === 'ADMIN' || role === 'PLATFORM_ADMIN';
+  const isPlatformAdmin = role === 'PLATFORM_ADMIN';
 
   const displayName =
     fullName ||
@@ -79,7 +79,7 @@ const Navbar = () => {
           </>
         )}
 
-        {(isCoach || isAdmin) && (
+        {(isCoach || isPlatformAdmin) && (
           <NavLink
             to="/sessions"
             className={({ isActive }) =>
@@ -90,7 +90,7 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {isCoach && (
+        {(isCoach || isPlatformAdmin) && (
           <NavLink
             to="/recommendations"
             className={({ isActive }) =>
@@ -98,6 +98,17 @@ const Navbar = () => {
             }
           >
             Recommendations
+          </NavLink>
+        )}
+
+        {isPlatformAdmin && (
+          <NavLink
+            to="/admin/users"
+            className={({ isActive }) =>
+              isActive ? 'nav-link active' : 'nav-link'
+            }
+          >
+            User Management
           </NavLink>
         )}
       </div>
