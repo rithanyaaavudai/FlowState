@@ -21,7 +21,13 @@ public interface CoachRecommendationRepository extends JpaRepository<CoachRecomm
 
     boolean existsByIdAndCoachId(Long id, Long coachId);
 
-    boolean existsByIdAndPractitionerId(Long id, Long practitionerId);
+    List<CoachRecommendation> findByPractitionerId(Long practitionerId);
+
+    List<CoachRecommendation> findByCoachId(Long coachId);
+
+    long countByPractitionerId(Long practitionerId);
+
+    long countByCoachId(Long coachId);
 
     @Query("SELECT cr.status, COUNT(cr) FROM CoachRecommendation cr WHERE cr.coach.id = :coachId GROUP BY cr.status")
     List<Object[]> countByStatusForCoach(@Param("coachId") Long coachId);

@@ -3,9 +3,14 @@ package com.example.demo.service;
 import com.example.demo.dto.UserCreateRequestDto;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.entity.FlowUser;
+import com.example.demo.entity.CoachRecommendation;
+import com.example.demo.entity.FocusBlock;
 import com.example.demo.exception.BusinessValidationException;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.CoachRecommendationRepository;
 import com.example.demo.repository.FlowUserRepository;
+import com.example.demo.repository.FocusBlockRepository;
+import com.example.demo.repository.FocusSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,9 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final FlowUserRepository flowUserRepository;
+    private final FocusSessionRepository focusSessionRepository;
+    private final FocusBlockRepository focusBlockRepository;
+    private final CoachRecommendationRepository coachRecommendationRepository;
     private final PasswordEncoder passwordEncoder;
 
     public List<UserResponseDto> getAllUsers() {
@@ -74,6 +82,16 @@ public class UserService {
             throw new BusinessValidationException("Invalid role: " + roleStr);
         }
 
+        if (user.getId().equals(requesterId) && newRole != FlowUser.UserRole.PLATFORM_ADMIN) {
+            throw new BusinessValidationException("You cannot change your own administrative role");
+        }
+
+        if (user.getRole() == FlowUser.UserRole.PLATFORM_ADMIN && newRole != FlowUser.UserRole.PLATFORM_ADMIN) {
+            if (Boolean.TRUE.equals(user.getIsActive()) && flowUserRepository.countActiveByRole(FlowUser.UserRole.PLATFORM_ADMIN) <= 1) {
+                throw new BusinessValidationException("Cannot demote the last active Platform Administrator");
+            }
+        }
+
         user.setRole(newRole);
         FlowUser updated = flowUserRepository.save(user);
         return toResponseDto(updated);
@@ -88,7 +106,14 @@ public class UserService {
             throw new BusinessValidationException("You cannot deactivate your own account");
         }
 
-        user.setIsActive(!Boolean.TRUE.equals(user.getIsActive()));
+        boolean willBeActive = !Boolean.TRUE.equals(user.getIsActive());
+        if (!willBeActive && user.getRole() == FlowUser.UserRole.PLATFORM_ADMIN) {
+            if (flowUserRepository.countActiveByRole(FlowUser.UserRole.PLATFORM_ADMIN) <= 1) {
+                throw new BusinessValidationException("Cannot deactivate the last active Platform Administrator");
+            }
+        }
+
+        user.setIsActive(willBeActive);
         FlowUser updated = flowUserRepository.save(user);
         return toResponseDto(updated);
     }
@@ -100,6 +125,36 @@ public class UserService {
 
         if (user.getId().equals(requesterId)) {
             throw new BusinessValidationException("You cannot delete your own account");
+        }
+
+        if (user.getRole() == FlowUser.UserRole.PLATFORM_ADMIN && Boolean.TRUE.equals(user.getIsActive())) {
+            if (flowUserRepository.countActiveByRole(FlowUser.UserRole.PLATFORM_ADMIN) <= 1) {
+                throw new BusinessValidationException("Cannot delete the last active Platform Administrator");
+            }
+        }
+
+        long sessionCount = focusSessionRepository.countByPractitionerId(id);
+        if (sessionCount > 0) {
+            throw new BusinessValidationException(
+                    "User cannot be permanently deleted because " + sessionCount +
+                    " associated focus session(s) must be retained for telemetry and audit records. Please deactivate the account instead."
+            );
+        }
+
+        // Cleanly delete dependent focus blocks and coach recommendations
+        List<FocusBlock> blocks = focusBlockRepository.findByPractitionerId(id);
+        if (!blocks.isEmpty()) {
+            focusBlockRepository.deleteAll(blocks);
+        }
+
+        List<CoachRecommendation> recsAsPractitioner = coachRecommendationRepository.findByPractitionerId(id);
+        if (!recsAsPractitioner.isEmpty()) {
+            coachRecommendationRepository.deleteAll(recsAsPractitioner);
+        }
+
+        List<CoachRecommendation> recsAsCoach = coachRecommendationRepository.findByCoachId(id);
+        if (!recsAsCoach.isEmpty()) {
+            coachRecommendationRepository.deleteAll(recsAsCoach);
         }
 
         flowUserRepository.delete(user);

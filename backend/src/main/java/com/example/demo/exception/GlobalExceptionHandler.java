@@ -66,6 +66,16 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(org.springframework.dao.DataIntegrityViolationException ex) {
+        return buildResponse(HttpStatus.CONFLICT, "Operation cannot be completed due to database referential integrity constraints. If attempting to remove a record with linked dependencies, please deactivate or unassign it instead.");
+    }
+
+    @ExceptionHandler(jakarta.persistence.PersistenceException.class)
+    public ResponseEntity<Map<String, Object>> handlePersistenceException(jakarta.persistence.PersistenceException ex) {
+        return buildResponse(HttpStatus.CONFLICT, "Database operation failed due to persistence constraints. Please deactivate the entity instead of permanent deletion.");
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred: " + ex.getMessage());

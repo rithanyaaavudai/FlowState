@@ -12,6 +12,10 @@ public interface FocusBlockRepository extends JpaRepository<FocusBlock, Long> {
 
     List<FocusBlock> findByPractitionerIdOrderByDayOfWeekAscBlockStartTimeAsc(Long practitionerId);
 
+    List<FocusBlock> findByPractitionerId(Long practitionerId);
+
+    long countByPractitionerId(Long practitionerId);
+
     List<FocusBlock> findByPractitionerIdAndDayOfWeek(Long practitionerId, String dayOfWeek);
 
     long countByPractitionerIdAndIsProtected(Long practitionerId, Boolean isProtected);

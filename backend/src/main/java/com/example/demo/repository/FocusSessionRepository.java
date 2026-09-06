@@ -23,6 +23,9 @@ public interface FocusSessionRepository
             Long practitionerId,
             FocusSession.SessionStatus status);
 
+    long countByPractitionerId(
+            Long practitionerId);
+
     Optional<FocusSession> findByIdAndPractitionerId(
             Long id,
             Long practitionerId);
