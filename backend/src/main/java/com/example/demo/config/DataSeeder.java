@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.entity.FlowUser;
 import com.example.demo.repository.FlowUserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
