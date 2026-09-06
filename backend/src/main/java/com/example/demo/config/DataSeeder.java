@@ -21,7 +21,8 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            jdbcTemplate.execute("ALTER TABLE flow_user MODIFY COLUMN role ENUM('ADMIN','PLATFORM_ADMIN','FLOW_COACH','PRACTITIONER') NOT NULL");
+            jdbcTemplate.execute("UPDATE flow_user SET role = 'PLATFORM_ADMIN' WHERE role = 'ADMIN'");
+            jdbcTemplate.execute("ALTER TABLE flow_user MODIFY COLUMN role ENUM('PLATFORM_ADMIN','FLOW_COACH','PRACTITIONER') NOT NULL");
         } catch (Exception e) {
             log.info("Schema update check: {}", e.getMessage());
         }
@@ -32,7 +33,7 @@ public class DataSeeder implements CommandLineRunner {
                     .email("admin@flowstate.com")
                     .passwordHash(passwordEncoder.encode("Admin@123"))
                     .fullName("Platform Admin")
-                    .role(FlowUser.UserRole.ADMIN)
+                    .role(FlowUser.UserRole.PLATFORM_ADMIN)
                     .isActive(true)
                     .build();
 

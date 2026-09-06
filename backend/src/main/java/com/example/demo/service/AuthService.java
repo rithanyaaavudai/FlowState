@@ -39,6 +39,10 @@ public class AuthService {
             throw new BusinessValidationException("Invalid role: " + dto.getRole());
         }
 
+        if (role == FlowUser.UserRole.PLATFORM_ADMIN) {
+            throw new BusinessValidationException("Public registration as PLATFORM_ADMIN is not permitted. Platform administrators must be created via administrative management.");
+        }
+
         FlowUser user = FlowUser.builder()
                 .username(dto.getUsername())
                 .email(dto.getEmail())
