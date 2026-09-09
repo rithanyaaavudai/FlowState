@@ -26,6 +26,19 @@ const Login = ({ initialRegister = false }) => {
   const [regPassword, setRegPassword] = useState('');
   const [regRole, setRegRole] = useState('PRACTITIONER');
 
+  const [successMsg, setSuccessMsg] = useState('');
+
+  const isFullNameValid = regFullname.trim() !== '' && /^[a-zA-Z\s]+$/.test(regFullname);
+  const passwordReqs = {
+    length: regPassword.length >= 8,
+    uppercase: /[A-Z]/.test(regPassword),
+    lowercase: /[a-z]/.test(regPassword),
+    number: /\d/.test(regPassword),
+    special: /[^A-Za-z0-9]/.test(regPassword),
+  };
+  const isPasswordValid = Object.values(passwordReqs).every(Boolean);
+  const isFormValid = regUsername && regEmail && isFullNameValid && isPasswordValid && regRole;
+
   const storedToken =
     localStorage.getItem('flowstate_access_token') ||
     localStorage.getItem('token');
@@ -61,6 +74,7 @@ const Login = ({ initialRegister = false }) => {
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
+    if (!isFormValid) return;
     const res = await dispatch(
       register({
         username: regUsername,
@@ -75,6 +89,7 @@ const Login = ({ initialRegister = false }) => {
       setUsername(regUsername);
       setPassword('');
       setRegPassword('');
+      setSuccessMsg('Registration successful! You can now log in.');
       navigate('/login', { replace: true });
     }
   };
@@ -100,6 +115,11 @@ const Login = ({ initialRegister = false }) => {
         </div>
 
         {error && <div className="error-banner">{error}</div>}
+        {successMsg && !isRegistering && (
+          <div className="success-banner" style={{backgroundColor: '#d4edda', color: '#155724', padding: '10px', borderRadius: '4px', marginBottom: '15px'}}>
+            {successMsg}
+          </div>
+        )}
 
         {!isRegistering ? (
           <form onSubmit={handleLoginSubmit} className="login-form">
@@ -190,6 +210,11 @@ const Login = ({ initialRegister = false }) => {
                 onChange={(e) => setRegFullname(e.target.value)}
                 required
               />
+              {regFullname && !isFullNameValid && (
+                <small className="error-text" style={{color: 'red', display: 'block', marginTop: '5px'}}>
+                  Full name must contain only alphabetic characters and spaces.
+                </small>
+              )}
             </div>
 
             <div className="form-group">
@@ -204,6 +229,15 @@ const Login = ({ initialRegister = false }) => {
                 required
                 autoComplete="new-password"
               />
+              {regPassword && (
+                <div className="password-requirements" style={{fontSize: '0.85em', marginTop: '5px'}}>
+                  <p style={{margin: '0', color: passwordReqs.length ? 'green' : 'red'}}>• At least 8 characters</p>
+                  <p style={{margin: '0', color: passwordReqs.uppercase ? 'green' : 'red'}}>• One uppercase letter</p>
+                  <p style={{margin: '0', color: passwordReqs.lowercase ? 'green' : 'red'}}>• One lowercase letter</p>
+                  <p style={{margin: '0', color: passwordReqs.number ? 'green' : 'red'}}>• One number</p>
+                  <p style={{margin: '0', color: passwordReqs.special ? 'green' : 'red'}}>• One special character</p>
+                </div>
+              )}
             </div>
 
             <div className="form-group">
@@ -224,7 +258,7 @@ const Login = ({ initialRegister = false }) => {
             <button
               type="submit"
               className="btn primary-btn submit-btn"
-              disabled={loading}
+              disabled={loading || !isFormValid}
             >
               {loading ? 'Registering...' : 'Register'}
             </button>
