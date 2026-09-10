@@ -1,68 +1,83 @@
 /* ==========================================================================
-   FlowState: Tactile Bio-Synthetics & Precision Emerald Matrix
-   Light Green & Dark Green Skeuomorphism with Machined Forest Chassis,
-   Debossed Wells, Extruded Phosphor Switches & Luminescent Mint LEDs
+   FlowState: Alpine Mint & Deep Forest Tactile Skeuomorphism
+   Light Green Ceramic Chassis & Major Components with
+   High-Contrast Dark Pine Extruded Buttons & Tactile Precision Hardware
    ========================================================================== */
 
 :root {
-  /* Dark Green Chassis & Enclosure System */
-  --chassis-dark: #07100b;
-  --chassis-base: #0c1812;
-  --chassis-surface: #13241b;
-  --chassis-elevated: #1a3226;
-  --chassis-panel: #162a20;
-  --chassis-recessed: #050a07;
-  --metal-highlight: rgba(167, 243, 208, 0.12);
-  --metal-highlight-crisp: rgba(167, 243, 208, 0.25);
-  --metal-shadow: rgba(0, 0, 0, 0.75);
-  --metal-groove: #030705;
-  
-  /* Light Green, Phosphor & Luminescent Mint */
-  --green-primary: #10b981;
-  --green-bright: #00ff87;
-  --green-glow: rgba(0, 255, 135, 0.45);
-  --green-filament: #86efac;
-  --green-mint: #a7f3d0;
-  --green-dark: #065f46;
-  --green-bevel: #064e3b;
-  --green-subtle: rgba(0, 255, 135, 0.12);
-  --green-gradient: linear-gradient(180deg, #34d399 0%, #10b981 50%, #059669 100%);
-  --green-gradient-hover: linear-gradient(180deg, #6ee7b7 0%, #34d399 50%, #047857 100%);
-  --green-gradient-active: linear-gradient(180deg, #047857 0%, #065f46 50%, #064e3b 100%);
+  /* Major Component Surfaces (Light Green / Mint / Jade Spectrum) */
+  --chassis-dark: #edf8f2;
+  --chassis-base: #f4fbf7;
+  --chassis-surface: #ffffff;
+  --chassis-elevated: #e3f7ec;
+  --chassis-panel: #eaf8f0;
+  --chassis-recessed: #d8f5e5;
+  --chassis-well-border: #a4e7c3;
+  --chassis-card-border: rgba(16, 185, 129, 0.22);
+  --metal-highlight: rgba(255, 255, 255, 0.95);
+  --metal-highlight-crisp: rgba(255, 255, 255, 1);
+  --metal-shadow: rgba(6, 43, 26, 0.12);
+  --metal-groove: #b2ebd0;
 
-  /* Metallic Forest Gradients */
-  --metal-gradient-raised: linear-gradient(180deg, #1f3d2f 0%, #162c22 60%, #102119 100%);
-  --metal-gradient-hover: linear-gradient(180deg, #264b3a 0%, #1c372b 60%, #13261e 100%);
-  --metal-gradient-pressed: linear-gradient(180deg, #09140f 0%, #0d1b14 60%, #13261d 100%);
-  --metal-gradient-card: linear-gradient(180deg, #152b20 0%, #0d1a13 100%);
+  /* Buttons & Small Components (Dark Green / Deep Pine System) */
+  --dark-btn-base: #062617;
+  --dark-btn-top: #0d3824;
+  --dark-btn-bottom: #03170d;
+  --dark-btn-extrusion: #021209;
+  --dark-btn-hover-top: #144e31;
+  --dark-btn-hover-base: #09331e;
+  --dark-btn-active: #041a0e;
+  --dark-btn-text: #f0fdf4;
+  --dark-btn-shadow: rgba(4, 26, 14, 0.4);
 
-  /* Typography Colors */
-  --text-primary: #f0fdf4;
-  --text-secondary: #9ab8a8;
-  --text-muted: #52796f;
-  --text-mint: #a7f3d0;
-  --text-green: #00ff87;
+  /* Vivid Emerald & Mint Accent Beacons */
+  --green-bright: #059669;
+  --green-primary: #047857;
+  --green-glow: rgba(16, 185, 129, 0.35);
+  --green-filament: #064e3b;
+  --green-mint: #d1fae5;
+  --green-subtle: rgba(16, 185, 129, 0.1);
+  --led-indicator: #00e676;
+  --led-indicator-glow: 0 0 10px rgba(0, 230, 118, 0.9), 0 0 20px rgba(0, 230, 118, 0.4);
 
-  /* Industrial LED Feedback */
-  --led-green: #00ff87;
-  --led-green-glow: 0 0 12px rgba(0, 255, 135, 0.9), 0 0 24px rgba(0, 255, 135, 0.45);
-  --led-amber: #f59e0b;
-  --led-amber-glow: 0 0 10px rgba(245, 158, 11, 0.7);
-  --led-crimson: #ef4444;
-  --led-crimson-glow: 0 0 10px rgba(239, 68, 68, 0.7);
+  /* Button & Control Gradients (Dark Forest) */
+  --dark-green-gradient: linear-gradient(180deg, #0d3824 0%, #062617 60%, #03170d 100%);
+  --dark-green-gradient-hover: linear-gradient(180deg, #144e31 0%, #09331e 60%, #052012 100%);
+  --dark-green-gradient-active: linear-gradient(180deg, #04170c 0%, #062617 60%, #08331f 100%);
+  --secondary-btn-gradient: linear-gradient(180deg, #1f4232 0%, #132f22 60%, #091b12 100%);
+  --secondary-btn-hover: linear-gradient(180deg, #27523f 0%, #193d2d 60%, #0e261a 100%);
 
-  /* Status Colors */
-  --success-bg: rgba(0, 255, 135, 0.12);
+  /* Major Component Gradients (Light Green / Mint Plates) */
+  --card-gradient: linear-gradient(180deg, #ffffff 0%, #edf9f2 100%);
+  --card-gradient-hover: linear-gradient(180deg, #ffffff 0%, #e2f7eb 100%);
+  --header-gradient: linear-gradient(180deg, #ffffff 0%, #e3f6ec 100%);
+  --banner-gradient: linear-gradient(180deg, #dcfce7 0%, #bbf7d0 100%);
+  --well-gradient: linear-gradient(180deg, #d4f4e3 0%, #e0f8ec 100%);
+
+  /* Typography Colors (High-Contrast Forest Ink) */
+  --text-primary: #042114;
+  --text-secondary: #24573f;
+  --text-muted: #4e8068;
+  --text-bright: #02180d;
+  --text-inverted: #f0fdf4;
+
+  /* Industrial LED & Statuses */
+  --led-amber: #d97706;
+  --led-amber-glow: 0 0 10px rgba(217, 119, 6, 0.7);
+  --led-crimson: #dc2626;
+  --led-crimson-glow: 0 0 10px rgba(220, 38, 38, 0.7);
+
+  --success-bg: #dcfce7;
   --success-border: #10b981;
-  --success-text: #6ee7b7;
+  --success-text: #065f46;
 
-  --warning-bg: rgba(245, 158, 11, 0.12);
+  --warning-bg: #fef3c7;
   --warning-border: #f59e0b;
-  --warning-text: #fbbf24;
+  --warning-text: #92400e;
 
-  --error-bg: rgba(239, 68, 68, 0.12);
+  --error-bg: #fee2e2;
   --error-border: #ef4444;
-  --error-text: #f87171;
+  --error-text: #991b1b;
 
   /* Geometry & Bevels */
   --radius-xs: 4px;
@@ -71,12 +86,12 @@
   --radius-lg: 16px;
   --radius-xl: 20px;
 
-  /* Physical Skeuomorphic Shadows */
-  --skeuo-extrusion-sm: 0 1px 0 rgba(167, 243, 208, 0.15) inset, 0 3px 0 #060e0a, 0 4px 8px rgba(0, 0, 0, 0.7);
-  --skeuo-extrusion-green: 0 1px 0 rgba(255, 255, 255, 0.45) inset, 0 3px 0 #064e3b, 0 6px 14px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 255, 135, 0.35);
-  --skeuo-card-raised: 0 1px 0 rgba(167, 243, 208, 0.12) inset, 0 -1px 0 rgba(0, 0, 0, 0.7) inset, 0 10px 25px -4px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6);
-  --skeuo-debossed: inset 0 2px 5px rgba(0, 0, 0, 0.85), inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(167, 243, 208, 0.08);
-  --skeuo-display-well: inset 0 3px 10px rgba(0, 0, 0, 0.95), inset 0 1px 2px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(167, 243, 208, 0.1);
+  /* Skeuomorphic Light Ceramic & Dark Extrusion Physics */
+  --skeuo-extrusion-dark: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 3px 0 var(--dark-btn-extrusion), 0 6px 14px rgba(4, 26, 14, 0.35), 0 0 12px rgba(16, 185, 129, 0.2);
+  --skeuo-extrusion-secondary: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 3px 0 #07150e, 0 4px 8px rgba(4, 26, 14, 0.25);
+  --skeuo-card-raised: 0 1px 0 #ffffff inset, 0 -1px 0 rgba(16, 185, 129, 0.15) inset, 0 8px 24px -4px rgba(6, 43, 26, 0.1), 0 2px 6px rgba(6, 43, 26, 0.05);
+  --skeuo-debossed: inset 0 2px 5px rgba(6, 43, 26, 0.12), inset 0 1px 2px rgba(6, 43, 26, 0.15), 0 1px 0 #ffffff;
+  --skeuo-display-well: inset 0 3px 8px rgba(6, 43, 26, 0.18), inset 0 1px 2px rgba(6, 43, 26, 0.2), 0 1px 0 #ffffff;
 
   /* Tactile Motion Physics */
   --transition: all 0.18s cubic-bezier(0.2, 0.8, 0.25, 1);
@@ -86,7 +101,7 @@
 }
 
 /* ==========================================================================
-   Base Layer & Machined Forest Chassis Surface
+   Base Layer & Major Light Green Mint Chassis
    ========================================================================== */
 
 * {
@@ -101,11 +116,11 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
-  /* Anodized milled dark forest plate finish with hardware dot grid */
+  /* Light mint background with precision micro dot matrix */
   background-image: 
-    linear-gradient(180deg, rgba(167, 243, 208, 0.02) 0%, transparent 100%),
-    radial-gradient(circle at 50% 0%, rgba(0, 255, 135, 0.08) 0%, transparent 50%),
-    radial-gradient(rgba(167, 243, 208, 0.05) 1px, transparent 1px);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+    radial-gradient(rgba(16, 185, 129, 0.16) 1.2px, transparent 1.2px);
   background-size: 100% 100%, 100% 100%, 20px 20px;
   background-attachment: fixed;
 }
@@ -145,16 +160,17 @@ body {
   }
 }
 
+/* Major Component: Light Green Page Header Plate */
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 1.25rem;
-  padding: 1.25rem 1.75rem;
-  background: var(--metal-gradient-card);
+  padding: 1.35rem 1.85rem;
+  background: var(--header-gradient);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(167, 243, 208, 0.1);
+  border: 1px solid var(--chassis-card-border);
   box-shadow: var(--skeuo-card-raised);
 }
 
@@ -163,37 +179,37 @@ body {
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  color: var(--text-bright);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
 }
 
 .page-header h2::before {
   content: '';
   display: inline-block;
   width: 8px;
-  height: 20px;
-  background: var(--green-bright);
+  height: 22px;
+  background: var(--dark-btn-base);
   border-radius: 2px;
-  box-shadow: 0 0 10px var(--green-glow);
+  box-shadow: 0 0 10px rgba(6, 38, 23, 0.4);
 }
 
 .page-subtitle {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   margin-top: 0.25rem;
+  font-weight: 500;
 }
 
 /* ==========================================================================
-   Machined Console Header & Tactile Switch Nav
+   Major Component: Light Mint Console Navbar with Dark Pine Switch Nav
    ========================================================================== */
 
 .navbar, .app-header {
-  background: linear-gradient(180deg, #152b20 0%, #0d1b14 100%) !important;
-  border-bottom: 2px solid #050a07 !important;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(167, 243, 208, 0.15) inset !important;
+  background: var(--header-gradient) !important;
+  border-bottom: 2px solid #b7ebd0 !important;
+  box-shadow: 0 4px 18px rgba(6, 43, 26, 0.08), 0 1px 0 #ffffff inset !important;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -206,43 +222,43 @@ body {
 .navbar-brand a {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.35rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--text-bright);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
   transition: var(--transition);
 }
 
 .navbar-brand svg {
-  color: var(--green-bright) !important;
-  filter: drop-shadow(0 0 8px var(--green-glow));
+  color: var(--dark-btn-top) !important;
+  filter: drop-shadow(0 2px 4px rgba(6, 43, 26, 0.25));
   transition: var(--transition);
 }
 
 .navbar-brand:hover svg {
   transform: rotate(15deg) scale(1.1);
+  color: var(--green-bright) !important;
 }
 
-/* Tactile Navigation Switches */
+/* Small Component: Dark Pine Navigation Switches */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 0.5rem !important;
-  background: #08120d;
+  background: #d4f2e2;
   padding: 0.35rem 0.5rem;
   border-radius: var(--radius-sm);
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(167, 243, 208, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0 2px 4px rgba(6, 43, 26, 0.15), 0 1px 0 #ffffff;
+  border: 1px solid #a8e6c4;
 }
 
 .nav-links a, .nav-link {
   color: var(--text-secondary) !important;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.86rem;
   padding: 0.5rem 0.95rem !important;
   border-radius: var(--radius-xs) !important;
@@ -255,33 +271,33 @@ body {
 }
 
 .nav-links a:hover, .nav-link:hover {
-  color: #ffffff !important;
-  background: rgba(167, 243, 208, 0.06) !important;
-  border-color: rgba(167, 243, 208, 0.12);
+  color: var(--text-bright) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
-/* Active Rocker Switch */
+/* Small Component: Active Dark Green Rocker Switch */
 .nav-links a.active, .nav-link.active {
-  color: #ffffff !important;
-  background: var(--metal-gradient-raised) !important;
-  border: 1px solid rgba(167, 243, 208, 0.22) !important;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.25) inset, 0 2px 5px rgba(0, 0, 0, 0.6) !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  color: var(--text-inverted) !important;
+  background: var(--dark-green-gradient) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 2px 6px rgba(4, 26, 14, 0.4) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .nav-links a.active::after, .nav-link.active::after {
   content: '';
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: var(--green-bright);
-  box-shadow: var(--led-green-glow);
-  margin-left: 0.2rem;
+  background: var(--led-indicator);
+  box-shadow: var(--led-indicator-glow);
+  margin-left: 0.25rem;
 }
 
 .nav-links a.active svg, .nav-link.active svg {
-  color: var(--green-bright);
+  color: #34d399 !important;
 }
 
 .nav-user-controls {
@@ -296,77 +312,79 @@ body {
   display: flex;
   align-items: center;
   gap: 0.45rem;
+  font-weight: 500;
 }
 
 .user-greeting strong {
-  color: #ffffff;
-  font-weight: 700;
+  color: var(--text-bright);
+  font-weight: 800;
 }
 
-/* Stamped Metal Badges */
+/* Small Component: Dark Green Role Badges */
 .admin-role-badge, .coach-role-badge {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.6px;
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem 0.6rem;
   border-radius: var(--radius-xs);
   text-transform: uppercase;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .admin-role-badge {
   color: #ffffff;
-  background: linear-gradient(180deg, #10b981 0%, #065f46 100%);
-  border: 1px solid #064e3b;
+  background: var(--dark-green-gradient);
+  border: 1px solid var(--dark-btn-extrusion);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .coach-role-badge {
   color: #ffffff;
-  background: linear-gradient(180deg, #334e40 0%, #1a2e24 100%);
-  border: 1px solid #0d1b14;
+  background: var(--secondary-btn-gradient);
+  border: 1px solid #0a1e14;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
+/* Small Component: Dark Green Logout Button */
 .logout-btn {
-  background: var(--metal-gradient-raised) !important;
-  border: 1px solid rgba(167, 243, 208, 0.12) !important;
-  color: var(--text-secondary) !important;
+  background: var(--dark-green-gradient) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: var(--text-inverted) !important;
   padding: 0.45rem 0.95rem !important;
   border-radius: var(--radius-xs) !important;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.85rem;
-  box-shadow: var(--skeuo-extrusion-sm) !important;
+  box-shadow: var(--skeuo-extrusion-dark) !important;
   transition: var(--transition) !important;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .logout-btn:hover {
-  color: #f87171 !important;
-  background: var(--metal-gradient-hover) !important;
+  color: #fca5a5 !important;
+  background: var(--dark-green-gradient-hover) !important;
   border-color: rgba(239, 68, 68, 0.4) !important;
 }
 
 .logout-btn:active {
   transform: translateY(2px) !important;
-  box-shadow: 0 1px 0 #060e0a inset, inset 0 2px 4px rgba(0, 0, 0, 0.7) !important;
+  box-shadow: 0 1px 0 #021209 inset, inset 0 2px 4px rgba(0, 0, 0, 0.7) !important;
 }
 
 /* ==========================================================================
-   Extruded Gauges & Telemetry Stat Cards
+   Major Component: Light Green Stat Cards with Dark Green Hardware
    ========================================================================== */
 
 .practitioner-greeting h2 {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.75rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 800;
+  color: var(--text-bright);
   margin-bottom: 1.25rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .stat-cards-grid {
@@ -377,8 +395,8 @@ body {
 }
 
 .stat-card {
-  background: var(--metal-gradient-card) !important;
-  border: 1px solid rgba(167, 243, 208, 0.1) !important;
+  background: var(--card-gradient) !important;
+  border: 1px solid var(--chassis-card-border) !important;
   border-radius: var(--radius-lg) !important;
   padding: 1.75rem !important;
   box-shadow: var(--skeuo-card-raised) !important;
@@ -390,7 +408,7 @@ body {
   gap: 0.75rem;
 }
 
-/* Skeuomorphic corner brass/steel rivets */
+/* Rivets on Light Ceramic Plate */
 .stat-card::before {
   content: '';
   position: absolute;
@@ -399,19 +417,20 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #2a4738;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(167, 243, 208, 0.25);
+  background: #2d6a4f;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .stat-card:hover {
   transform: translateY(-3px) !important;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.2) inset, 0 14px 28px -4px rgba(0, 0, 0, 0.85), 0 0 18px rgba(0, 255, 135, 0.2) !important;
-  border-color: rgba(0, 255, 135, 0.35) !important;
+  background: var(--card-gradient-hover) !important;
+  box-shadow: 0 1px 0 #ffffff inset, 0 14px 28px -4px rgba(6, 43, 26, 0.16), 0 0 18px rgba(16, 185, 129, 0.25) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
 }
 
 .stat-label {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -421,23 +440,24 @@ body {
   gap: 0.5rem;
 }
 
-/* Debossed LED readout display well */
+/* Debossed Light Jade Display Well for Numbers */
 .stat-value {
   font-family: 'JetBrains Mono', monospace !important;
   font-size: 2.35rem !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   line-height: 1.2;
-  color: var(--green-bright) !important;
-  text-shadow: 0 0 12px rgba(0, 255, 135, 0.75), 0 0 24px rgba(0, 255, 135, 0.35) !important;
-  background: #050a07;
+  color: #032616 !important;
+  text-shadow: 0 1px 0 #ffffff;
+  background: var(--chassis-recessed);
   padding: 0.5rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px solid #000000;
+  border: 1px solid var(--chassis-well-border);
   box-shadow: var(--skeuo-display-well);
   display: inline-block;
   letter-spacing: -0.02em;
 }
 
+/* Small Component: Dark Green Icon Capsule */
 .stat-icon-wrapper {
   width: 48px;
   height: 48px;
@@ -446,22 +466,21 @@ body {
   align-items: center;
   justify-content: center;
   margin-bottom: 0.75rem;
-  background: var(--metal-gradient-raised);
-  border: 1px solid rgba(167, 243, 208, 0.12);
-  color: var(--green-bright);
-  box-shadow: var(--skeuo-extrusion-sm);
+  background: var(--dark-green-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #34d399;
+  box-shadow: var(--skeuo-extrusion-dark);
   transition: var(--transition);
 }
 
 .stat-card:hover .stat-icon-wrapper {
   color: #ffffff;
-  background: var(--green-gradient);
-  box-shadow: var(--skeuo-extrusion-green);
+  background: var(--dark-green-gradient-hover);
   transform: scale(1.05);
 }
 
 /* ==========================================================================
-   Milled Chassis Panels & Frequency Meters
+   Major Component: Light Mint Dashboard Panels & Charts
    ========================================================================== */
 
 .dashboard-grid {
@@ -472,8 +491,8 @@ body {
 }
 
 .dashboard-chart-card, .recent-activity-card {
-  background: var(--metal-gradient-card) !important;
-  border: 1px solid rgba(167, 243, 208, 0.08) !important;
+  background: var(--card-gradient) !important;
+  border: 1px solid var(--chassis-card-border) !important;
   border-radius: var(--radius-lg) !important;
   padding: 2rem !important;
   box-shadow: var(--skeuo-card-raised) !important;
@@ -483,16 +502,16 @@ body {
 
 .dashboard-chart-card h3, .recent-activity-card h3 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 800;
   margin-bottom: 1.5rem;
-  color: #ffffff;
+  color: var(--text-bright);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #060e0a;
+  border-bottom: 2px solid #c0eed7;
   padding-bottom: 0.85rem;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.08);
+  box-shadow: 0 1px 0 #ffffff;
 }
 
 .chart-container {
@@ -505,9 +524,9 @@ body {
   gap: 1.5rem;
   height: 200px;
   padding: 1rem 1rem 2rem;
-  background: #050a07;
+  background: var(--chassis-recessed);
   border-radius: var(--radius-md);
-  border: 1px solid #000000;
+  border: 1px solid var(--chassis-well-border);
   box-shadow: var(--skeuo-display-well);
 }
 
@@ -525,40 +544,41 @@ body {
   width: 100%;
   max-width: 46px;
   height: 130px;
-  background: #0c1812;
+  background: #c6eed9;
   border-radius: 4px;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  border: 1px solid #000000;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+  border: 1px solid #a3e3c1;
+  box-shadow: inset 0 2px 4px rgba(6, 43, 26, 0.15);
 }
 
+/* Small Component: Dark Green Frequency Bar Fill */
 .bar-fill {
   width: 100%;
   border-radius: 3px;
   transition: height 0.3s cubic-bezier(0.2, 0.8, 0.25, 1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 12px rgba(0, 255, 135, 0.55);
-  background: var(--green-gradient) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 10px rgba(6, 38, 23, 0.4);
+  background: var(--dark-green-gradient) !important;
 }
 
 .bar-group:hover .bar-fill {
   filter: brightness(1.2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 0 16px var(--green-glow);
+  background: var(--dark-green-gradient-hover) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 14px rgba(16, 185, 129, 0.5);
 }
 
 .bar-label-top {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--green-filament);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--dark-btn-base);
   margin-bottom: 0.4rem;
-  text-shadow: 0 0 6px rgba(0, 255, 135, 0.6);
 }
 
 .bar-label-bottom {
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--text-secondary);
   margin-top: 0.65rem;
   text-align: center;
@@ -566,7 +586,7 @@ body {
 }
 
 .bar-group:hover .bar-label-bottom {
-  color: #ffffff;
+  color: var(--text-bright);
 }
 
 /* ==========================================================================
@@ -585,10 +605,10 @@ body {
   align-items: center;
   gap: 1rem;
   padding: 0.9rem 1.2rem !important;
-  background: var(--metal-gradient-raised) !important;
-  border: 1px solid rgba(167, 243, 208, 0.08) !important;
+  background: #ffffff !important;
+  border: 1px solid var(--chassis-card-border) !important;
   border-radius: var(--radius-sm) !important;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.08) inset, 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 1px 0 #ffffff inset, 0 2px 5px rgba(6, 43, 26, 0.06) !important;
   transition: var(--transition) !important;
   position: relative;
 }
@@ -600,17 +620,17 @@ body {
   top: 0;
   bottom: 0;
   width: 4px;
-  background: var(--green-bright);
-  box-shadow: var(--led-green-glow);
+  background: var(--dark-btn-base);
+  box-shadow: 0 0 8px rgba(6, 38, 23, 0.3);
   opacity: 0;
   transition: var(--transition);
 }
 
 .activity-item:hover {
-  background: var(--metal-gradient-hover) !important;
-  border-color: rgba(0, 255, 135, 0.4) !important;
+  background: #f4fcf7 !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
   transform: translateY(-2px);
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.15) inset, 0 6px 14px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 1px 0 #ffffff inset, 0 6px 14px rgba(6, 43, 26, 0.1) !important;
 }
 
 .activity-item:hover::before {
@@ -621,25 +641,25 @@ body {
   width: 36px;
   height: 36px;
   border-radius: var(--radius-xs);
-  background: #08120d;
-  border: 1px solid #000000;
-  box-shadow: var(--skeuo-debossed);
+  background: var(--dark-green-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--skeuo-extrusion-dark);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--green-bright);
+  color: #34d399;
   flex-shrink: 0;
 }
 
 .activity-title {
   font-size: 0.92rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 800;
+  color: var(--text-bright);
   margin-bottom: 0.15rem;
 }
 
 .activity-subtitle {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
 }
 
@@ -647,10 +667,11 @@ body {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.78rem;
   color: var(--text-muted);
+  font-weight: 600;
 }
 
 /* ==========================================================================
-   Tactile 3D Push Buttons (Mechanical Physical Switch Physics)
+   Small Component: Dark Green Physical 3D Push Buttons
    ========================================================================== */
 
 .btn {
@@ -661,7 +682,7 @@ body {
   gap: 0.5rem !important;
   padding: 0.65rem 1.35rem !important;
   border-radius: var(--radius-xs) !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   font-size: 0.88rem !important;
   cursor: pointer;
   border: none;
@@ -671,69 +692,67 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Extruded Luminescent Green Action Button */
+/* Dark Green Primary Push Button */
 .primary-btn {
-  background: var(--green-gradient) !important;
-  color: #032114 !important;
-  font-weight: 800 !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: var(--skeuo-extrusion-green) !important;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  background: var(--dark-green-gradient) !important;
+  color: var(--dark-btn-text) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: var(--skeuo-extrusion-dark) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .primary-btn:hover:not(:disabled) {
-  background: var(--green-gradient-hover) !important;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 0 #064e3b, 0 8px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(0, 255, 135, 0.55) !important;
+  background: var(--dark-green-gradient-hover) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 4px 0 var(--dark-btn-extrusion), 0 8px 18px rgba(4, 26, 14, 0.45), 0 0 16px rgba(16, 185, 129, 0.35) !important;
   transform: translateY(-1px);
 }
 
 .primary-btn:active:not(:disabled) {
   transform: translateY(3px) !important;
-  background: var(--green-gradient-active) !important;
-  color: #ffffff !important;
-  box-shadow: 0 1px 0 #064e3b, inset 0 2px 4px rgba(0, 0, 0, 0.7) !important;
+  background: var(--dark-green-gradient-active) !important;
+  box-shadow: 0 1px 0 var(--dark-btn-extrusion), inset 0 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
 
 .primary-btn:disabled {
-  background: #1e382b !important;
-  border-color: #0d1f16 !important;
-  color: #4d705d !important;
+  background: #a4c9b5 !important;
+  border-color: #8db59f !important;
+  color: #557c67 !important;
   box-shadow: none !important;
   cursor: not-allowed;
 }
 
-/* Machined Metallic Secondary Button */
+/* Dark Green Secondary Button */
 .secondary-btn {
-  background: var(--metal-gradient-raised) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid rgba(167, 243, 208, 0.15) !important;
-  box-shadow: var(--skeuo-extrusion-sm) !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  background: var(--secondary-btn-gradient) !important;
+  color: var(--dark-btn-text) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: var(--skeuo-extrusion-secondary) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .secondary-btn:hover:not(:disabled) {
-  background: var(--metal-gradient-hover) !important;
+  background: var(--secondary-btn-hover) !important;
   color: #ffffff !important;
-  border-color: rgba(167, 243, 208, 0.28) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
   transform: translateY(-1px);
 }
 
 .secondary-btn:active:not(:disabled) {
   transform: translateY(3px) !important;
-  box-shadow: 0 1px 0 #060e0a, inset 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+  box-shadow: 0 1px 0 #07150e, inset 0 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Danger Push Button */
 .danger-btn {
-  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important;
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%) !important;
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 3px 0 #7f1d1d, 0 6px 14px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 3px 0 #7f1d1d, 0 6px 14px rgba(153, 27, 27, 0.4) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .danger-btn:hover:not(:disabled) {
-  background: linear-gradient(180deg, #f87171 0%, #dc2626 100%) !important;
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important;
   transform: translateY(-1px);
 }
 
@@ -742,33 +761,31 @@ body {
   box-shadow: 0 1px 0 #7f1d1d, inset 0 2px 4px rgba(0, 0, 0, 0.7) !important;
 }
 
-/* Compact Rocker Actions */
+/* Small Component: Compact Rocker Action Buttons */
 .action-btn {
   padding: 0.35rem 0.75rem !important;
   font-size: 0.8rem !important;
   margin-right: 0.35rem;
   border-radius: var(--radius-xs) !important;
-  font-weight: 700 !important;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.15) inset, 0 2px 0 rgba(0, 0, 0, 0.8), 0 3px 6px rgba(0, 0, 0, 0.5) !important;
+  font-weight: 800 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 2px 0 rgba(0, 0, 0, 0.4), 0 3px 6px rgba(6, 43, 26, 0.2) !important;
 }
 
 .action-btn:active {
   transform: translateY(2px) !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7) !important;
 }
 
 .start-btn, .protect-btn, .acknowledge-btn {
-  background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
-  color: #042114 !important;
-  font-weight: 800 !important;
-  border: 1px solid #064e3b !important;
+  background: var(--dark-green-gradient) !important;
+  color: #ffffff !important;
+  border: 1px solid #021209 !important;
 }
 
 .complete-btn {
-  background: var(--green-gradient) !important;
-  color: #042114 !important;
-  font-weight: 800 !important;
-  border: 1px solid #064e3b !important;
+  background: linear-gradient(180deg, #047857 0%, #064e3b 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #022c1f !important;
 }
 
 .abandon-btn, .unprotect-btn, .dismiss-btn, .delete-btn {
@@ -778,48 +795,47 @@ body {
 }
 
 .edit-btn {
-  background: var(--metal-gradient-raised) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid rgba(167, 243, 208, 0.12) !important;
+  background: var(--secondary-btn-gradient) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .link-btn {
   background: transparent !important;
-  color: var(--green-bright) !important;
+  color: var(--dark-btn-top) !important;
+  font-weight: 700;
   padding: 0 !important;
   text-decoration: underline !important;
   cursor: pointer;
 }
 
 .link-btn:hover {
-  color: #ffffff !important;
-  text-shadow: 0 0 8px var(--green-glow);
+  color: var(--green-primary) !important;
 }
 
 .btn-outline-cyan {
-  background: var(--metal-gradient-raised) !important;
-  border: 1px solid var(--green-bright) !important;
-  color: var(--green-bright) !important;
+  background: var(--dark-green-gradient) !important;
+  border: 1px solid var(--dark-btn-extrusion) !important;
+  color: #ffffff !important;
   padding: 0.4rem 0.85rem !important;
   font-size: 0.82rem !important;
   border-radius: var(--radius-xs) !important;
-  box-shadow: var(--skeuo-extrusion-sm) !important;
+  box-shadow: var(--skeuo-extrusion-dark) !important;
 }
 
 .btn-outline-cyan:hover {
-  background: var(--green-gradient) !important;
-  color: #042114 !important;
-  box-shadow: var(--skeuo-extrusion-green) !important;
+  background: var(--dark-green-gradient-hover) !important;
+  color: #ffffff !important;
 }
 
 .btn-outline-danger {
-  background: var(--metal-gradient-raised) !important;
+  background: #ffffff !important;
   border: 1px solid #ef4444 !important;
-  color: #f87171 !important;
+  color: #dc2626 !important;
   padding: 0.4rem 0.85rem !important;
   font-size: 0.82rem !important;
   border-radius: var(--radius-xs) !important;
-  box-shadow: var(--skeuo-extrusion-sm) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
 }
 
 .btn-outline-danger:hover {
@@ -828,7 +844,7 @@ body {
 }
 
 /* ==========================================================================
-   Debossed Form Inputs & Control Wells
+   Major Component: Form Groups & Debossed Input Wells
    ========================================================================== */
 
 .form-group {
@@ -841,7 +857,7 @@ body {
 label, .form-group label {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.82rem !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   color: var(--text-secondary) !important;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -852,24 +868,25 @@ label, .form-group label {
 input, select, textarea {
   font-family: inherit;
   padding: 0.85rem 1.15rem !important;
-  background: #050a07 !important;
-  border: 1px solid #000000 !important;
+  background: #ffffff !important;
+  border: 1px solid #a8e6c4 !important;
   border-radius: var(--radius-sm) !important;
-  color: #ffffff !important;
+  color: var(--text-bright) !important;
   font-size: 0.95rem !important;
-  box-shadow: var(--skeuo-display-well) !important;
+  font-weight: 600;
+  box-shadow: var(--skeuo-debossed) !important;
   transition: var(--transition) !important;
   width: 100%;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none !important;
-  border-color: var(--green-bright) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 0 2px rgba(0, 255, 135, 0.35), 0 0 14px rgba(0, 255, 135, 0.25) !important;
+  border-color: var(--dark-btn-top) !important;
+  box-shadow: inset 0 2px 4px rgba(6, 43, 26, 0.15), 0 0 0 3px rgba(16, 185, 129, 0.25) !important;
 }
 
 input::placeholder, textarea::placeholder {
-  color: #3b5747;
+  color: #72a88e;
 }
 
 .search-filter-bar {
@@ -877,10 +894,10 @@ input::placeholder, textarea::placeholder {
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1.75rem;
-  background: var(--metal-gradient-card);
+  background: var(--card-gradient);
   padding: 1.25rem;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(167, 243, 208, 0.08);
+  border: 1px solid var(--chassis-card-border);
   box-shadow: var(--skeuo-card-raised);
 }
 
@@ -894,14 +911,14 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ==========================================================================
-   Data Table Chassis & Row Machining
+   Major Component: Table Chassis & Row Machining
    ========================================================================== */
 
 .table-responsive, .admin-table-container {
   overflow-x: auto;
   border-radius: var(--radius-md) !important;
-  border: 1px solid rgba(167, 243, 208, 0.08) !important;
-  background: var(--metal-gradient-card) !important;
+  border: 1px solid var(--chassis-card-border) !important;
+  background: #ffffff !important;
   box-shadow: var(--skeuo-card-raised);
 }
 
@@ -912,37 +929,36 @@ input::placeholder, textarea::placeholder {
 }
 
 .sessions-table th, .admin-table th {
-  background: #09150e !important;
+  background: #dcfce7 !important;
   padding: 1rem 1.4rem !important;
-  border-bottom: 2px solid #030705 !important;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.08) inset !important;
+  border-bottom: 2px solid #a7f3d0 !important;
+  box-shadow: 0 1px 0 #ffffff inset !important;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.76rem !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
-  color: var(--text-secondary) !important;
-  font-weight: 700 !important;
+  color: #064e3b !important;
+  font-weight: 800 !important;
 }
 
 .sessions-table td, .admin-table td {
   padding: 1rem 1.4rem !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.7) !important;
-  border-top: 1px solid rgba(167, 243, 208, 0.02) !important;
+  border-bottom: 1px solid #e2f6eb !important;
   color: var(--text-primary) !important;
   vertical-align: middle;
 }
 
 .sessions-table tbody tr:hover, .admin-table-row:hover {
-  background-color: rgba(0, 255, 135, 0.06) !important;
+  background-color: #f0fdf4 !important;
 }
 
 .session-title {
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 800;
+  color: var(--text-bright);
 }
 
 /* ==========================================================================
-   Tactile Badges, Plastic Rocker Tabs & LEDs
+   Small Component: Dark Green Badges, Plastic Tabs & Pills
    ========================================================================== */
 
 .type-badge, .status-badge, .priority-badge, .score-badge, .session-type-pill, .day-badge, .category-badge {
@@ -957,50 +973,50 @@ input::placeholder, textarea::placeholder {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.6);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-/* Deep Work / Phosphor Core */
+/* Deep Work / Dark Pine Core */
 .type-deep_work, .type-deep.work {
-  background: linear-gradient(180deg, #10b981 0%, #064e3b 100%) !important;
+  background: var(--dark-green-gradient) !important;
   color: #ffffff !important;
-  border-color: #042f24 !important;
+  border-color: #021209 !important;
 }
 
 .type-creative {
-  background: linear-gradient(180deg, #375343 0%, #1e3328 100%) !important;
+  background: var(--secondary-btn-gradient) !important;
   color: #f0fdf4 !important;
-  border-color: #0f1d16 !important;
+  border-color: #0a1e14 !important;
 }
 
 .type-review {
-  background: linear-gradient(180deg, #059669 0%, #044e37 100%) !important;
+  background: linear-gradient(180deg, #047857 0%, #064e3b 100%) !important;
   color: #ffffff !important;
   border-color: #022c1f !important;
 }
 
 /* Statuses */
 .status-scheduled {
-  background: linear-gradient(180deg, #2d4538 0%, #1a2a22 100%) !important;
+  background: linear-gradient(180deg, #475569 0%, #334155 100%) !important;
   color: #ffffff !important;
 }
 
 .status-in_progress, .status-in.progress {
-  background: linear-gradient(180deg, #10b981 0%, #047857 100%) !important;
-  color: #042114 !important;
-  font-weight: 800 !important;
+  background: var(--dark-green-gradient) !important;
+  color: #ffffff !important;
+  border: 1px solid #10b981 !important;
   animation: skeuoGreenPulse 2s infinite ease-in-out;
 }
 
 @keyframes skeuoGreenPulse {
-  0%, 100% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 8px rgba(0, 255, 135, 0.4); }
-  50% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 18px var(--green-glow); }
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 8px rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 16px rgba(16, 185, 129, 0.7); }
 }
 
 .status-completed {
-  background: linear-gradient(180deg, #10b981 0%, #047857 100%) !important;
+  background: linear-gradient(180deg, #059669 0%, #047857 100%) !important;
   color: #ffffff !important;
 }
 
@@ -1021,7 +1037,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .priority-low {
-  background: linear-gradient(180deg, #10b981 0%, #047857 100%) !important;
+  background: var(--dark-green-gradient) !important;
   color: #ffffff !important;
 }
 
@@ -1044,27 +1060,27 @@ input::placeholder, textarea::placeholder {
 }
 
 .user-name-tag, .coach-tag {
-  background: #08120d !important;
-  border: 1px solid rgba(167, 243, 208, 0.12) !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+  background: #d8f5e5 !important;
+  border: 1px solid #a4e7c3 !important;
+  box-shadow: inset 0 1px 2px rgba(6, 43, 26, 0.1);
   padding: 0.2rem 0.6rem !important;
   border-radius: var(--radius-xs) !important;
-  font-weight: 700 !important;
-  color: var(--green-filament) !important;
+  font-weight: 800 !important;
+  color: var(--dark-btn-top) !important;
 }
 
 .day-badge {
-  background: linear-gradient(180deg, #243d30 0%, #13241b 100%) !important;
+  background: var(--secondary-btn-gradient) !important;
   color: #ecfdf5 !important;
 }
 
 .category-badge {
-  background: linear-gradient(180deg, #065f46 0%, #022c22 100%) !important;
+  background: var(--dark-green-gradient) !important;
   color: #a7f3d0 !important;
 }
 
 /* ==========================================================================
-   Weekly Focus Blocks & Recommendation Cards
+   Major Component: Weekly Focus Blocks & Recommendation Cards
    ========================================================================== */
 
 .weekly-blocks-grid, .recommendations-grid {
@@ -1074,8 +1090,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .day-block-card, .recommendation-card {
-  background: var(--metal-gradient-card);
-  border: 1px solid rgba(167, 243, 208, 0.08);
+  background: var(--card-gradient);
+  border: 1px solid var(--chassis-card-border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   box-shadow: var(--skeuo-card-raised);
@@ -1084,18 +1100,19 @@ input::placeholder, textarea::placeholder {
 
 .day-block-card:hover, .recommendation-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(0, 255, 135, 0.35);
+  background: var(--card-gradient-hover);
+  border-color: rgba(16, 185, 129, 0.4);
 }
 
 .day-header h3 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 800;
   margin-bottom: 1.25rem;
   padding-bottom: 0.65rem;
-  border-bottom: 2px solid #060e0a;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.06);
-  color: #ffffff;
+  border-bottom: 2px solid #c0eed7;
+  box-shadow: 0 1px 0 #ffffff;
+  color: var(--text-bright);
 }
 
 .day-content {
@@ -1105,8 +1122,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .block-item {
-  background: #08120d;
-  border: 1px solid #000000;
+  background: #ffffff;
+  border: 1px solid var(--chassis-card-border);
   box-shadow: var(--skeuo-debossed);
   border-radius: var(--radius-xs);
   padding: 1rem;
@@ -1114,27 +1131,27 @@ input::placeholder, textarea::placeholder {
 }
 
 .block-item.is-protected {
-  border-left: 4px solid var(--green-bright);
+  border-left: 4px solid var(--dark-btn-base);
 }
 
 .block-time {
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: 0.92rem;
-  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--text-bright);
 }
 
 .block-type {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   margin-top: 0.35rem;
 }
 
 .block-status {
-  font-size: 0.8rem;
-  color: var(--green-filament);
+  font-size: 0.82rem;
+  color: var(--dark-btn-top);
   margin-top: 0.35rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .block-actions {
@@ -1144,7 +1161,7 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ==========================================================================
-   Platform Admin Console Master Layout
+   Major Component: Platform Admin Console Layout
    ========================================================================== */
 
 .admin-container {
@@ -1155,8 +1172,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .admin-header-banner {
-  background: linear-gradient(180deg, #183325 0%, #0d1e15 100%) !important;
-  border: 1px solid rgba(167, 243, 208, 0.15) !important;
+  background: var(--banner-gradient) !important;
+  border: 1px solid #86efac !important;
   border-radius: var(--radius-lg) !important;
   padding: 2.25rem 2.5rem !important;
   box-shadow: var(--skeuo-card-raised) !important;
@@ -1171,7 +1188,7 @@ input::placeholder, textarea::placeholder {
   right: 0;
   width: 350px;
   height: 100%;
-  background: radial-gradient(circle at 100% 0%, rgba(0, 255, 135, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -1182,10 +1199,10 @@ input::placeholder, textarea::placeholder {
   font-weight: 800;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: #042114;
-  background: var(--green-gradient);
-  border: 1px solid #064e3b;
-  box-shadow: var(--skeuo-extrusion-green);
+  color: var(--text-inverted);
+  background: var(--dark-green-gradient);
+  border: 1px solid var(--dark-btn-extrusion);
+  box-shadow: var(--skeuo-extrusion-dark);
   padding: 0.3rem 0.85rem;
   border-radius: var(--radius-xs);
   margin-bottom: 0.85rem;
@@ -1196,9 +1213,8 @@ input::placeholder, textarea::placeholder {
   font-size: 2.1rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--text-bright);
   margin-bottom: 0.4rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 .admin-banner-subtitle {
@@ -1206,16 +1222,17 @@ input::placeholder, textarea::placeholder {
   font-size: 0.95rem;
   max-width: 850px;
   line-height: 1.6;
+  font-weight: 500;
 }
 
-/* Admin Tabs */
+/* Small Component: Dark Green Admin Navigation Tabs */
 .admin-tab-nav {
   display: flex;
   gap: 0.5rem;
-  background: #08120d;
+  background: #d8f5e5;
   padding: 0.5rem;
   border-radius: var(--radius-sm);
-  border: 1px solid #000000;
+  border: 1px solid #a4e7c3;
   box-shadow: var(--skeuo-debossed);
   overflow-x: auto;
 }
@@ -1235,15 +1252,15 @@ input::placeholder, textarea::placeholder {
 }
 
 .admin-tab-link:hover {
-  color: #ffffff;
-  background: rgba(167, 243, 208, 0.06);
+  color: var(--text-bright);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .admin-tab-link.active {
-  color: #042114;
+  color: var(--text-inverted);
   font-weight: 800;
-  background: var(--green-gradient);
-  box-shadow: var(--skeuo-extrusion-green);
+  background: var(--dark-green-gradient);
+  box-shadow: var(--skeuo-extrusion-dark);
 }
 
 /* KPI Cards */
@@ -1254,8 +1271,8 @@ input::placeholder, textarea::placeholder {
 }
 
 .admin-kpi-card {
-  background: var(--metal-gradient-card);
-  border: 1px solid rgba(167, 243, 208, 0.08);
+  background: var(--card-gradient);
+  border: 1px solid var(--chassis-card-border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   display: flex;
@@ -1265,15 +1282,15 @@ input::placeholder, textarea::placeholder {
   transition: var(--transition);
 }
 
-.card-cyan, .card-blue, .card-indigo { border-top: 3px solid var(--green-bright); }
-.card-green { border-top: 3px solid #00ff87; }
-.card-purple { border-top: 3px solid #6ee7b7; }
+.card-cyan, .card-blue, .card-indigo { border-top: 3px solid var(--dark-btn-top); }
+.card-green { border-top: 3px solid #10b981; }
+.card-purple { border-top: 3px solid #059669; }
 .card-amber { border-top: 3px solid #f59e0b; }
 
 .kpi-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -1282,20 +1299,21 @@ input::placeholder, textarea::placeholder {
 .kpi-value {
   font-family: 'JetBrains Mono', monospace;
   font-size: 2rem;
-  font-weight: 700;
-  color: var(--green-filament);
-  text-shadow: 0 0 10px rgba(0, 255, 135, 0.6);
-  background: #050a07;
+  font-weight: 800;
+  color: var(--dark-btn-base);
+  text-shadow: 0 1px 0 #ffffff;
+  background: var(--chassis-recessed);
   padding: 0.35rem 0.75rem;
   border-radius: var(--radius-xs);
+  border: 1px solid var(--chassis-well-border);
   box-shadow: var(--skeuo-display-well);
 }
 
-/* Segmented Buttons */
+/* Small Component: Dark Segmented Buttons */
 .btn-group-segmented {
   display: flex;
-  background: #08120d;
-  border: 1px solid #000000;
+  background: #d4f2e2;
+  border: 1px solid #a4e7c3;
   border-radius: var(--radius-xs);
   padding: 3px;
   box-shadow: var(--skeuo-debossed);
@@ -1307,27 +1325,26 @@ input::placeholder, textarea::placeholder {
   color: var(--text-secondary);
   padding: 0.4rem 0.85rem;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 800;
   border-radius: 3px;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .btn-segment.active {
-  background: var(--green-gradient);
-  color: #042114;
-  font-weight: 800;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 3px rgba(0, 0, 0, 0.7);
+  background: var(--dark-green-gradient);
+  color: var(--text-inverted);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* ==========================================================================
-   Chassis Modals & Dialogs
+   Major Component: Light Green Modals & Dialogs
    ========================================================================== */
 
 .modal-overlay, .error-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 10, 7, 0.88);
+  background: rgba(4, 26, 14, 0.65);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -1337,15 +1354,15 @@ input::placeholder, textarea::placeholder {
 }
 
 .modal-card, .error-modal-card, .modal-dialog {
-  background: linear-gradient(180deg, #162f22 0%, #0d1a13 100%) !important;
-  border: 1px solid rgba(167, 243, 208, 0.18) !important;
+  background: var(--card-gradient) !important;
+  border: 1px solid var(--chassis-card-border) !important;
   border-radius: var(--radius-lg) !important;
   padding: 2.25rem !important;
   width: 100%;
   max-width: 560px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.25) inset, 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 255, 135, 0.18) !important;
+  box-shadow: 0 1px 0 #ffffff inset, 0 24px 48px rgba(6, 43, 26, 0.22) !important;
 }
 
 .modal-header, .error-header {
@@ -1354,47 +1371,47 @@ input::placeholder, textarea::placeholder {
   align-items: center;
   margin-bottom: 1.75rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #060e0a;
-  box-shadow: 0 1px 0 rgba(167, 243, 208, 0.08);
+  border-bottom: 2px solid #c0eed7;
+  box-shadow: 0 1px 0 #ffffff;
 }
 
 .modal-header h3, .error-header h3, .modal-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.35rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 800;
+  color: var(--text-bright);
 }
 
 .close-btn {
-  background: var(--metal-gradient-raised);
-  border: 1px solid rgba(167, 243, 208, 0.15);
+  background: var(--dark-green-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-xs);
   font-size: 1.25rem;
-  color: var(--text-secondary);
+  color: #ffffff;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   line-height: 1;
-  box-shadow: var(--skeuo-extrusion-sm);
+  box-shadow: var(--skeuo-extrusion-dark);
   transition: var(--transition);
 }
 
 .close-btn:hover {
-  color: #042114;
-  background: var(--green-gradient);
+  color: #ffffff;
+  background: var(--dark-green-gradient-hover);
 }
 
 .modal-footer, .error-footer {
   padding-top: 1.25rem;
   margin-top: 1.5rem;
-  border-top: 2px solid #060e0a;
-  box-shadow: 0 -1px 0 rgba(167, 243, 208, 0.08) inset;
+  border-top: 2px solid #c0eed7;
+  box-shadow: 0 -1px 0 #ffffff inset;
   display: flex;
   justify-content: flex-end;
   gap: 0.85rem;
 }
 
 /* ==========================================================================
-   Login / Hardware Terminal Console
+   Major Component: Login Card & Terminal Console
    ========================================================================== */
 
 .login-container {
@@ -1406,13 +1423,13 @@ input::placeholder, textarea::placeholder {
 }
 
 .login-card {
-  background: linear-gradient(180deg, #152c20 0%, #0d1b14 100%) !important;
-  border: 1px solid rgba(167, 243, 208, 0.15) !important;
+  background: var(--card-gradient) !important;
+  border: 1px solid var(--chassis-card-border) !important;
   border-radius: var(--radius-xl) !important;
   padding: 3rem !important;
   width: 100%;
   max-width: 480px;
-  box-shadow: var(--skeuo-card-raised), 0 0 30px rgba(0, 255, 135, 0.15) !important;
+  box-shadow: var(--skeuo-card-raised), 0 16px 36px rgba(6, 43, 26, 0.12) !important;
 }
 
 .login-header {
@@ -1427,10 +1444,10 @@ input::placeholder, textarea::placeholder {
   font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #042114;
-  background: var(--green-gradient);
-  border: 1px solid #064e3b;
-  box-shadow: var(--skeuo-extrusion-green);
+  color: var(--text-inverted);
+  background: var(--dark-green-gradient);
+  border: 1px solid var(--dark-btn-extrusion);
+  box-shadow: var(--skeuo-extrusion-dark);
   padding: 0.35rem 1.1rem;
   border-radius: var(--radius-xs);
   margin-bottom: 1rem;
@@ -1440,14 +1457,14 @@ input::placeholder, textarea::placeholder {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.85rem;
   font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  color: var(--text-bright);
 }
 
 .login-subtitle {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   margin-top: 0.35rem;
+  font-weight: 500;
 }
 
 .toggle-container {
@@ -1457,8 +1474,8 @@ input::placeholder, textarea::placeholder {
 
 .toggle-auth-btn {
   font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--green-bright);
+  font-weight: 700;
+  color: var(--dark-btn-top);
 }
 
 /* ==========================================================================
@@ -1466,14 +1483,15 @@ input::placeholder, textarea::placeholder {
    ========================================================================== */
 
 .error-banner {
-  background: linear-gradient(180deg, #7f1d1d 0%, #450a0a 100%);
+  background: linear-gradient(180deg, #fee2e2 0%, #fecaca 100%);
   border: 1px solid #ef4444;
-  color: #fecaca;
+  color: #991b1b;
   padding: 0.9rem 1.2rem;
   border-radius: var(--radius-xs);
   font-size: 0.9rem;
+  font-weight: 700;
   margin-bottom: 1.5rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 6px rgba(153, 27, 27, 0.15);
 }
 
 .notification-stack {
@@ -1491,27 +1509,27 @@ input::placeholder, textarea::placeholder {
   padding: 1rem 1.4rem;
   border-radius: var(--radius-xs);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 10px 25px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 10px 25px rgba(6, 43, 26, 0.25);
 }
 
 .notification.success {
-  background: linear-gradient(180deg, #059669 0%, #064e3b 100%);
-  border: 1px solid #10b981;
+  background: var(--dark-green-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #ffffff;
 }
 
 .notification.warning {
-  background: linear-gradient(180deg, #9a3412 0%, #7c2d12 100%);
-  border: 1px solid #f97316;
+  background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
+  border: 1px solid #f59e0b;
   color: #ffffff;
 }
 
 .notification.error {
-  background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%);
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
   border: 1px solid #ef4444;
   color: #ffffff;
 }
@@ -1532,18 +1550,18 @@ input::placeholder, textarea::placeholder {
 .spinner {
   width: 44px;
   height: 44px;
-  border: 4px solid #142a1f;
-  border-top-color: var(--green-bright);
+  border: 4px solid #b7ebd0;
+  border-top-color: var(--dark-btn-top);
   border-radius: 50%;
   animation: skeuoSpin 0.8s linear infinite;
-  box-shadow: 0 0 14px var(--green-glow);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
 }
 
 .spinner-small {
   width: 20px;
   height: 20px;
-  border: 2px solid #142a1f;
-  border-top-color: var(--green-bright);
+  border: 2px solid #b7ebd0;
+  border-top-color: var(--dark-btn-top);
   border-radius: 50%;
   animation: skeuoSpin 0.8s linear infinite;
 }
@@ -1559,8 +1577,8 @@ input::placeholder, textarea::placeholder {
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
-  background: #08120d;
-  border: 1px dashed #244233;
+  background: var(--card-gradient);
+  border: 1px dashed #a4e7c3;
   border-radius: var(--radius-md);
   box-shadow: var(--skeuo-debossed);
   color: var(--text-secondary);
@@ -1569,15 +1587,15 @@ input::placeholder, textarea::placeholder {
 .empty-state-icon, .empty-icon {
   width: 56px;
   height: 56px;
-  color: var(--green-bright);
+  color: var(--dark-btn-top);
   margin-bottom: 1.25rem;
 }
 
 .empty-state-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 1.3rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 800;
+  color: var(--text-bright);
   margin-bottom: 0.4rem;
 }
 
@@ -1588,7 +1606,7 @@ input::placeholder, textarea::placeholder {
 }
 
 /* ==========================================================================
-   Pagination Controls
+   Small Component: Dark Green Pagination Controls
    ========================================================================== */
 
 .pagination, .admin-pagination {
@@ -1600,21 +1618,20 @@ input::placeholder, textarea::placeholder {
 }
 
 .pagination-btn {
-  background: var(--metal-gradient-raised);
-  border: 1px solid rgba(167, 243, 208, 0.12);
-  color: var(--text-primary);
+  background: var(--dark-green-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-inverted);
   padding: 0.55rem 1.15rem;
   border-radius: var(--radius-xs);
   cursor: pointer;
-  font-weight: 700;
-  box-shadow: var(--skeuo-extrusion-sm);
+  font-weight: 800;
+  box-shadow: var(--skeuo-extrusion-dark);
   transition: var(--transition);
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: var(--metal-gradient-hover);
+  background: var(--dark-green-gradient-hover);
   color: #ffffff;
-  border-color: rgba(167, 243, 208, 0.28);
 }
 
 .pagination-btn:active:not(:disabled) {
@@ -1630,9 +1647,11 @@ input::placeholder, textarea::placeholder {
 
 .page-info, .page-indicator {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
+  font-weight: 700;
 }
+
 
 
 
