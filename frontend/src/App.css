@@ -1,80 +1,1629 @@
 /* ==========================================================================
-   FlowState: Hyper-Luminescent Obsidian Observatory Design System
-   High-craft productivity interface with luminous depth & snappy micro-physics
+   FlowState: Industrial Tactile Skeuomorphism (Machined Slate & Orange)
+   Precision physical controls, debossed wells, extruded switches & tungsten LEDs
    ========================================================================== */
 
 :root {
-  /* Color Palette - Obsidian & Deep Astral */
-  --bg-space: #05070e;
-  --bg-navy-dark: #090d16;
-  --bg-navy-card: rgba(15, 22, 36, 0.75);
-  --bg-navy-card-solid: #0f1624;
-  --bg-navy-elevated: rgba(22, 32, 52, 0.85);
-  --bg-navy-input: rgba(14, 20, 32, 0.9);
-  --bg-navy-hover: rgba(30, 41, 59, 0.8);
+  /* Chassis & Metallic Grey System */
+  --chassis-dark: #12151b;
+  --chassis-base: #181c24;
+  --chassis-surface: #202530;
+  --chassis-elevated: #282f3d;
+  --chassis-panel: #222834;
+  --chassis-recessed: #0e1015;
+  --metal-highlight: rgba(255, 255, 255, 0.12);
+  --metal-highlight-crisp: rgba(255, 255, 255, 0.22);
+  --metal-shadow: rgba(0, 0, 0, 0.65);
+  --metal-groove: #0a0c10;
   
-  /* Borders & Highlights */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-highlight: rgba(255, 255, 255, 0.15);
-  --border-focus: #06b6d4;
-  --border-glow-cyan: rgba(6, 182, 212, 0.45);
-  
-  /* Luminous Accents */
-  --accent-cyan: #06b6d4;
-  --accent-cyan-light: #38bdf8;
-  --accent-purple: #8b5cf6;
-  --accent-purple-light: #a78bfa;
-  --accent-indigo: #6366f1;
-  --accent-emerald: #10b981;
-  --accent-amber: #f59e0b;
-  --accent-rose: #f43f5e;
-  
-  /* Gradients */
-  --accent-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #0891b2 0%, #2563eb 50%, #7c3aed 100%);
-  --accent-gradient-subtle: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
-  --card-surface-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-  --mesh-glow: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15) 0%, rgba(99, 102, 241, 0.08) 40%, transparent 70%);
+  /* International Orange & Tungsten Flame */
+  --orange-primary: #ff6600;
+  --orange-bright: #f97316;
+  --orange-glow: rgba(249, 115, 22, 0.45);
+  --orange-filament: #fb923c;
+  --orange-dark: #c2410c;
+  --orange-bevel: #9a3412;
+  --orange-subtle: rgba(249, 115, 22, 0.14);
+  --orange-gradient: linear-gradient(180deg, #ff7a1a 0%, #ea580c 50%, #c2410c 100%);
+  --orange-gradient-hover: linear-gradient(180deg, #ff8c33 0%, #f97316 50%, #d94e08 100%);
+  --orange-gradient-active: linear-gradient(180deg, #b43e06 0%, #c2410c 50%, #9a3412 100%);
+
+  /* Metallic Gradients */
+  --metal-gradient-raised: linear-gradient(180deg, #303746 0%, #242a36 60%, #1c212b 100%);
+  --metal-gradient-hover: linear-gradient(180deg, #384152 0%, #2b3240 60%, #202632 100%);
+  --metal-gradient-pressed: linear-gradient(180deg, #14171e 0%, #1a1e27 60%, #202530 100%);
+  --metal-gradient-card: linear-gradient(180deg, #242a36 0%, #1c202a 100%);
 
   /* Typography Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-highlight: #ffffff;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --text-amber: #fed7aa;
+  --text-orange: #ff7a1a;
 
-  /* Feedback States */
-  --success-bg: rgba(16, 185, 129, 0.12);
-  --success-border: rgba(16, 185, 129, 0.4);
-  --success-text: #34d399;
+  /* Industrial LED Feedback */
+  --led-green: #22c55e;
+  --led-green-glow: 0 0 10px rgba(34, 197, 94, 0.7);
+  --led-amber: #f59e0b;
+  --led-amber-glow: 0 0 10px rgba(245, 158, 11, 0.7);
+  --led-crimson: #ef4444;
+  --led-crimson-glow: 0 0 10px rgba(239, 68, 68, 0.7);
+  --led-orange-glow: 0 0 12px rgba(249, 115, 22, 0.85), 0 0 24px rgba(249, 115, 22, 0.4);
+
+  /* Status Colors */
+  --success-bg: rgba(34, 197, 94, 0.12);
+  --success-border: #22c55e;
+  --success-text: #4ade80;
 
   --warning-bg: rgba(245, 158, 11, 0.12);
-  --warning-border: rgba(245, 158, 11, 0.4);
+  --warning-border: #f59e0b;
   --warning-text: #fbbf24;
 
-  --error-bg: rgba(244, 63, 94, 0.12);
-  --error-border: rgba(244, 63, 94, 0.4);
-  --error-text: #fb7185;
+  --error-bg: rgba(239, 68, 68, 0.12);
+  --error-border: #ef4444;
+  --error-text: #f87171;
 
-  /* Shape & Metrics */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 26px;
-  
-  /* Shadows & Glows */
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
-  --shadow-card-hover: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 24px -4px rgba(6, 182, 212, 0.25);
-  --shadow-glow: 0 0 25px rgba(6, 182, 212, 0.25);
-  --shadow-glow-purple: 0 0 25px rgba(139, 92, 246, 0.25);
-  
-  /* Motion & Physics */
-  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-fast: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Geometry & Bevels */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Physical Skeuomorphic Shadows */
+  --skeuo-extrusion-sm: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 3px 0 #101217, 0 4px 8px rgba(0, 0, 0, 0.5);
+  --skeuo-extrusion-orange: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 3px 0 #9a3412, 0 6px 14px rgba(0, 0, 0, 0.55), 0 0 12px rgba(249, 115, 22, 0.3);
+  --skeuo-card-raised: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 -1px 0 rgba(0, 0, 0, 0.6) inset, 0 8px 20px -3px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.5);
+  --skeuo-debossed: inset 0 2px 5px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.08);
+  --skeuo-display-well: inset 0 3px 8px rgba(0, 0, 0, 0.85), inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  /* Tactile Motion Physics */
+  --transition: all 0.18s cubic-bezier(0.2, 0.8, 0.25, 1);
+  --transition-press: all 0.08s ease-out;
   
   --sidebar-width: 280px;
 }
+
+/* ==========================================================================
+   Base Layer & Machined Chassis Surface
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--chassis-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  /* Anodized milled aluminum / textured slate finish with hardware dot grid */
+  background-image: 
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%),
+    radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.08) 0%, transparent 45%),
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 20px 20px;
+  background-attachment: fixed;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem 2rem 4rem;
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  animation: skeuoDropIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+@keyframes skeuoDropIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.75rem;
+  background: var(--metal-gradient-card);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--skeuo-card-raised);
+}
+
+.page-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.page-header h2::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 20px;
+  background: var(--orange-primary);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--orange-glow);
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   Machined Console Header & Tactile Switch Nav
+   ========================================================================== */
+
+.navbar, .app-header {
+  background: linear-gradient(180deg, #242a36 0%, #181c24 100%) !important;
+  border-bottom: 2px solid #0e1015 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.12) inset !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.85rem 2.5rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  transition: var(--transition);
+}
+
+.navbar-brand svg {
+  color: var(--orange-bright) !important;
+  filter: drop-shadow(0 0 6px var(--orange-glow));
+  transition: var(--transition);
+}
+
+.navbar-brand:hover svg {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Tactile Navigation Switches */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem !important;
+  background: #12151c;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+.nav-links a, .nav-link {
+  color: var(--text-secondary) !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.86rem;
+  padding: 0.5rem 0.95rem !important;
+  border-radius: var(--radius-xs) !important;
+  transition: var(--transition) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.nav-links a:hover, .nav-link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Active Rocker Switch */
+.nav-links a.active, .nav-link.active {
+  color: #ffffff !important;
+  background: var(--metal-gradient-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 2px 5px rgba(0, 0, 0, 0.5) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.nav-links a.active::after, .nav-link.active::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange-bright);
+  box-shadow: var(--led-orange-glow);
+  margin-left: 0.2rem;
+}
+
+.nav-links a.active svg, .nav-link.active svg {
+  color: var(--orange-bright);
+}
+
+.nav-user-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.user-greeting {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.user-greeting strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Stamped Metal Badges */
+.admin-role-badge, .coach-role-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.admin-role-badge {
+  color: #ffffff;
+  background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%);
+  border: 1px solid #7c2d12;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.coach-role-badge {
+  color: #ffffff;
+  background: linear-gradient(180deg, #6b7280 0%, #374151 100%);
+  border: 1px solid #1f2937;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.logout-btn {
+  background: var(--metal-gradient-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: var(--text-secondary) !important;
+  padding: 0.45rem 0.95rem !important;
+  border-radius: var(--radius-xs) !important;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  box-shadow: var(--skeuo-extrusion-sm) !important;
+  transition: var(--transition) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.logout-btn:hover {
+  color: #f87171 !important;
+  background: var(--metal-gradient-hover) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+.logout-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 0 #101217 inset, inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* ==========================================================================
+   Extruded Gauges & Telemetry Stat Cards
+   ========================================================================== */
+
+.practitioner-greeting h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--metal-gradient-card) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 1.75rem !important;
+  box-shadow: var(--skeuo-card-raised) !important;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Skeuomorphic corner brass/steel rivets */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #475569;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 12px 24px -4px rgba(0, 0, 0, 0.75), 0 0 16px rgba(249, 115, 22, 0.18) !important;
+  border-color: rgba(249, 115, 22, 0.35) !important;
+}
+
+.stat-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Debossed LED readout display well */
+.stat-value {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 2.35rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  color: var(--orange-bright) !important;
+  text-shadow: 0 0 12px rgba(249, 115, 22, 0.6), 0 0 24px rgba(249, 115, 22, 0.25) !important;
+  background: #0d1016;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #000000;
+  box-shadow: var(--skeuo-display-well);
+  display: inline-block;
+  letter-spacing: -0.02em;
+}
+
+.stat-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  background: var(--metal-gradient-raised);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--orange-bright);
+  box-shadow: var(--skeuo-extrusion-sm);
+  transition: var(--transition);
+}
+
+.stat-card:hover .stat-icon-wrapper {
+  color: #ffffff;
+  background: var(--orange-gradient);
+  box-shadow: var(--skeuo-extrusion-orange);
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Milled Chassis Panels & Frequency Meters
+   ========================================================================== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.dashboard-chart-card, .recent-activity-card {
+  background: var(--metal-gradient-card) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 2rem !important;
+  box-shadow: var(--skeuo-card-raised) !important;
+  transition: var(--transition) !important;
+  position: relative;
+}
+
+.dashboard-chart-card h3, .recent-activity-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #101217;
+  padding-bottom: 0.85rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.chart-container {
+  padding: 1.25rem 0.5rem;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  height: 200px;
+  padding: 1rem 1rem 2rem;
+  background: #0d1016;
+  border-radius: var(--radius-md);
+  border: 1px solid #000000;
+  box-shadow: var(--skeuo-display-well);
+}
+
+.bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.bar-track {
+  width: 100%;
+  max-width: 46px;
+  height: 130px;
+  background: #161a22;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border: 1px solid #000000;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.bar-fill {
+  width: 100%;
+  border-radius: 3px;
+  transition: height 0.3s cubic-bezier(0.2, 0.8, 0.25, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(249, 115, 22, 0.5);
+  background: var(--orange-gradient) !important;
+}
+
+.bar-group:hover .bar-fill {
+  filter: brightness(1.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 14px var(--orange-glow);
+}
+
+.bar-label-top {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--orange-filament);
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+}
+
+.bar-label-bottom {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 0.65rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.bar-group:hover .bar-label-bottom {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Activity Console & Log Stream
+   ========================================================================== */
+
+.activity-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem !important;
+  background: var(--metal-gradient-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 2px 5px rgba(0, 0, 0, 0.4) !important;
+  transition: var(--transition) !important;
+  position: relative;
+}
+
+.activity-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--orange-bright);
+  box-shadow: var(--led-orange-glow);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.activity-item:hover {
+  background: var(--metal-gradient-hover) !important;
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 6px 14px rgba(0, 0, 0, 0.5) !important;
+}
+
+.activity-item:hover::before {
+  opacity: 1;
+}
+
+.activity-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-xs);
+  background: #12151c;
+  border: 1px solid #000000;
+  box-shadow: var(--skeuo-debossed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange-bright);
+  flex-shrink: 0;
+}
+
+.activity-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.activity-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.activity-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Tactile 3D Push Buttons (Mechanical Physical Switch Physics)
+   ========================================================================== */
+
+.btn {
+  font-family: 'Space Grotesk', sans-serif;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  padding: 0.65rem 1.35rem !important;
+  border-radius: var(--radius-xs) !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition) !important;
+  text-decoration: none;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Extruded International Orange Action Button */
+.primary-btn {
+  background: var(--orange-gradient) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: var(--skeuo-extrusion-orange) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.primary-btn:hover:not(:disabled) {
+  background: var(--orange-gradient-hover) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 4px 0 #9a3412, 0 8px 18px rgba(0, 0, 0, 0.6), 0 0 16px rgba(249, 115, 22, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+.primary-btn:active:not(:disabled) {
+  transform: translateY(3px) !important;
+  background: var(--orange-gradient-active) !important;
+  box-shadow: 0 1px 0 #9a3412, inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+}
+
+.primary-btn:disabled {
+  background: #374151 !important;
+  border-color: #1f2937 !important;
+  color: #6b7280 !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+
+/* Machined Metallic Secondary Button */
+.secondary-btn {
+  background: var(--metal-gradient-raised) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: var(--skeuo-extrusion-sm) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.secondary-btn:hover:not(:disabled) {
+  background: var(--metal-gradient-hover) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-1px);
+}
+
+.secondary-btn:active:not(:disabled) {
+  transform: translateY(3px) !important;
+  box-shadow: 0 1px 0 #101217, inset 0 2px 4px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Danger Push Button */
+.danger-btn {
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 3px 0 #7f1d1d, 0 6px 14px rgba(0, 0, 0, 0.5) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.danger-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, #f87171 0%, #dc2626 100%) !important;
+  transform: translateY(-1px);
+}
+
+.danger-btn:active:not(:disabled) {
+  transform: translateY(3px) !important;
+  box-shadow: 0 1px 0 #7f1d1d, inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Compact Rocker Actions */
+.action-btn {
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.8rem !important;
+  margin-right: 0.35rem;
+  border-radius: var(--radius-xs) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 2px 0 rgba(0, 0, 0, 0.8), 0 3px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+.action-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+}
+
+.start-btn, .protect-btn, .acknowledge-btn {
+  background: linear-gradient(180deg, #16a34a 0%, #15803d 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #14532d !important;
+}
+
+.complete-btn {
+  background: var(--orange-gradient) !important;
+  color: #ffffff !important;
+  border: 1px solid #9a3412 !important;
+}
+
+.abandon-btn, .unprotect-btn, .dismiss-btn, .delete-btn {
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #7f1d1d !important;
+}
+
+.edit-btn {
+  background: var(--metal-gradient-raised) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.link-btn {
+  background: transparent !important;
+  color: var(--orange-bright) !important;
+  padding: 0 !important;
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  color: #ffffff !important;
+  text-shadow: 0 0 6px var(--orange-glow);
+}
+
+.btn-outline-cyan {
+  background: var(--metal-gradient-raised) !important;
+  border: 1px solid var(--orange-bright) !important;
+  color: var(--orange-bright) !important;
+  padding: 0.4rem 0.85rem !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-xs) !important;
+  box-shadow: var(--skeuo-extrusion-sm) !important;
+}
+
+.btn-outline-cyan:hover {
+  background: var(--orange-gradient) !important;
+  color: #ffffff !important;
+  box-shadow: var(--skeuo-extrusion-orange) !important;
+}
+
+.btn-outline-danger {
+  background: var(--metal-gradient-raised) !important;
+  border: 1px solid #ef4444 !important;
+  color: #f87171 !important;
+  padding: 0.4rem 0.85rem !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-xs) !important;
+  box-shadow: var(--skeuo-extrusion-sm) !important;
+}
+
+.btn-outline-danger:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Debossed Form Inputs & Control Wells
+   ========================================================================== */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.4rem;
+}
+
+label, .form-group label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  color: var(--text-secondary) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: block !important;
+  margin-bottom: 0.25rem !important;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  padding: 0.85rem 1.15rem !important;
+  background: #0d1016 !important;
+  border: 1px solid #000000 !important;
+  border-radius: var(--radius-sm) !important;
+  color: #ffffff !important;
+  font-size: 0.95rem !important;
+  box-shadow: var(--skeuo-display-well) !important;
+  transition: var(--transition) !important;
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: var(--orange-bright) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 0 2px rgba(249, 115, 22, 0.35), 0 0 12px rgba(249, 115, 22, 0.25) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #4b5563;
+}
+
+.search-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  background: var(--metal-gradient-card);
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--skeuo-card-raised);
+}
+
+.search-input-wrapper {
+  flex: 1;
+  min-width: 260px;
+}
+
+.filter-select-wrapper {
+  min-width: 200px;
+}
+
+/* ==========================================================================
+   Data Table Chassis & Row Machining
+   ========================================================================== */
+
+.table-responsive, .admin-table-container {
+  overflow-x: auto;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: var(--metal-gradient-card) !important;
+  box-shadow: var(--skeuo-card-raised);
+}
+
+.sessions-table, .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.sessions-table th, .admin-table th {
+  background: #13161e !important;
+  padding: 1rem 1.4rem !important;
+  border-bottom: 2px solid #0a0c10 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: var(--text-secondary) !important;
+  font-weight: 700 !important;
+}
+
+.sessions-table td, .admin-table td {
+  padding: 1rem 1.4rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.02) !important;
+  color: var(--text-primary) !important;
+  vertical-align: middle;
+}
+
+.sessions-table tbody tr:hover, .admin-table-row:hover {
+  background-color: rgba(249, 115, 22, 0.06) !important;
+}
+
+.session-title {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Tactile Badges, Plastic Rocker Tabs & LEDs
+   ========================================================================== */
+
+.type-badge, .status-badge, .priority-badge, .score-badge, .session-type-pill, .day-badge, .category-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: var(--radius-xs) !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Deep Work / Amber Core */
+.type-deep_work, .type-deep.work {
+  background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%) !important;
+  color: #ffffff !important;
+  border-color: #7c2d12 !important;
+}
+
+.type-creative {
+  background: linear-gradient(180deg, #4b5563 0%, #374151 100%) !important;
+  color: #f3f4f6 !important;
+  border-color: #1f2937 !important;
+}
+
+.type-review {
+  background: linear-gradient(180deg, #d97706 0%, #92400e 100%) !important;
+  color: #ffffff !important;
+  border-color: #78350f !important;
+}
+
+/* Statuses */
+.status-scheduled {
+  background: linear-gradient(180deg, #475569 0%, #334155 100%) !important;
+  color: #ffffff !important;
+}
+
+.status-in_progress, .status-in.progress {
+  background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%) !important;
+  color: #ffffff !important;
+  animation: skeuoOrangePulse 2s infinite ease-in-out;
+}
+
+@keyframes skeuoOrangePulse {
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 6px rgba(249, 115, 22, 0.4); }
+  50% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 16px var(--orange-glow); }
+}
+
+.status-completed {
+  background: linear-gradient(180deg, #16a34a 0%, #15803d 100%) !important;
+  color: #ffffff !important;
+}
+
+.status-abandoned {
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Priority */
+.priority-high {
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important;
+  color: #ffffff !important;
+}
+
+.priority-medium {
+  background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%) !important;
+  color: #ffffff !important;
+}
+
+.priority-low {
+  background: linear-gradient(180deg, #22c55e 0%, #15803d 100%) !important;
+  color: #ffffff !important;
+}
+
+.score-high {
+  background: #14532d !important;
+  color: #4ade80 !important;
+  border-color: #22c55e !important;
+}
+
+.score-mid {
+  background: #78350f !important;
+  color: #fcd34d !important;
+  border-color: #f59e0b !important;
+}
+
+.score-low {
+  background: #7f1d1d !important;
+  color: #fca5a5 !important;
+  border-color: #ef4444 !important;
+}
+
+.user-name-tag, .coach-tag {
+  background: #11141a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+  padding: 0.2rem 0.6rem !important;
+  border-radius: var(--radius-xs) !important;
+  font-weight: 700 !important;
+  color: var(--orange-filament) !important;
+}
+
+.day-badge {
+  background: linear-gradient(180deg, #374151 0%, #1f2937 100%) !important;
+  color: #e5e7eb !important;
+}
+
+.category-badge {
+  background: linear-gradient(180deg, #78350f 0%, #451a03 100%) !important;
+  color: #fdba74 !important;
+}
+
+/* ==========================================================================
+   Weekly Focus Blocks & Recommendation Cards
+   ========================================================================== */
+
+.weekly-blocks-grid, .recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.day-block-card, .recommendation-card {
+  background: var(--metal-gradient-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--skeuo-card-raised);
+  transition: var(--transition);
+}
+
+.day-block-card:hover, .recommendation-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.day-header h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 2px solid #101217;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.day-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.block-item {
+  background: #11141b;
+  border: 1px solid #000000;
+  box-shadow: var(--skeuo-debossed);
+  border-radius: var(--radius-xs);
+  padding: 1rem;
+  transition: var(--transition);
+}
+
+.block-item.is-protected {
+  border-left: 4px solid var(--orange-bright);
+}
+
+.block-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #ffffff;
+}
+
+.block-type {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.block-status {
+  font-size: 0.8rem;
+  color: var(--orange-filament);
+  margin-top: 0.35rem;
+  font-weight: 600;
+}
+
+.block-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   Platform Admin Console Master Layout
+   ========================================================================== */
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.admin-header-banner {
+  background: linear-gradient(180deg, #2b3240 0%, #1e232d 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 2.25rem 2.5rem !important;
+  box-shadow: var(--skeuo-card-raised) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-header-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100%;
+  background: radial-gradient(circle at 100% 0%, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.admin-banner-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: var(--orange-gradient);
+  border: 1px solid #7c2d12;
+  box-shadow: var(--skeuo-extrusion-orange);
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-xs);
+  margin-bottom: 0.85rem;
+}
+
+.admin-banner-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.admin-banner-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 850px;
+  line-height: 1.6;
+}
+
+/* Admin Tabs */
+.admin-tab-nav {
+  display: flex;
+  gap: 0.5rem;
+  background: #11141b;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #000000;
+  box-shadow: var(--skeuo-debossed);
+  overflow-x: auto;
+}
+
+.admin-tab-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-xs);
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.admin-tab-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-tab-link.active {
+  color: #ffffff;
+  background: var(--orange-gradient);
+  box-shadow: var(--skeuo-extrusion-orange);
+}
+
+/* KPI Cards */
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.admin-kpi-card {
+  background: var(--metal-gradient-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: var(--skeuo-card-raised);
+  transition: var(--transition);
+}
+
+.card-cyan, .card-blue, .card-indigo { border-top: 3px solid var(--orange-bright); }
+.card-green { border-top: 3px solid #22c55e; }
+.card-purple { border-top: 3px solid #9ca3af; }
+.card-amber { border-top: 3px solid #f59e0b; }
+
+.kpi-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.kpi-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--orange-filament);
+  text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+  background: #0d1016;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--skeuo-display-well);
+}
+
+/* Segmented Buttons */
+.btn-group-segmented {
+  display: flex;
+  background: #11141b;
+  border: 1px solid #000000;
+  border-radius: var(--radius-xs);
+  padding: 3px;
+  box-shadow: var(--skeuo-debossed);
+}
+
+.btn-segment {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-segment.active {
+  background: var(--orange-gradient);
+  color: #ffffff;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   Chassis Modals & Dialogs
+   ========================================================================== */
+
+.modal-overlay, .error-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.modal-card, .error-modal-card, .modal-dialog {
+  background: linear-gradient(180deg, #242a36 0%, #191d26 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 2.25rem !important;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 20px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(249, 115, 22, 0.15) !important;
+}
+
+.modal-header, .error-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #101217;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.modal-header h3, .error-header h3, .modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.close-btn {
+  background: var(--metal-gradient-raised);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xs);
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  box-shadow: var(--skeuo-extrusion-sm);
+  transition: var(--transition);
+}
+
+.close-btn:hover {
+  color: #ffffff;
+  background: var(--orange-gradient);
+}
+
+.modal-footer, .error-footer {
+  padding-top: 1.25rem;
+  margin-top: 1.5rem;
+  border-top: 2px solid #101217;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.08) inset;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.85rem;
+}
+
+/* ==========================================================================
+   Login / Hardware Terminal Console
+   ========================================================================== */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem 1rem;
+}
+
+.login-card {
+  background: linear-gradient(180deg, #242a36 0%, #1a1e27 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--radius-xl) !important;
+  padding: 3rem !important;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--skeuo-card-raised), 0 0 25px rgba(249, 115, 22, 0.15) !important;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.brand-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: var(--orange-gradient);
+  border: 1px solid #7c2d12;
+  box-shadow: var(--skeuo-extrusion-orange);
+  padding: 0.35rem 1.1rem;
+  border-radius: var(--radius-xs);
+  margin-bottom: 1rem;
+}
+
+.login-header h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.login-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.35rem;
+}
+
+.toggle-container {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.toggle-auth-btn {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--orange-bright);
+}
+
+/* ==========================================================================
+   Alert Banners & Notifications
+   ========================================================================== */
+
+.error-banner {
+  background: linear-gradient(180deg, #7f1d1d 0%, #450a0a 100%);
+  border: 1px solid #ef4444;
+  color: #fecaca;
+  padding: 0.9rem 1.2rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.notification-stack {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 400px;
+}
+
+.notification {
+  padding: 1rem 1.4rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 10px 25px rgba(0, 0, 0, 0.8);
+}
+
+.notification.success {
+  background: linear-gradient(180deg, #166534 0%, #14532d 100%);
+  border: 1px solid #22c55e;
+  color: #ffffff;
+}
+
+.notification.warning {
+  background: linear-gradient(180deg, #9a3412 0%, #7c2d12 100%);
+  border: 1px solid #f97316;
+  color: #ffffff;
+}
+
+.notification.error {
+  background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%);
+  border: 1px solid #ef4444;
+  color: #ffffff;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin-left: 0.85rem;
+}
+
+/* ==========================================================================
+   Loading Spinners & Empty States
+   ========================================================================== */
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #1f2937;
+  border-top-color: var(--orange-bright);
+  border-radius: 50%;
+  animation: skeuoSpin 0.8s linear infinite;
+  box-shadow: 0 0 12px var(--orange-glow);
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #1f2937;
+  border-top-color: var(--orange-bright);
+  border-radius: 50%;
+  animation: skeuoSpin 0.8s linear infinite;
+}
+
+@keyframes skeuoSpin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state, .empty-state-wrapper, .admin-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #11141b;
+  border: 1px dashed #374151;
+  border-radius: var(--radius-md);
+  box-shadow: var(--skeuo-debossed);
+  color: var(--text-secondary);
+}
+
+.empty-state-icon, .empty-icon {
+  width: 56px;
+  height: 56px;
+  color: var(--orange-bright);
+  margin-bottom: 1.25rem;
+}
+
+.empty-state-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.empty-state-desc {
+  color: var(--text-secondary);
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   Pagination Controls
+   ========================================================================== */
+
+.pagination, .admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.75rem;
+  padding: 0.5rem 0;
+}
+
+.pagination-btn {
+  background: var(--metal-gradient-raised);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: var(--skeuo-extrusion-sm);
+  transition: var(--transition);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--metal-gradient-hover);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pagination-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.page-info, .page-indicator {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
 
 /* ==========================================================================
    Global Atmosphere & Layered Cosmic Background
