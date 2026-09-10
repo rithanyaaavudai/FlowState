@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { login, register, clearAuthError } from '../../store/slices/authSlice';
-import { User, Lock, Mail, ChevronRight, Activity, Zap } from 'lucide-react';
 
 const Login = ({ initialRegister = false }) => {
   const dispatch = useDispatch();

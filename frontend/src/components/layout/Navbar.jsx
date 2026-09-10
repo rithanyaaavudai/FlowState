@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/slices/authSlice';
-import { Activity, LayoutDashboard, Calendar, Clock, List, Users, ShieldAlert, BarChart3, LogOut, Settings } from 'lucide-react';
+import { Activity, Calendar, Clock, List, Users, ShieldAlert, BarChart3, LogOut, Settings } from 'lucide-react';
 
 const Navbar = () => {
   const dispatch = useDispatch();
