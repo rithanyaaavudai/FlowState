@@ -1,4 +1,5 @@
 import React from 'react';
+import { Inbox } from 'lucide-react';
 
 const EmptyState = ({ message = 'No items found', icon }) => {
   return (

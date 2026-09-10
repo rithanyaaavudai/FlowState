@@ -229,21 +229,15 @@ const FocusSessionList = () => {
                           <button
                             className="btn action-btn start-btn"
                             onClick={() => handleStart(id)}
-                          >
-                            Start
-                          </button>
+                          ><Play size={14} /> Start</button>
                           <button
                             className="btn action-btn edit-btn"
                             onClick={() => handleEdit(session)}
-                          >
-                            Edit
-                          </button>
+                          ><Edit2 size={14} /> Edit</button>
                           <button
                             className="btn action-btn delete-btn"
                             onClick={() => handleDelete(id)}
-                          >
-                            Delete
-                          </button>
+                          ><Trash2 size={14} /> Delete</button>
                         </>
                       )}
 
@@ -252,18 +246,14 @@ const FocusSessionList = () => {
                           <button
                             className="btn action-btn complete-btn"
                             onClick={() => handleComplete(id)}
-                          >
-                            Complete
-                          </button>
+                          ><Check size={14} /> Complete</button>
                           <button
                             className="btn action-btn abandon-btn"
                             onClick={() => {
                               setAbandoningSessionId(id);
                               setAbandonReason('');
                             }}
-                          >
-                            Abandon
-                          </button>
+                          ><XCircle size={14} /> Abandon</button>
                         </>
                       )}
                     </td>
