@@ -1,4 +1,5 @@
 import React from 'react';
+import { Clock, AlertTriangle } from 'lucide-react';
 
 const RecentActivity = ({ sessions = [], distractionLogs = [] }) => {
   const combinedActivity = [
@@ -34,7 +35,7 @@ const RecentActivity = ({ sessions = [], distractionLogs = [] }) => {
           {recentItems.map((item) => (
             <li key={item.id} className={`activity-item activity-${item.type.toLowerCase()}`}>
               <div className="activity-icon">
-                {item.type === 'SESSION' ? '⏱️' : '⚠️'}
+                {item.type === 'SESSION' ? <Clock size={20} color="var(--accent-cyan)" /> : <AlertTriangle size={20} color="var(--warning-border)" />}
               </div>
               <div className="activity-details">
                 <div className="activity-title">{item.title}</div>

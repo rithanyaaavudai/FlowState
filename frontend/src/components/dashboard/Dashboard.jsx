@@ -26,10 +26,7 @@ const Dashboard = () => {
 
   return (
     <div className="page-container dashboard-page">
-      <div className="welcome-header welcome-section welcome-banner" data-testid="welcome-message">
-        <h1 className="welcome-title">Welcome to FlowState</h1>
-        <p className="welcome-subtitle">Here is your focus dashboard and recent productivity stats.</p>
-      </div>
+      <div className="welcome-header" data-testid="welcome-message" style={{ display: 'none' }}></div>
 
       <StatCards stats={stats || {}} />
 

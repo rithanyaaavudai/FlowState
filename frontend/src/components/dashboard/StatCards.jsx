@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { CheckCircle, Clock, TrendingUp } from 'lucide-react';
 
 const StatCards = ({ stats = {} }) => {
   const { user, fullName } = useSelector((state) => state.auth);
