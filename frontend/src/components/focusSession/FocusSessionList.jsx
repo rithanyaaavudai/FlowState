@@ -15,6 +15,7 @@ import {
 import SearchFilterBar from '../common/SearchFilterBar';
 import EmptyState from '../common/EmptyState';
 import FocusSessionForm from './FocusSessionForm';
+import { Play, Edit2, Trash2, Check, XCircle } from 'lucide-react';
 
 const FocusSessionList = () => {
   const dispatch = useDispatch();
